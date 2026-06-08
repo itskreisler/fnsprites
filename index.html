@@ -62,7 +62,6 @@
             font-weight: 500;
         }
 
-        /* Turned the user-tag container into a working interactive layout element */
         .share-btn {
             font-size: 20px;
             font-weight: 700;
@@ -246,7 +245,6 @@
             text-overflow: ellipsis;
         }
 
-        /* Banner styling when viewing someone else's shared collection link */
         .view-mode-banner {
             display: none;
             background: rgba(244, 196, 48, 0.15);
@@ -282,7 +280,7 @@
 
     <div class="app-layout">
         <aside class="sidebar">
-            <div class="filter-header">SEARCH BOX</div>
+            <div class="filter-header">SEARCH BOX FOR NAME</div>
             <input type="text" id="search" class="fn-input" placeholder="Search for name...">
             
             <div class="filter-header">SORT BY THEME</div>
@@ -309,21 +307,71 @@
 </div>
 
 <script>
-    // System checks the URL for a shared link format first: ?showcase=id1,id2,id3
+    // Functions to compress/decompress a list of boolean data states via URL safe strings
+    function compressCollection(baseList, activeObtained) {
+        // Maps every sprite entry into a 1 (unlocked) or 0 (locked) state string sequence
+        let bitString = '';
+        baseList.forEach(sprite => {
+            bitString += activeObtained.includes(sprite.id) ? '1' : '0';
+        });
+        
+        // Pad out the string length to clean multiples of 8 bits for binary formatting conversion
+        while (bitString.length % 8 !== 0) bitString += '0';
+        
+        // Convert the sequence chunk variables directly into plain numeric text values
+        let byteArray = [];
+        for (let i = 0; i < bitString.length; i += 8) {
+            byteArray.push(parseInt(bitString.substring(i, i + 8), 2));
+        }
+        
+        // Output compressed string array using standard native window encoding methods
+        let binaryString = String.fromCharCode.apply(null, byteArray);
+        return btoa(binaryString).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+
+    function decompressCollection(baseList, compressedString) {
+        if (!compressedString) return [];
+        try {
+            // Restore structural parameters from standard URL encoded strings back into raw binary text
+            let base64 = compressedString.replace(/-/g, '+').replace(/_/g, '/');
+            while (base64.length % 4) base64 += '=';
+            let binaryString = atob(base64);
+            
+            let bitString = '';
+            for (let i = 0; i < binaryString.length; i++) {
+                let bits = binaryString.charCodeAt(i).toString(2);
+                bitString += bits.padStart(8, '0');
+            }
+            
+            // Map the binary map indexes right back to match your base array keys
+            let decodedIds = [];
+            baseList.forEach((sprite, index) => {
+                if (bitString[index] === '1') {
+                    decodedIds.push(sprite.id);
+                }
+            });
+            return decodedIds;
+        } catch (e) {
+            console.error("Failed to decode tracking query code bundle extension:", e);
+            return [];
+        }
+    }
+
     const urlParams = new URLSearchParams(window.location.search);
-    const sharedIdsString = urlParams.get('showcase');
-    const isViewMode = sharedIdsString !== null;
+    const compressedCode = urlParams.get('c'); // 'c' query parameter contains the new compressed code string
+    const isViewMode = compressedCode !== null;
 
     let obtainedSprites = [];
 
+    // Grid rendering logic setup step changes depending on the mode initialized
     if (isViewMode) {
-        // Shared View Mode: Parse the ids from the link, and restrict view adjustments
-        obtainedSprites = sharedIdsString ? sharedIdsString.split(',') : [];
+        if (typeof baseSprites !== 'undefined') {
+            obtainedSprites = decompressCollection(baseSprites, compressedCode);
+        }
         document.getElementById('viewModeBanner').style.display = 'block';
         document.getElementById('status-filter').value = 'obtained';
         document.getElementById('status-filter').disabled = true;
     } else {
-        // Standard Personal Mode: Pull data from the local computer cache checklist
         obtainedSprites = JSON.parse(localStorage.getItem('fn_obtained_sprites')) || [];
     }
 
@@ -358,7 +406,6 @@
         baseSprites.forEach(sprite => {
             const isObtained = obtainedSprites.includes(sprite.id);
             
-            // Layout Override Rule: If in shared showcase view link, automatically hide uncollected or unreleased items
             if (isViewMode && (!isObtained || sprite.unreleased)) {
                 return;
             }
@@ -383,7 +430,6 @@
                     <div class="card-title-footer">${sprite.name}</div>
                 `;
                 
-                // Clicking only changes the checklist state if the user is on their own personal dashboard page
                 if (!isViewMode) {
                     card.addEventListener('click', () => toggleObtained(sprite.id));
                 }
@@ -403,9 +449,9 @@
         renderGrid();
     }
 
-    // Share link generation logic loop script
     shareBtn.addEventListener('click', () => {
-        // Collect currently logged items (ignoring unreleased sprites)
+        if (typeof baseSprites === 'undefined') return;
+
         const activeCollected = obtainedSprites.filter(id => {
             const match = baseSprites.find(s => s.id === id);
             return match && !match.unreleased;
@@ -416,14 +462,13 @@
             return;
         }
 
-        // Generate showcase link string sequence parameters
-        const shareURL = `${window.location.origin}${window.location.pathname}?showcase=${activeCollected.join(',')}`;
+        // Generate compressed string code token 
+        const compressionCodeString = compressCollection(baseSprites, obtainedSprites);
+        const shareURL = `${window.location.origin}${window.location.pathname}?c=${compressionCodeString}`;
         
-        // Copy link output directly onto the device dashboard clipboard actions array
         navigator.clipboard.writeText(shareURL).then(() => {
-            alert("COLLECTION COPIED TO CLIPBOARD!\n\nSend this link to others to show off your matching collected sprites grid!");
+            alert("COMPRESSED COLLECTION LINK COPIED TO CLIPBOARD!");
         }).catch(err => {
-            // Error handling fallback box if device blocks clipboard write tasks
             prompt("COPY YOUR SHARE LINK BELOW:", shareURL);
         });
     });
