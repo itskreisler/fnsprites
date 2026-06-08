@@ -62,12 +62,23 @@
             font-weight: 500;
         }
 
-        .user-tag {
-            font-size: 24px;
+        /* Turned the user-tag container into a working interactive layout element */
+        .share-btn {
+            font-size: 20px;
+            font-weight: 700;
             font-style: italic;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1));
-            padding: 5px 20px;
+            background: linear-gradient(90deg, transparent, rgba(244,196,48,0.15));
+            color: #ffffff;
+            padding: 8px 24px;
+            border: 2px solid transparent;
             border-right: 4px solid var(--fn-yellow);
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .share-btn:hover {
+            background: linear-gradient(90deg, transparent, rgba(244,196,48,0.3));
+            border-color: rgba(255,255,255,0.2);
         }
 
         .app-layout {
@@ -234,6 +245,24 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
+        /* Banner styling when viewing someone else's shared collection link */
+        .view-mode-banner {
+            display: none;
+            background: rgba(244, 196, 48, 0.15);
+            border: 2px dashed var(--fn-yellow);
+            color: var(--fn-yellow);
+            text-align: center;
+            padding: 10px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-style: italic;
+        }
+        .view-mode-banner a {
+            color: #fff;
+            margin-left: 10px;
+        }
     </style>
     
     <script src="sprites-data.js"></script>
@@ -243,8 +272,13 @@
 <div class="container">
     <header class="fn-navbar">
         <div class="brand-title">👑 FORTNITE SPRITES TRACKER <span id="navbar-stats">0/0 COLLECTED</span></div>
-        <div class="user-tag">USER COLLECTION</div>
+        <button class="share-btn" id="shareBtn">SHARE COLLECTION</button>
     </header>
+
+    <div class="view-mode-banner" id="viewModeBanner">
+        👀 VIEWING A SHARED COLLECTION. ITEMS ARE FILTERED TO SHOW COLLECTED ONLY.
+        <a href="index.html">GO TO MY PERSONAL TRACKER</a>
+    </div>
 
     <div class="app-layout">
         <aside class="sidebar">
@@ -275,25 +309,35 @@
 </div>
 
 <script>
-    let obtainedSprites = JSON.parse(localStorage.getItem('fn_obtained_sprites')) || [];
+    // System checks the URL for a shared link format first: ?showcase=id1,id2,id3
+    const urlParams = new URLSearchParams(window.location.search);
+    const sharedIdsString = urlParams.get('showcase');
+    const isViewMode = sharedIdsString !== null;
+
+    let obtainedSprites = [];
+
+    if (isViewMode) {
+        // Shared View Mode: Parse the ids from the link, and restrict view adjustments
+        obtainedSprites = sharedIdsString ? sharedIdsString.split(',') : [];
+        document.getElementById('viewModeBanner').style.display = 'block';
+        document.getElementById('status-filter').value = 'obtained';
+        document.getElementById('status-filter').disabled = true;
+    } else {
+        // Standard Personal Mode: Pull data from the local computer cache checklist
+        obtainedSprites = JSON.parse(localStorage.getItem('fn_obtained_sprites')) || [];
+    }
 
     const spriteGrid = document.getElementById('spriteGrid');
     const searchInput = document.getElementById('search');
     const themeFilter = document.getElementById('theme-filter');
     const statusFilter = document.getElementById('status-filter');
     const navbarStats = document.getElementById('navbar-stats');
+    const shareBtn = document.getElementById('shareBtn');
 
-    // New helper function to count tracked progress of active/released items
     function updateCollectionCounter() {
         if (typeof baseSprites === 'undefined') return;
-
-        // Count items in sprites-data.js that are NOT unreleased
         const totalReleased = baseSprites.filter(sprite => !sprite.unreleased).length;
-
-        // Count how many of those released items are saved inside your obtained array
         const collectedReleased = baseSprites.filter(sprite => !sprite.unreleased && obtainedSprites.includes(sprite.id)).length;
-
-        // Dynamically print the format to the top header view area
         navbarStats.textContent = `${collectedReleased}/${totalReleased} COLLECTED`;
     }
 
@@ -305,7 +349,6 @@
             return;
         }
 
-        // Keep the tracker data matching changes smoothly whenever cards load or are filtered
         updateCollectionCounter();
 
         const searchQuery = searchInput.value.toLowerCase();
@@ -314,6 +357,12 @@
 
         baseSprites.forEach(sprite => {
             const isObtained = obtainedSprites.includes(sprite.id);
+            
+            // Layout Override Rule: If in shared showcase view link, automatically hide uncollected or unreleased items
+            if (isViewMode && (!isObtained || sprite.unreleased)) {
+                return;
+            }
+
             const matchesSearch = sprite.name.toLowerCase().includes(searchQuery);
             const matchesTheme = selectedTheme === 'all' || sprite.theme === selectedTheme;
             const matchesStatus = selectedStatus === 'all' || (selectedStatus === 'obtained' && isObtained) || (selectedStatus === 'missing' && !isObtained);
@@ -323,7 +372,6 @@
                 card.className = `sprite-card theme-${sprite.theme} ${isObtained ? 'obtained' : ''}`;
                 
                 const badgeHTML = sprite.unreleased ? `<div class="status-badge unreleased">UNRELEASED</div>` : '';
-                
                 const inferredImagePath = `sprites/${sprite.id}.png`;
 
                 card.innerHTML = `
@@ -335,7 +383,11 @@
                     <div class="card-title-footer">${sprite.name}</div>
                 `;
                 
-                card.addEventListener('click', () => toggleObtained(sprite.id));
+                // Clicking only changes the checklist state if the user is on their own personal dashboard page
+                if (!isViewMode) {
+                    card.addEventListener('click', () => toggleObtained(sprite.id));
+                }
+                
                 spriteGrid.appendChild(card);
             }
         });
@@ -351,9 +403,36 @@
         renderGrid();
     }
 
+    // Share link generation logic loop script
+    shareBtn.addEventListener('click', () => {
+        // Collect currently logged items (ignoring unreleased sprites)
+        const activeCollected = obtainedSprites.filter(id => {
+            const match = baseSprites.find(s => s.id === id);
+            return match && !match.unreleased;
+        });
+
+        if (activeCollected.length === 0) {
+            alert("YOUR CHECKLIST IS EMPTY! CHOOSE SOME SPRITES BEFORE GENERATING A LINK.");
+            return;
+        }
+
+        // Generate showcase link string sequence parameters
+        const shareURL = `${window.location.origin}${window.location.pathname}?showcase=${activeCollected.join(',')}`;
+        
+        // Copy link output directly onto the device dashboard clipboard actions array
+        navigator.clipboard.writeText(shareURL).then(() => {
+            alert("COLLECTION COPIED TO CLIPBOARD!\n\nSend this link to others to show off your matching collected sprites grid!");
+        }).catch(err => {
+            // Error handling fallback box if device blocks clipboard write tasks
+            prompt("COPY YOUR SHARE LINK BELOW:", shareURL);
+        });
+    });
+
     searchInput.addEventListener('input', renderGrid);
     themeFilter.addEventListener('change', renderGrid);
-    statusFilter.addEventListener('change', renderGrid);
+    if (!isViewMode) {
+        statusFilter.addEventListener('change', renderGrid);
+    }
 
     renderGrid();
 </script>
