@@ -6,19 +6,24 @@
     <title>Fortnite Sprites Tracker</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --fn-bg: #0b0d13;
             --fn-panel-bg: #181c25;
             --fn-yellow: #f4c430;
-            --fn-blue-top: #2575fc;
-            --fn-purple-bot: #6a11cb;
-            --fn-gold-top: #fcd34d;
-            --fn-gold-bot: #b45309;
             --fn-border: #3b4253;
             --fn-neon-cyan: #00f0ff;
+            --fn-unreleased: #ef4444;
+
+            /* Theme Gradients */
+            --gradient-Basic: linear-gradient(180deg, #2575fc 0%, #6a11cb 100%);
+            --gradient-Gold: linear-gradient(180deg, #fcd34d 0%, #b45309 100%);
+            --gradient-Candy: linear-gradient(180deg, #ff758c 0%, #ff7eb3 100%);
+            --gradient-Galaxy: linear-gradient(180deg, #1d1b4b 0%, #4c1d95 50%, #701a75 100%);
+            --gradient-Gem: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%);
+            --gradient-Holofoil: linear-gradient(135deg, #a5b4fc 0%, #6366f1 25%, #ec4899 50%, #14b8a6 75%, #f59e0b 100%);
         }
 
         * {
@@ -36,7 +41,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Top Header Navigation bar styled like Fortnite menus */
         .fn-navbar {
             display: flex;
             justify-content: space-between;
@@ -50,9 +54,6 @@
             font-size: 38px;
             font-weight: 900;
             font-style: italic;
-            display: flex;
-            align-items: center;
-            gap: 10px;
             text-shadow: 2px 2px 0px #000;
         }
 
@@ -69,7 +70,6 @@
             border-right: 4px solid var(--fn-yellow);
         }
 
-        /* Layout Grid split into Control Sidebar and Main Display Workspace */
         .app-layout {
             display: grid;
             grid-template-columns: 280px 1fr;
@@ -81,7 +81,6 @@
             .app-layout { grid-template-columns: 1fr; }
         }
 
-        /* Fortnite UI Sidebar Box */
         .sidebar {
             background-color: var(--fn-panel-bg);
             border: 3px solid var(--fn-border);
@@ -90,45 +89,17 @@
             box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
         }
 
-        /* Slanted Action Buttons */
-        .fn-btn {
-            width: 100%;
-            background: var(--fn-yellow);
-            color: #000000;
-            font-size: 18px;
-            font-weight: 700;
-            font-style: italic;
-            padding: 12px;
-            border: none;
-            margin-bottom: 12px;
-            cursor: pointer;
-            text-align: left;
-            position: relative;
-            clip-path: polygon(0 0, 95% 0, 100% 100%, 5% 100%);
-            transition: transform 0.1s, filter 0.2s;
-        }
-
-        .fn-btn::after {
-            content: "⚡";
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .fn-btn:hover {
-            filter: brightness(1.2);
-            transform: scale(1.02);
-        }
-
         .filter-header {
             font-size: 14px;
             color: #8a929e;
-            margin: 20px 0 8px 0;
+            margin: 0 0 8px 0;
             font-style: italic;
         }
 
-        /* Modernized inputs */
+        .filter-header:not(:first-child) {
+            margin-top: 20px;
+        }
+
         .fn-input, .fn-select {
             width: 100%;
             background-color: #0e1117;
@@ -137,7 +108,6 @@
             padding: 10px;
             font-size: 16px;
             border-radius: 4px;
-            margin-bottom: 15px;
         }
 
         .fn-input:focus, .fn-select:focus {
@@ -145,16 +115,12 @@
             outline: none;
         }
 
-        #sprite-upload { display: none; }
-
-        /* The Main Grid system matching the layout proportions */
         .sprite-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 15px;
         }
 
-        /* AUTHENTIC FORTNITE BOXES: Metallic frame, glowing gradient backgrounds */
         .sprite-card {
             background-color: #171c26;
             border: 3px solid #2d3648;
@@ -170,7 +136,6 @@
             transition: transform 0.15s, border-color 0.15s;
         }
 
-        /* Subtle mechanical corner cuts to replicate the reference image borders */
         .sprite-card::before {
             content: '';
             position: absolute;
@@ -180,26 +145,19 @@
             z-index: 3;
         }
 
-        /* Animated cyan frame accents when hovered or checked */
         .sprite-card:hover {
             transform: translateY(-4px);
             border-color: #4b5975;
         }
 
-        /* Fortnite Item Grade Color Gradients */
-        .sprite-card.variant-Base .card-inner-display {
-            background: linear-gradient(180deg, var(--fn-blue-top) 0%, var(--fn-purple-bot) 100%);
-        }
+        /* Dynamically handle background themes via classes */
+        .sprite-card.theme-Basic .card-inner-display { background: var(--gradient-Basic); }
+        .sprite-card.theme-Gold .card-inner-display { background: var(--gradient-Gold); }
+        .sprite-card.theme-Candy .card-inner-display { background: var(--gradient-Candy); }
+        .sprite-card.theme-Galaxy .card-inner-display { background: var(--gradient-Galaxy); }
+        .sprite-card.theme-Gem .card-inner-display { background: var(--gradient-Gem); }
+        .sprite-card.theme-Holofoil .card-inner-display { background: var(--gradient-Holofoil); }
 
-        .sprite-card.variant-Gold .card-inner-display {
-            background: linear-gradient(180deg, var(--fn-gold-top) 0%, var(--fn-gold-bot) 100%);
-        }
-        
-        .sprite-card.variant-Custom .card-inner-display {
-            background: linear-gradient(180deg, #34d399 0%, #065f46 100%);
-        }
-
-        /* Display Wrapper inside the Outer Border Frame */
         .card-inner-display {
             flex: 1;
             width: 100%;
@@ -211,11 +169,10 @@
             overflow: hidden;
         }
 
-        /* Angular shadows inside the card items */
         .card-inner-display::after {
             content: '';
             position: absolute;
-            bottom: 0; left: 0; right: 0; hieght: 40%;
+            bottom: 0; left: 0; right: 0; height: 40%;
             background: linear-gradient(0deg, rgba(0,0,0,0.4) 0%, transparent 100%);
             pointer-events: none;
         }
@@ -228,7 +185,6 @@
             z-index: 2;
         }
 
-        /* Item Checklist Active Crown Crown Marker */
         .sprite-card .crown-indicator {
             position: absolute;
             top: 6px;
@@ -240,38 +196,36 @@
             transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Smooth transition for crown popup appearance */
         .sprite-card.obtained .crown-indicator {
             transform: translateX(-50%) scale(1.3);
         }
 
-        /* Locked / Active Highlight Framework overrides */
         .sprite-card.obtained {
             border-color: var(--fn-yellow);
             box-shadow: 0 0 15px rgba(244, 196, 48, 0.4);
         }
 
-        /* Level Ribbon Graphic from your Game Screenshot */
-        .lvl-badge {
+        /* Badge component handles the developer unreleased toggle state */
+        .status-badge {
             position: absolute;
             bottom: 4px;
             left: 4px;
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.8);
             color: #ffffff;
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 700;
             font-style: italic;
-            padding: 1px 8px;
+            padding: 1px 6px;
             border-radius: 3px;
-            border-left: 3px solid var(--fn-neon-cyan);
             z-index: 4;
+            letter-spacing: 0px;
         }
 
-        .sprite-card.obtained .lvl-badge {
-            border-left-color: var(--fn-yellow);
+        .status-badge.unreleased {
+            border-left: 3px solid var(--fn-unreleased);
+            color: var(--fn-unreleased);
         }
 
-        /* Label at base of frame for identifying names */
         .card-title-footer {
             font-size: 12px;
             font-weight: 700;
@@ -281,37 +235,6 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-        }
-
-        /* Popup Windows */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.85);
-            justify-content: center; align-items: center;
-            z-index: 100;
-            backdrop-filter: blur(4px);
-        }
-        .modal-content {
-            background-color: var(--fn-panel-bg);
-            padding: 25px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 400px;
-            border: 3px solid var(--fn-border);
-        }
-        .modal-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .modal-btn {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
         }
     </style>
 </head>
@@ -325,18 +248,18 @@
 
     <div class="app-layout">
         <aside class="sidebar">
-            <label for="sprite-upload" class="fn-btn">ADD NEW SPRITE VARIANT</label>
-            <input type="file" id="sprite-upload" accept="image/*">
-            
             <div class="filter-header">SEARCH BOX FOR NAME</div>
             <input type="text" id="search" class="fn-input" placeholder="Search for name...">
             
-            <div class="filter-header">SORT BY STYLE</div>
-            <select id="variant-filter" class="fn-select">
-                <option value="all">ALL STYLES</option>
-                <option value="Base">BASE STYLE (BLUE/PURPLE)</option>
-                <option value="Gold">GOLD STYLE (GOLDEN)</option>
-                <option value="Custom">CUSTOM ENTRIES</option>
+            <div class="filter-header">SORT BY THEME</div>
+            <select id="theme-filter" class="fn-select">
+                <option value="all">ALL THEMES</option>
+                <option value="Basic">BASIC</option>
+                <option value="Gold">GOLD</option>
+                <option value="Candy">CANDY</option>
+                <option value="Galaxy">GALAXY</option>
+                <option value="Gem">GEM</option>
+                <option value="Holofoil">HOLOFOIL</option>
             </select>
 
             <div class="filter-header">COLLECTION PROGRESS</div>
@@ -351,81 +274,48 @@
     </div>
 </div>
 
-<div class="modal" id="uploadModal">
-    <div class="modal-content">
-        <h2 style="margin-top:0; font-style: italic;">NEW SPRITE FILE DETECTED</h2>
-        <div class="filter-header">SPRITE IDENTITY NAME</div>
-        <input type="text" id="modal-name" class="fn-input" placeholder="e.g. Slurp Sprite">
-        
-        <div class="filter-header">ASSIGN ITEM STYLE</div>
-        <select id="modal-variant" class="fn-select">
-            <option value="Base">Base Style (Epic Blue)</option>
-            <option value="Gold">Gold Style (Legendary Gold)</option>
-            <option value="Custom">Custom Entry</option>
-        </select>
-        
-        <div class="modal-buttons">
-            <button class="modal-btn" id="modal-cancel" style="background-color:#4a5262; color:#fff;">ABORT</button>
-            <button class="modal-btn" id="modal-save" style="background-color:var(--fn-yellow); color:#000;">SAVE DATA</button>
-        </div>
-    </div>
-</div>
-
 <script>
-    // Live reference parameters for sprites matching the user's provided snapshot layout
+    // DEVELOPER CONTROL PANEL: Update this array to manage your live catalog
     const baseSprites = [
-        { id: "water_base", name: "Water Sprite", variant: "Base", image: "https://placehold.co/150x150/1d4ed8/ffffff?text=Water" },
-        { id: "water_gold", name: "Water Sprite", variant: "Gold", image: "https://placehold.co/150x150/eab308/000000?text=Gold+Water" },
-        { id: "earth_base", name: "Earth Sprite", variant: "Base", image: "https://placehold.co/150x150/15803d/ffffff?text=Earth" },
-        { id: "fire_base", name: "Fire Sprite", variant: "Base", image: "https://placehold.co/150x150/b91c1c/ffffff?text=Fire" },
-        { id: "fire_gold", name: "Fire Sprite", variant: "Gold", image: "https://placehold.co/150x150/eab308/000000?text=Gold+Fire" },
-        { id: "demon_base", name: "Demon Sprite", variant: "Base", image: "https://placehold.co/150x150/4b5563/ffffff?text=Demon" },
-        { id: "demon_gold", name: "Demon Sprite", variant: "Gold", image: "https://placehold.co/150x150/eab308/000000?text=Gold+Demon" },
-        { id: "duck_base", name: "Duck Sprite", variant: "Base", image: "https://placehold.co/150x150/a21caf/ffffff?text=Duck" },
-        { id: "duck_gold", name: "Duck Sprite", variant: "Gold", image: "https://placehold.co/150x150/eab308/000000?text=Gold+Duck" },
-        { id: "ghost_base", name: "Ghost Sprite", variant: "Base", image: "https://placehold.co/150x150/6b21a8/ffffff?text=Ghost" },
-        { id: "ghost_gold", name: "Ghost Sprite", variant: "Gold", image: "https://placehold.co/150x150/eab308/000000?text=Gold+Ghost" },
-        { id: "king_base", name: "King Sprite", variant: "Base", image: "https://placehold.co/150x150/4338ca/ffffff?text=King" },
-        { id: "king_gold", name: "King Sprite", variant: "Gold", image: "https://placehold.co/150x150/eab308/000000?text=Gold+King" },
-        { id: "punk_base", name: "Punk Sprite", variant: "Base", image: "https://placehold.co/150x150/0f172a/ffffff?text=Punk" },
-        { id: "dream_base", name: "Dream Sprite", variant: "Base", image: "https://placehold.co/150x150/db2777/ffffff?text=Dream" }
+        { id: "water_basic", name: "Water Sprite", theme: "Basic", image: "sprites/water_basic.png", unreleased: false },
+        { id: "water_gold", name: "Water Sprite", theme: "Gold", image: "sprites/water_gold.png", unreleased: false },
+        { id: "earth_candy", name: "Earth Sprite", theme: "Candy", image: "sprites/earth_candy.png", unreleased: false },
+        { id: "fire_galaxy", name: "Fire Sprite", theme: "Galaxy", image: "sprites/fire_galaxy.png", unreleased: true },
+        { id: "demon_gem", name: "Demon Sprite", theme: "Gem", image: "sprites/demon_gem.png", unreleased: false },
+        { id: "ghost_holofoil", name: "Ghost Sprite", theme: "Holofoil", image: "sprites/ghost_holo.png", unreleased: true }
     ];
 
-    let customSprites = JSON.parse(localStorage.getItem('fn_custom_sprites')) || [];
     let obtainedSprites = JSON.parse(localStorage.getItem('fn_obtained_sprites')) || [];
-    let temporaryImgData = null;
 
     const spriteGrid = document.getElementById('spriteGrid');
     const searchInput = document.getElementById('search');
-    const variantFilter = document.getElementById('variant-filter');
+    const themeFilter = document.getElementById('theme-filter');
     const statusFilter = document.getElementById('status-filter');
-    const fileInput = document.getElementById('sprite-upload');
-    const uploadModal = document.getElementById('uploadModal');
 
     function renderGrid() {
         spriteGrid.innerHTML = '';
-        const allSprites = [...baseSprites, ...customSprites];
-        
         const searchQuery = searchInput.value.toLowerCase();
-        const selectedVariant = variantFilter.value;
+        const selectedTheme = themeFilter.value;
         const selectedStatus = statusFilter.value;
 
-        allSprites.forEach(sprite => {
+        baseSprites.forEach(sprite => {
             const isObtained = obtainedSprites.includes(sprite.id);
-            
             const matchesSearch = sprite.name.toLowerCase().includes(searchQuery);
-            const matchesVariant = selectedVariant === 'all' || sprite.variant === selectedVariant;
+            const matchesTheme = selectedTheme === 'all' || sprite.theme === selectedTheme;
             const matchesStatus = selectedStatus === 'all' || (selectedStatus === 'obtained' && isObtained) || (selectedStatus === 'missing' && !isObtained);
 
-            if (matchesSearch && matchesVariant && matchesStatus) {
+            if (matchesSearch && matchesTheme && matchesStatus) {
                 const card = document.createElement('div');
-                card.className = `sprite-card variant-${sprite.variant} ${isObtained ? 'obtained' : ''}`;
+                card.className = `sprite-card theme-${sprite.theme} ${isObtained ? 'obtained' : ''}`;
                 
+                // Display UNRELEASED status or leave empty depending on developer boolean
+                const badgeHTML = sprite.unreleased ? `<div class="status-badge unreleased">UNRELEASED</div>` : '';
+
                 card.innerHTML = `
                     <div class="crown-indicator">👑</div>
                     <div class="card-inner-display">
-                        <img src="${sprite.image}" class="sprite-img" alt="${sprite.name}">
-                        <div class="lvl-badge">LVL 5</div>
+                        <img src="${sprite.image}" class="sprite-img" alt="${sprite.name}" onerror="this.src='https://placehold.co/150?text=Missing+File'">
+                        ${badgeHTML}
                     </div>
                     <div class="card-title-footer">${sprite.name}</div>
                 `;
@@ -446,42 +336,8 @@
         renderGrid();
     }
 
-    fileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                temporaryImgData = event.target.result;
-                uploadModal.style.display = 'flex';
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-
-    document.getElementById('modal-save').addEventListener('click', () => {
-        const name = document.getElementById('modal-name').value.trim() || "NEW SPRITE";
-        const variant = document.getElementById('modal-variant').value;
-        const uniqueId = 'custom_' + Date.now();
-
-        if (temporaryImgData) {
-            const newSprite = { id: uniqueId, name, variant, image: temporaryImgData };
-            customSprites.push(newSprite);
-            localStorage.setItem('fn_custom_sprites', JSON.stringify(customSprites));
-            
-            document.getElementById('modal-name').value = '';
-            uploadModal.style.display = 'none';
-            fileInput.value = '';
-            renderGrid();
-        }
-    });
-
-    document.getElementById('modal-cancel').addEventListener('click', () => {
-        uploadModal.style.display = 'none';
-        fileInput.value = '';
-    });
-
     searchInput.addEventListener('input', renderGrid);
-    variantFilter.addEventListener('change', renderGrid);
+    themeFilter.addEventListener('change', renderGrid);
     statusFilter.addEventListener('change', renderGrid);
 
     renderGrid();
