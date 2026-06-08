@@ -462,9 +462,9 @@
         const shareURL = `${window.location.origin}${window.location.pathname}?c=${compressionCodeString}`;
         
         navigator.clipboard.writeText(shareURL).then(() => {
-            alert("COMPRESSED COLLECTION LINK COPIED TO CLIPBOARD!");
+            alert("Link copied to clipboard! Paste it to a friend to share your collection!");
         }).catch(err => {
-            prompt("COPY YOUR SHARE LINK BELOW:", shareURL);
+            prompt("Copy your share link.", shareURL);
         });
     });
 
