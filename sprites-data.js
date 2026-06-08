@@ -5,5 +5,5 @@ const baseSprites = [
     { id: "earth_candy", name: "Candy Earth Sprite", theme: "Candy", image: "sprites/earth_candy.png", unreleased: true },
     { id: "earth_galaxy", name: "Galaxy Earth Sprite", theme: "Galaxy", image: "sprites/earth_galaxy.png", unreleased: true },
     { id: "earth_gem", name: "Gem Earth Sprite", theme: "Gem", image: "sprites/earth_gem.png", unreleased: true },
-    { id: "theburntpeanut_basic", name: "TheBurntPeanut Sprite", theme: "Basic", image: "sprites/theburntpeanut_basic.png", unreleased: false },
+    { id: "theburntpeanut_basic", name: "TheBurntPeanut Sprite", theme: "Basic", image: "sprites/theburntpeanut_basic.png", unreleased: true },
 ];
