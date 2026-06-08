@@ -24,6 +24,8 @@
             --gradient-Galaxy: linear-gradient(180deg, #1d1b4b 0%, #4c1d95 50%, #701a75 100%);
             --gradient-Gem: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%);
             --gradient-Holofoil: linear-gradient(135deg, #a5b4fc 0%, #6366f1 25%, #ec4899 50%, #14b8a6 75%, #f59e0b 100%);
+            /* Added Rift Gradient (Fortnite Cube Purple theme) */
+            --gradient-Rift: linear-gradient(180deg, #b5179e 0%, #7209b7 50%, #3f37c9 100%);
         }
 
         * {
@@ -166,6 +168,8 @@
         .sprite-card.theme-Galaxy .card-inner-display { background: var(--gradient-Galaxy); }
         .sprite-card.theme-Gem .card-inner-display { background: var(--gradient-Gem); }
         .sprite-card.theme-Holofoil .card-inner-display { background: var(--gradient-Holofoil); }
+        /* Map the Rift class to its background variable */
+        .sprite-card.theme-Rift .card-inner-display { background: var(--gradient-Rift); }
 
         .card-inner-display {
             flex: 1;
@@ -280,8 +284,8 @@
 
     <div class="app-layout">
         <aside class="sidebar">
-            <div class="filter-header">SEARCH BOX FOR NAME</div>
-            <input type="text" id="search" class="fn-input" placeholder="Search for name...">
+            <div class="filter-header">SEARCH BOX</div>
+            <input type="text" id="search" class="fn-input" placeholder="Type to search...">
             
             <div class="filter-header">SORT BY THEME</div>
             <select id="theme-filter" class="fn-select">
@@ -292,6 +296,7 @@
                 <option value="Galaxy">GALAXY</option>
                 <option value="Gem">GEM</option>
                 <option value="Holofoil">HOLOFOIL</option>
+                <option value="Rift">RIFT</option>
             </select>
 
             <div class="filter-header">COLLECTION PROGRESS</div>
@@ -307,24 +312,18 @@
 </div>
 
 <script>
-    // Functions to compress/decompress a list of boolean data states via URL safe strings
     function compressCollection(baseList, activeObtained) {
-        // Maps every sprite entry into a 1 (unlocked) or 0 (locked) state string sequence
         let bitString = '';
         baseList.forEach(sprite => {
             bitString += activeObtained.includes(sprite.id) ? '1' : '0';
         });
-        
-        // Pad out the string length to clean multiples of 8 bits for binary formatting conversion
         while (bitString.length % 8 !== 0) bitString += '0';
         
-        // Convert the sequence chunk variables directly into plain numeric text values
         let byteArray = [];
         for (let i = 0; i < bitString.length; i += 8) {
             byteArray.push(parseInt(bitString.substring(i, i + 8), 2));
         }
         
-        // Output compressed string array using standard native window encoding methods
         let binaryString = String.fromCharCode.apply(null, byteArray);
         return btoa(binaryString).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
     }
@@ -332,7 +331,6 @@
     function decompressCollection(baseList, compressedString) {
         if (!compressedString) return [];
         try {
-            // Restore structural parameters from standard URL encoded strings back into raw binary text
             let base64 = compressedString.replace(/-/g, '+').replace(/_/g, '/');
             while (base64.length % 4) base64 += '=';
             let binaryString = atob(base64);
@@ -343,7 +341,6 @@
                 bitString += bits.padStart(8, '0');
             }
             
-            // Map the binary map indexes right back to match your base array keys
             let decodedIds = [];
             baseList.forEach((sprite, index) => {
                 if (bitString[index] === '1') {
@@ -358,12 +355,11 @@
     }
 
     const urlParams = new URLSearchParams(window.location.search);
-    const compressedCode = urlParams.get('c'); // 'c' query parameter contains the new compressed code string
+    const compressedCode = urlParams.get('c');
     const isViewMode = compressedCode !== null;
 
     let obtainedSprites = [];
 
-    // Grid rendering logic setup step changes depending on the mode initialized
     if (isViewMode) {
         if (typeof baseSprites !== 'undefined') {
             obtainedSprites = decompressCollection(baseSprites, compressedCode);
@@ -462,7 +458,6 @@
             return;
         }
 
-        // Generate compressed string code token 
         const compressionCodeString = compressCollection(baseSprites, obtainedSprites);
         const shareURL = `${window.location.origin}${window.location.pathname}?c=${compressionCodeString}`;
         
