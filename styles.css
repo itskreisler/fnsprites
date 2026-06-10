@@ -508,14 +508,33 @@ body.low-fidelity .sprite-card.rarity-Special .card-inner-display { background: 
    ========================================== */
 @media (max-width: 768px) {
     
-    /* 1. Base Layout Overhaul */
+/* 1. Base Layout Overhaul */
     body {
         padding: 12px; /* Extra breathing room on small screens */
     }
 
     .app-layout {
-        grid-template-columns: 1fr; /* Stack sidebar on top of grid */
+        display: flex;
+        flex-direction: column;
         gap: 16px;
+    }
+
+    /* Keep the filters panel above the sprite grid */
+    .layout-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        order: 1; 
+    }
+
+    /* Move the main sprite grid into the middle position */
+    .sprite-grid {
+        order: 2;
+    }
+
+    /* Push the creator card to the very bottom below the grid */
+    .creator-card {
+        order: 3;
     }
 
     /* 2. Compact & Flexible Navbar */
@@ -605,13 +624,23 @@ body.low-fidelity .sprite-card.rarity-Special .card-inner-display { background: 
         font-size: 16px;
     }
 
-    /* 6. Mobile Optimized Creator Card */
+/* 6. Mobile Optimized Creator Card */
     .creator-card {
         padding: 12px;
+        margin-top: 10px; /* Separation space from the bottom of the grid */
     }
 
     .creator-link {
-        max-width: 70%; /* Keeps the image from scaling excessively huge on tall phones */
+        max-width: 120px; /* Restricts the structural link block width */
+        margin: 0 auto;   /* Centers the image container element */
+        display: block;
+    }
+
+    .creator-img {
+        width: 80px;      /* Drops the profile picture size directly */
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
     }
 
     .creator-title {
