@@ -503,20 +503,124 @@ body.low-fidelity .sprite-card.rarity-Mythic .card-inner-display { background: #
 body.low-fidelity .sprite-card.rarity-Special .card-inner-display { background: #1c2436 !important; }
 
 
-/* MOBILE RESPONSIVE FIX */
+/* ==========================================
+   COMPLETE MOBILE UI OPTIMIZATION (<= 768px)
+   ========================================== */
 @media (max-width: 768px) {
-    .app-layout {
-        grid-template-columns: 1fr; /* Stacks the sidebar above the grid */
-        gap: 20px;
+    
+    /* 1. Base Layout Overhaul */
+    body {
+        padding: 12px; /* Extra breathing room on small screens */
     }
 
-    .sprite-grid {
-        /* Lowers the minimum card size to allow 2+ columns on mobile screens */
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
+    .app-layout {
+        grid-template-columns: 1fr; /* Stack sidebar on top of grid */
+        gap: 16px;
+    }
+
+    /* 2. Compact & Flexible Navbar */
+    .fn-navbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding-bottom: 14px;
+        border-bottom-width: 3px;
+    }
+
+    .brand-container {
+        justify-content: center; /* Center title and mascot on mobile */
+    }
+
+    .brand-title {
+        font-size: 28px; /* Slightly scaled down so it doesn't wrap awkwardly */
+    }
+
+    /* 3. Stacked Progress Bars & Action Buttons */
+    .nav-controls-right {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
         gap: 10px;
     }
-    
+
+    .progress-wrapper {
+        flex-direction: column; /* Stack progress boxes vertically */
+        gap: 8px;
+        width: 100%;
+    }
+
+    .live-progress-box {
+        min-width: 100%; /* Force full width utilization */
+    }
+
+    /* Group action buttons horizontally on mobile so they don't eat vertical screen space */
+    .nav-controls-right > .share-btn,
+    .nav-controls-right > .image-btn,
+    .nav-controls-right > .missing-image-btn {
+        display: flex;
+        justify-content: center;
+        font-size: 16px;
+        padding: 10px 16px;
+        height: auto;
+        width: 100%;
+        border-right: none;
+        border-bottom: 3px solid transparent;
+    }
+
+    /* Adjust the border accents to be horizontal lines at the bottom of buttons */
+    .share-btn { border-bottom-color: var(--fn-yellow) !important; }
+    .image-btn { border-bottom-color: var(--fn-lime) !important; }
+    .missing-image-btn { border-bottom-color: var(--fn-unreleased) !important; }
+
+    /* 4. Streamlined Sidebar & Inputs */
+    .panel-box {
+        padding: 14px; /* Compress inner padding */
+    }
+
+    .fn-input, .fn-select, .toggle-container {
+        margin-bottom: 8px;
+        font-size: 15px;
+        padding: 8px;
+    }
+
+    /* 5. Fluid Responsive Sprite Grid */
+    .sprite-grid {
+        /* Ensures exactly 2 clean columns on tiny phones, scaling up to 3 or 4 on tablets */
+        grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); 
+        gap: 8px;
+    }
+
+    .card-title-footer {
+        height: 32px; /* Slightly shorter footer for better proportions */
+        font-size: 12px;
+    }
+
+    .fortnite-rarity-tag {
+        font-size: 9px;
+        padding: 1px 10px 1px 4px;
+    }
+
+    .crown-action-icon {
+        bottom: 40px; /* Adjust crown positioning for more compact cards */
+        font-size: 16px;
+    }
+
+    /* 6. Mobile Optimized Creator Card */
+    .creator-card {
+        padding: 12px;
+    }
+
     .creator-link {
-        max-width: 80%; /* Allows the creator image to look better on mobile */
+        max-width: 70%; /* Keeps the image from scaling excessively huge on tall phones */
+    }
+
+    .creator-title {
+        font-size: 18px;
+        margin-bottom: 6px;
+    }
+
+    .creator-subtext {
+        font-size: 12px;
+        margin-top: 6px;
     }
 }
