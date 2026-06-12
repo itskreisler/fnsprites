@@ -1,4 +1,6 @@
-// Application Setup & DOM Elements
+import { baseSprites } from './sprites-data.js'
+import { compressCollection, decompressCollection } from './share-utils.js'
+
 const urlParams = new URLSearchParams(window.location.search);
 const compressedCode = urlParams.get('c');
 const isViewMode = compressedCode !== null;
@@ -34,7 +36,7 @@ const liveBarFill = document.getElementById('live-counter-bar');
 const masteryRatio = document.getElementById('mastery-counter-ratio');
 const masteryBarFill = document.getElementById('mastery-counter-bar');
 
-let currentStatusFilter = 'all'; 
+let currentStatusFilter = 'all';
 
 const toggleAll = document.getElementById('toggle-all');
 const toggleOwned = document.getElementById('toggle-owned');
@@ -48,16 +50,13 @@ function setStatusFilter(filterValue, activeButton) {
     renderGrid();
 }
 
-// Hide Creator Card for the Session
 const creatorCard = document.querySelector('.creator-card');
 const closeCreatorBtn = document.getElementById('closeCreatorBtn');
 
-// Check if the user already closed it this session
 if (sessionStorage.getItem('hide_creator_card') === 'true' && creatorCard) {
     creatorCard.style.display = 'none';
 }
 
-// Add the click event listener to hide it and save the preference
 if (closeCreatorBtn && creatorCard) {
     closeCreatorBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -75,7 +74,6 @@ searchInput.addEventListener('input', renderGrid);
 themeFilter.addEventListener('change', renderGrid);
 unreleasedSwitch.addEventListener('change', renderGrid);
 
-// Low Fidelity Switch Event Handler
 lowFidelitySwitch.addEventListener('change', () => {
     if (lowFidelitySwitch.checked) {
         document.body.classList.add('low-fidelity');
@@ -89,7 +87,7 @@ function updateCollectionCounter() {
     const totalReleased = baseSprites.filter(sprite => !sprite.unreleased).length;
     const collectedReleased = baseSprites.filter(sprite => !sprite.unreleased && obtainedSprites.includes(sprite.id)).length;
     const masteredReleased = baseSprites.filter(sprite => !sprite.unreleased && masteredSprites.includes(sprite.id)).length;
-    
+
     liveRatio.textContent = `${collectedReleased} / ${totalReleased}`;
     const collectionPercentage = totalReleased > 0 ? (collectedReleased / totalReleased) * 100 : 0;
     liveBarFill.style.width = `${collectionPercentage}%`;
@@ -104,7 +102,7 @@ function adjustCardFontSizes() {
         const parent = span.parentElement;
         let currentSize = 16.95;
         span.style.fontSize = currentSize + 'px';
-        
+
         while ((span.scrollWidth > parent.clientWidth) && currentSize > 6) {
             currentSize -= 0.5;
             span.style.fontSize = currentSize + 'px';
@@ -115,13 +113,13 @@ function adjustCardFontSizes() {
 function buildCardHTML(sprite, isObtained, isMastered) {
     const itemRarity = sprite.rarity || 'Rare';
     const unreleasedBadge = sprite.unreleased ? `<div class="status-badge unreleased">UNRELEASED</div>` : '';
-    
+
     let badgeHTML = '';
     let renderedCrownHTML = '';
-    
+
     if (isMastered) {
         badgeHTML = `<div class="status-badge mastered-badge">MASTERED</div>`;
-        renderedCrownHTML = `<div class="rendered-head-crown">👑</div>`; 
+        renderedCrownHTML = `<div class="rendered-head-crown">👑</div>`;
     } else if (isObtained) {
         badgeHTML = `<div class="status-badge collected">COLLECTED</div>`;
     }
@@ -165,12 +163,12 @@ function renderGrid() {
         basicSprites.forEach(baseSprite => {
             const baseNameRoot = baseSprite.name.replace(/\s*\(Basic\)\s*/i, '').trim();
             let alternatives = baseSprites.filter(s => s.id !== baseSprite.id && s.name.toLowerCase().includes(baseNameRoot.toLowerCase()));
-            
+
             if (!showUnreleased) alternatives = alternatives.filter(v => !v.unreleased);
-            
+
             const matchesSearch = baseSprite.name.toLowerCase().includes(searchQuery);
             const matchesTheme = selectedTheme === 'all' || selectedTheme === 'Basic';
-            
+
             if (!showUnreleased && baseSprite.unreleased) return;
 
             if (matchesSearch && matchesTheme) {
@@ -191,7 +189,7 @@ function renderGrid() {
         const sprite = item.sprite;
         const isObtained = obtainedSprites.includes(sprite.id);
         const isMastered = masteredSprites.includes(sprite.id);
-        
+
         if (isViewMode && (!isObtained || sprite.unreleased)) return;
         if (!isViewMode && !showUnreleased && sprite.unreleased) return;
 
@@ -204,7 +202,7 @@ function renderGrid() {
 
         const card = document.createElement('div');
         card.dataset.id = sprite.id;
-        
+
         const itemRarity = sprite.rarity || 'Rare';
         const itemTheme = sprite.theme || 'Basic';
         let masteryClass = isMastered ? ' mastered' : '';
@@ -235,14 +233,14 @@ function renderGrid() {
                 let pinMasteryClass = varMastered ? ' mastered-pin' : '';
                 pin.className = `alt-variant-pin ${varObtained ? 'obtained-pin' : ''}${pinMasteryClass}`;
                 pin.style.backgroundImage = `url('sprites/${variant.id}.png'), url('https://placehold.co/50?text=None')`;
-                
+
                 const popout = document.createElement('div');
                 const varRarity = variant.rarity || 'Rare';
                 const varTheme = variant.theme || 'Basic';
                 let popMasteryClass = varMastered ? ' mastered' : '';
                 popout.className = `alt-preview-popout sprite-card rarity-${varRarity} theme-${varTheme} ${varObtained ? 'obtained' : ''}${popMasteryClass}`;
                 popout.innerHTML = buildCardHTML(variant, varObtained, varMastered);
-                
+
                 if (!isViewMode && varObtained && !varMastered) {
                     const subCrown = popout.querySelector('.crown-action-icon');
                     if (subCrown) {
@@ -309,17 +307,14 @@ shareBtn.addEventListener('click', () => {
     navigator.clipboard.writeText(shareURL).then(() => { alert("Share link copied!"); });
 });
 
-// ==========================================
-// ADAPTIVE EXPORT GRAPHICS ENGINE V3 (UPDATED WITH SHINE)
-// ==========================================
 function exportCanvasImage(mode) {
     if (typeof baseSprites === 'undefined') return;
-    
+
     let targetItems = [];
     let titleL1 = "FORTNITE SPRITES TRACKER:";
     let titleL2 = "";
     let fallbackTitleText = "";
-    let titleColor = "#32cd32"; 
+    let titleColor = "#32cd32";
     let fileName = "fnsprites-collection";
 
     if (mode === 'collected') {
@@ -332,20 +327,20 @@ function exportCanvasImage(mode) {
         titleL1 = "FORTNITE SPRITES TRACKER:";
         titleL2 = "I'M LOOKING FOR THESE!";
         fallbackTitleText = "MISSING SPRITES";
-        titleColor = "#ef4444"; 
+        titleColor = "#ef4444";
         fileName = "fnsprites-missing";
         if (targetItems.length === 0) { alert("You aren't missing any released sprites!"); return; }
     }
 
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    
+
     const cardW = 160;
-    const cardH = 200; 
+    const cardH = 200;
     const padding = 15;
     const borderThickness = 8;
-    const footerLinkHeight = 55; 
-    
+    const footerLinkHeight = 55;
+
     const maxCols = 6;
     const cols = Math.min(maxCols, targetItems.length);
     const rows = Math.ceil(targetItems.length / cols);
@@ -354,32 +349,32 @@ function exportCanvasImage(mode) {
     const renderBars = (mode === 'collected');
     const inlineBarsPossible = (cols >= 5);
     const ultraSmallStacked = (cols <= 2) && renderBars;
-    
-    let topBarHeight = 55; 
+
+    let topBarHeight = 55;
     if (renderBars) {
-        if (ultraSmallStacked) topBarHeight = 135; 
-        else if (!inlineBarsPossible) topBarHeight = 95; 
+        if (ultraSmallStacked) topBarHeight = 135;
+        else if (!inlineBarsPossible) topBarHeight = 95;
     }
 
     canvas.width = innerWidth + (borderThickness * 2);
     canvas.height = topBarHeight + (rows * (cardH + padding) + padding) + footerLinkHeight + (borderThickness * 2);
-    
+
     const mascotImg = new Image();
     mascotImg.src = 'siteimages/staticsprite.png';
-    
+
     mascotImg.onload = () => { processRenderChain(); };
     mascotImg.onerror = () => { processRenderChain(); };
 
     function processRenderChain() {
         ctx.fillStyle = titleColor;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
+
         ctx.fillStyle = '#0b0d13';
         ctx.fillRect(borderThickness, borderThickness, canvas.width - (borderThickness * 2), canvas.height - (borderThickness * 2));
-        
+
         ctx.fillStyle = '#181c25';
         ctx.fillRect(borderThickness, borderThickness, canvas.width - (borderThickness * 2), topBarHeight);
-        
+
         ctx.strokeStyle = titleColor;
         ctx.lineWidth = 3;
         ctx.beginPath();
@@ -402,7 +397,6 @@ function exportCanvasImage(mode) {
         let availableTextWidth = canvas.width - textLeftBoundary - borderThickness - padding;
         if (renderBars && inlineBarsPossible) availableTextWidth -= 260;
 
-        // CONDITIONAL HEADER BANNER TEXT RULE: One missing item means title strictly reads "MISSING"
         let fullCombinedText = `${titleL1} ${titleL2}`;
         if (mode === 'missing' && targetItems.length === 1) {
             fullCombinedText = "MISSING";
@@ -421,18 +415,18 @@ function exportCanvasImage(mode) {
             ctx.font = 'italic 900 20px "Oswald", sans-serif';
             ctx.fillText(fallbackTitleText, textLeftBoundary, borderThickness + 28);
         } else {
-            let idealFontSize = 32; 
+            let idealFontSize = 32;
             let printText = useFallback ? fallbackTitleText : fullCombinedText;
-            
+
             ctx.font = `italic 900 ${idealFontSize}px "Oswald", sans-serif`;
             while (ctx.measureText(printText).width > availableTextWidth && idealFontSize > 12) {
                 idealFontSize -= 1;
                 ctx.font = `italic 900 ${idealFontSize}px "Oswald", sans-serif`;
             }
-            
+
             let centerTextY = borderThickness + (topBarHeight / 2);
             if (renderBars && !inlineBarsPossible) {
-                centerTextY = borderThickness + 30; 
+                centerTextY = borderThickness + 30;
             }
             ctx.fillText(printText, textLeftBoundary, centerTextY);
         }
@@ -449,7 +443,7 @@ function exportCanvasImage(mode) {
                 ctx.font = '900 12px "Oswald", sans-serif';
                 let bWidth = 110;
                 let rightEdge = canvas.width - borderThickness - padding;
-                
+
                 ctx.fillStyle = '#22c55e';
                 ctx.fillText(`COLLECTION: ${colCount}/${totalReleased}`, rightEdge - (bWidth * 2) - 25, borderThickness + 16);
                 ctx.fillStyle = '#0e1117';
@@ -470,7 +464,7 @@ function exportCanvasImage(mode) {
             } else if (ultraSmallStacked) {
                 ctx.font = '900 11px "Oswald", sans-serif';
                 let fullBarW = canvas.width - (borderThickness * 2) - (padding * 2);
-                
+
                 let colY = borderThickness + 54;
                 ctx.fillStyle = '#22c55e';
                 ctx.fillText(`COLLECTION: ${colCount} / ${totalReleased}`, borderThickness + padding, colY);
@@ -493,7 +487,7 @@ function exportCanvasImage(mode) {
             } else {
                 ctx.font = '900 12px "Oswald", sans-serif';
                 let midY = borderThickness + 68;
-                
+
                 ctx.fillStyle = '#22c55e';
                 ctx.fillText(`COLLECTION: ${colCount} / ${totalReleased}`, borderThickness + padding, midY);
                 ctx.fillStyle = '#0e1117';
@@ -512,29 +506,29 @@ function exportCanvasImage(mode) {
                 ctx.fillRect(borderThickness + padding + 335, midY - 5, 85 * masPct, 10);
             }
         }
-        
+
         let loadedCount = 0;
         targetItems.forEach((sprite, index) => {
             const img = new Image();
             img.crossOrigin = 'anonymous';
             img.src = `sprites/${sprite.id}.png`;
-            
+
             img.onload = () => {
                 const r = index % cols;
                 const c = Math.floor(index / cols);
                 const x = borderThickness + padding + r * (cardW + padding);
                 const y = borderThickness + topBarHeight + padding + c * (cardH + padding);
-                
+
                 const rarity = sprite.rarity || 'Rare';
                 const theme = sprite.theme || 'Basic';
                 const isMastered = masteredSprites.includes(sprite.id);
                 const isLowFidelity = lowFidelitySwitch.checked;
-                
+
                 ctx.fillStyle = '#0f141d';
                 ctx.fillRect(x, y, cardW, cardH);
 
-                const innerH = cardH - 38; 
-                
+                const innerH = cardH - 38;
+
                 if (isLowFidelity) {
                     if (rarity === 'Rare') ctx.fillStyle = '#104273';
                     else if (rarity === 'Epic') ctx.fillStyle = '#4d1566';
@@ -594,7 +588,7 @@ function exportCanvasImage(mode) {
                     if (isMastered) {
                         ctx.save();
                         ctx.fillStyle = '#ffd700';
-                        ctx.font = '900 13px "Oswald", sans-serif'; 
+                        ctx.font = '900 13px "Oswald", sans-serif';
                         ctx.shadowColor = 'rgba(0,0,0,0.8)';
                         ctx.shadowBlur = 3;
                         ctx.textAlign = 'left';
@@ -604,7 +598,7 @@ function exportCanvasImage(mode) {
                     } else {
                         ctx.save();
                         ctx.fillStyle = '#22c55e';
-                        ctx.font = '900 13px "Oswald", sans-serif'; 
+                        ctx.font = '900 13px "Oswald", sans-serif';
                         ctx.shadowColor = 'rgba(0,0,0,0.8)';
                         ctx.shadowBlur = 3;
                         ctx.textAlign = 'left';
@@ -641,24 +635,23 @@ function exportCanvasImage(mode) {
                 ctx.fillStyle = txtColor;
                 ctx.font = '900 13px "Oswald", sans-serif';
                 ctx.textAlign = 'left';
-                ctx.textBaseline = 'middle'; 
+                ctx.textBaseline = 'middle';
                 ctx.fillText(rarity === 'Mythic' ? 'MYTHIC' : rarity.toUpperCase(), x + 6, y + innerH - 9);
 
                 ctx.fillStyle = 'rgba(15, 20, 29, 0.9)';
                 ctx.fillRect(x, y + innerH, cardW, 38);
 
-                // Sprite card name text stays exactly as its native value
                 ctx.fillStyle = '#ffffff';
                 let displayNameText = sprite.name.toUpperCase();
-                
-                let calculatedFontSize = 16.95; 
-                ctx.font = `${calculatedFontSize}px "Oswald", sans-serif`; // <--- Look for this line
+
+                let calculatedFontSize = 16.95;
+                ctx.font = `${calculatedFontSize}px "Oswald", sans-serif`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                
+
                 while((ctx.measureText(displayNameText).width > (cardW - 8)) && calculatedFontSize > 6) {
                     calculatedFontSize -= 0.5;
-                    ctx.font = `${calculatedFontSize}px "Oswald", sans-serif`; // <--- And this line
+                    ctx.font = `${calculatedFontSize}px "Oswald", sans-serif`;
                 }
                 ctx.fillText(displayNameText, x + (cardW / 2), y + innerH + 19);
 
@@ -674,7 +667,7 @@ function exportCanvasImage(mode) {
                     finalizeCanvas(canvas, footerLinkHeight, borderThickness, fileName);
                 }
             };
-            
+
             img.onerror = () => {
                 loadedCount++;
                 if (loadedCount === targetItems.length) {
@@ -687,23 +680,23 @@ function exportCanvasImage(mode) {
 
 function finalizeCanvas(canvas, footerLinkHeight, borderThickness, fileName) {
     const ctx = canvas.getContext('2d');
-    
+
     ctx.fillStyle = '#0e1117';
     ctx.fillRect(borderThickness, canvas.height - footerLinkHeight - borderThickness, canvas.width - (borderThickness * 2), footerLinkHeight);
-    
+
     ctx.fillStyle = '#ffffff';
-    let cleanUrlString = "staticvacant.github.io/fnsprites/";
+    let cleanUrlString = "itskreisler.github.io/fnsprites/";
     let targetFontPix = 24;
     ctx.font = `bold ${targetFontPix}px "Oswald", sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    
+
     const maxWebWidth = canvas.width - (borderThickness * 2) - 30;
     while (ctx.measureText(cleanUrlString).width > maxWebWidth && targetFontPix > 8) {
         targetFontPix -= 1;
         ctx.font = `bold ${targetFontPix}px "Oswald", sans-serif`;
     }
-    
+
     ctx.fillText(cleanUrlString, canvas.width / 2, canvas.height - borderThickness - (footerLinkHeight / 2));
 
     const dataUrl = canvas.toDataURL('image/png');

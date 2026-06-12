@@ -1,0 +1,58 @@
+export const en = {
+    app: {
+        title: 'FORTNITE SPRITES TRACKER',
+        collectionProgress: 'COLLECTION PROGRESS:',
+        masteryProgress: 'MASTERY PROGRESS:',
+        generateMissing: 'GENERATE MISSING SPRITES IMAGE',
+        generateCollection: 'GENERATE COLLECTION IMAGE',
+        shareCollection: 'SHARE COLLECTION',
+    },
+    viewMode: {
+        banner: '👀 VIEWING A SHARED COLLECTION. ITEMS ARE FILTERED TO SHOW COLLECTED ONLY.',
+        goToPersonal: 'GO TO MY PERSONAL TRACKER',
+    },
+    sidebar: {
+        searchBox: 'SEARCH BOX',
+        searchPlaceholder: 'Type to search...',
+        sortByTheme: 'SORT BY THEME',
+        allThemes: 'ALL THEMES',
+        collectionProgress: 'COLLECTION PROGRESS',
+        all: 'ALL',
+        owned: 'OWNED',
+        unowned: 'UNOWNED',
+        compressedGrid: 'COMPRESSED GRID MODE',
+        showUnreleased: 'SHOW UNRELEASED',
+        lowFidelity: 'LOW FIDELITY MODE',
+    },
+    card: {
+        unreleased: 'UNRELEASED',
+        mastered: 'MASTERED',
+        collected: 'COLLECTED',
+        masterThis: 'Master this Sprite',
+    },
+    creator: {
+        madeBy: 'Made by Kreisler',
+        sub: 'sub 2 me',
+        helpText: 'Help me reach 1,000 subscribers so I can put a creator code here.',
+    },
+    share: {
+        linkCopied: 'Share link copied!',
+    },
+    canvas: {
+        tracker: 'FORTNITE SPRITES TRACKER:',
+        myCollection: 'MY COLLECTION',
+        lookingFor: "I'M LOOKING FOR THESE!",
+        missingSprites: 'MISSING SPRITES',
+        missing: 'MISSING',
+        noCollected: 'No collected sprites to export!',
+        noMissing: "You aren't missing any released sprites!",
+        footer: 'itskreisler.github.io/fnsprites/',
+    },
+    rarity: {
+        rare: 'RARE',
+        epic: 'EPIC',
+        legendary: 'LEGENDARY',
+        mythic: 'MYTHIC',
+        special: 'SPECIAL',
+    },
+} as const

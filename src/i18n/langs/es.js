@@ -1,0 +1,58 @@
+export const es = {
+    app: {
+        title: 'FORTNITE SPRITES TRACKER',
+        collectionProgress: 'PROGRESO DE COLECCIÓN:',
+        masteryProgress: 'PROGRESO DE MAESTRÍA:',
+        generateMissing: 'GENERAR IMAGEN DE SPRITES FALTANTES',
+        generateCollection: 'GENERAR IMAGEN DE COLECCIÓN',
+        shareCollection: 'COMPARTIR COLECCIÓN',
+    },
+    viewMode: {
+        banner: '👀 VIENDO UNA COLECCIÓN COMPARTIDA. LOS ELEMENTOS ESTÁN FILTRADOS PARA MOSTRAR SOLO LOS COLECCIONADOS.',
+        goToPersonal: 'IR A MI TRACKER PERSONAL',
+    },
+    sidebar: {
+        searchBox: 'BUSCADOR',
+        searchPlaceholder: 'Escribe para buscar...',
+        sortByTheme: 'ORDENAR POR TEMA',
+        allThemes: 'TODOS LOS TEMAS',
+        collectionProgress: 'PROGRESO DE COLECCIÓN',
+        all: 'TODOS',
+        owned: 'COLECCIONADOS',
+        unowned: 'FALTANTES',
+        compressedGrid: 'MODO CUADRÍCULA COMPRIMIDA',
+        showUnreleased: 'MOSTRAR NO LANZADOS',
+        lowFidelity: 'MODO BAJA FIDELIDAD',
+    },
+    card: {
+        unreleased: 'NO LANZADO',
+        mastered: 'MAESTRADO',
+        collected: 'COLECCIONADO',
+        masterThis: 'Maestrar este Sprite',
+    },
+    creator: {
+        madeBy: 'Hecho por Kreisler',
+        sub: 'suscríbete',
+        helpText: 'Ayúdame a llegar a 1,000 suscriptores para poder poner un código de creador aquí.',
+    },
+    share: {
+        linkCopied: '¡Enlace copiado!',
+    },
+    canvas: {
+        tracker: 'FORTNITE SPRITES TRACKER:',
+        myCollection: 'MI COLECCIÓN',
+        lookingFor: '¡ESTOY BUSCANDO ESTOS!',
+        missingSprites: 'SPRITES FALTANTES',
+        missing: 'FALTANTES',
+        noCollected: '¡No hay sprites coleccionados para exportar!',
+        noMissing: '¡No te faltan sprites lanzados!',
+        footer: 'itskreisler.github.io/fnsprites/',
+    },
+    rarity: {
+        rare: 'RARO',
+        epic: 'ÉPICO',
+        legendary: 'LEGENDARIO',
+        mythic: 'MÍTICO',
+        special: 'ESPECIAL',
+    },
+} as const
