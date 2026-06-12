@@ -28,7 +28,7 @@ export const es = {
     },
     card: {
         unreleased: 'NO LANZADO',
-        mastered: 'MAESTRADO',
+        mastered: 'MAESTR\u00CDA',
         collected: 'COLECCIONADO',
         masterThis: 'Maestrar este Sprite',
     },
