@@ -35,7 +35,7 @@ export const en = {
     creator: {
         madeBy: 'Made by Kreisler',
         sub: 'sub 2 me',
-        helpText: 'Help me reach 1,000 subscribers so I can put a creator code here.',
+        helpText: 'Help me reach 4,000 subscribers so I can put a creator code here.',
     },
     share: {
         linkCopied: 'Share link copied!',

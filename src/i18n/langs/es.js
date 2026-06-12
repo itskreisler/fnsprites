@@ -35,7 +35,7 @@ export const es = {
     creator: {
         madeBy: 'Hecho por Kreisler',
         sub: 'suscr\u00EDbete',
-        helpText: 'Ay\u00FAdame a llegar a 1,000 suscriptores para poder poner un c\u00F3digo de creador aqu\u00ED.',
+        helpText: 'Ay\u00FAdame a llegar a 4,000 suscriptores para poder poner un c\u00F3digo de creador aqu\u00ED.',
     },
     share: {
         linkCopied: '\u00A1Enlace copiado!',
