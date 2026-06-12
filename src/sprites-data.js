@@ -1,3 +1,4 @@
+// DEVELOPER DATA SHEET: Add new sprites, change rarities, or toggle unreleased states here.
 export const baseSprites = [
     { id: "water_basic", name: "Water", theme: "Basic", rarity: "Rare", unreleased: false },
     { id: "water_gold", name: "Gold Water", theme: "Gold", rarity: "Special", unreleased: false },

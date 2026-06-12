@@ -3,8 +3,8 @@ import { compressCollection, decompressCollection } from './share-utils.js'
 import { useTranslations } from '@src/i18n/index.js'
 import { applyTranslations } from '@src/i18n/dom.js'
 
-const locale = navigator.language.startsWith('es') ? 'es' : 'en'
-const t = useTranslations(locale)
+let currentLocale = localStorage.getItem('fn_locale') || (navigator.language.startsWith('es') ? 'es' : 'en')
+let t = useTranslations(currentLocale)
 
 const urlParams = new URLSearchParams(window.location.search);
 const compressedCode = urlParams.get('c');
@@ -85,6 +85,18 @@ lowFidelitySwitch.addEventListener('change', () => {
     } else {
         document.body.classList.remove('low-fidelity');
     }
+});
+
+const langBtn = document.getElementById('langBtn');
+langBtn.textContent = currentLocale === 'es' ? 'EN' : 'ES';
+langBtn.addEventListener('click', () => {
+    const newLocale = currentLocale === 'es' ? 'en' : 'es';
+    currentLocale = newLocale;
+    localStorage.setItem('fn_locale', newLocale);
+    t = useTranslations(newLocale);
+    langBtn.textContent = newLocale === 'es' ? 'EN' : 'ES';
+    applyTranslations(t);
+    renderGrid();
 });
 
 function updateCollectionCounter() {

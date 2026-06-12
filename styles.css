@@ -282,6 +282,26 @@ body {
 
 .switch-input:checked::before { transform: translateX(22px); }
 
+.lang-btn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    background: var(--fn-bg);
+    border: 2px solid var(--fn-border);
+    border-radius: 6px;
+    color: var(--fn-text);
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+.lang-btn:hover {
+    background: var(--fn-nav-bg);
+    border-color: var(--fn-yellow);
+    color: var(--fn-yellow);
+}
+
 .creator-card { text-align: center; display: flex; flex-direction: column; align-items: center; }
 .creator-title { font-size: 20px; font-weight: 900; color: var(--fn-yellow); margin-bottom: 12px; font-style: italic; }
 
