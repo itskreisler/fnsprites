@@ -8,7 +8,7 @@ export const en = {
         shareCollection: 'SHARE COLLECTION',
     },
     viewMode: {
-        banner: '👀 VIEWING A SHARED COLLECTION. ITEMS ARE FILTERED TO SHOW COLLECTED ONLY.',
+        banner: '\u{1F440} VIEWING A SHARED COLLECTION. ITEMS ARE FILTERED TO SHOW COLLECTED ONLY.',
         goToPersonal: 'GO TO MY PERSONAL TRACKER',
     },
     sidebar: {
@@ -23,6 +23,8 @@ export const en = {
         compressedGrid: 'COMPRESSED GRID MODE',
         showUnreleased: 'SHOW UNRELEASED',
         lowFidelity: 'LOW FIDELITY MODE',
+        collection: 'COLLECTION',
+        mastery: 'MASTERY',
     },
     card: {
         unreleased: 'UNRELEASED',
@@ -47,6 +49,8 @@ export const en = {
         noCollected: 'No collected sprites to export!',
         noMissing: "You aren't missing any released sprites!",
         footer: 'itskreisler.github.io/fnsprites/',
+        collection: 'COLLECTION:',
+        mastery: 'MASTERY:',
     },
     rarity: {
         rare: 'RARE',
@@ -55,4 +59,4 @@ export const en = {
         mythic: 'MYTHIC',
         special: 'SPECIAL',
     },
-} as const
+}

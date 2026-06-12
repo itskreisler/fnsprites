@@ -1,5 +1,10 @@
 import { baseSprites } from './sprites-data.js'
 import { compressCollection, decompressCollection } from './share-utils.js'
+import { useTranslations } from '@src/i18n/index.js'
+import { applyTranslations } from '@src/i18n/dom.js'
+
+const locale = navigator.language.startsWith('es') ? 'es' : 'en'
+const t = useTranslations(locale)
 
 const urlParams = new URLSearchParams(window.location.search);
 const compressedCode = urlParams.get('c');
@@ -112,24 +117,25 @@ function adjustCardFontSizes() {
 
 function buildCardHTML(sprite, isObtained, isMastered) {
     const itemRarity = sprite.rarity || 'Rare';
-    const unreleasedBadge = sprite.unreleased ? `<div class="status-badge unreleased">UNRELEASED</div>` : '';
+    const unreleasedBadge = sprite.unreleased ? `<div class="status-badge unreleased">${t('card.unreleased')}</div>` : '';
 
     let badgeHTML = '';
     let renderedCrownHTML = '';
 
     if (isMastered) {
-        badgeHTML = `<div class="status-badge mastered-badge">MASTERED</div>`;
+        badgeHTML = `<div class="status-badge mastered-badge">${t('card.mastered')}</div>`;
         renderedCrownHTML = `<div class="rendered-head-crown">👑</div>`;
     } else if (isObtained) {
-        badgeHTML = `<div class="status-badge collected">COLLECTED</div>`;
+        badgeHTML = `<div class="status-badge collected">${t('card.collected')}</div>`;
     }
 
     let crownHTML = '';
     if (isObtained && !isMastered) {
-        crownHTML = `<div class="crown-action-icon" title="Master this Sprite">👑</div>`;
+        crownHTML = `<div class="crown-action-icon" title="${t('card.masterThis')}">👑</div>`;
     }
 
-    const displayRarityText = itemRarity === 'Mythic' ? 'MYTHIC' : itemRarity;
+    const rarityKey = itemRarity.toLowerCase()
+    const displayRarityText = t('rarity.' + rarityKey)
     const rarityBadge = `<div class="fortnite-rarity-tag">${displayRarityText}</div>`;
     const inferredImagePath = `sprites/${sprite.id}.png`;
 
@@ -304,14 +310,14 @@ shareBtn.addEventListener('click', () => {
     if (typeof baseSprites === 'undefined') return;
     const compressionCodeString = compressCollection(baseSprites, obtainedSprites, masteredSprites);
     const shareURL = `${window.location.origin}${window.location.pathname}?c=${compressionCodeString}`;
-    navigator.clipboard.writeText(shareURL).then(() => { alert("Share link copied!"); });
+    navigator.clipboard.writeText(shareURL).then(() => { alert(t('share.linkCopied')); });
 });
 
 function exportCanvasImage(mode) {
     if (typeof baseSprites === 'undefined') return;
 
     let targetItems = [];
-    let titleL1 = "FORTNITE SPRITES TRACKER:";
+    let titleL1 = t('canvas.tracker');
     let titleL2 = "";
     let fallbackTitleText = "";
     let titleColor = "#32cd32";
@@ -319,17 +325,17 @@ function exportCanvasImage(mode) {
 
     if (mode === 'collected') {
         targetItems = baseSprites.filter(s => obtainedSprites.includes(s.id));
-        titleL2 = "MY COLLECTION";
-        fallbackTitleText = "MY COLLECTION";
-        if (targetItems.length === 0) { alert("No collected sprites to export!"); return; }
+        titleL2 = t('canvas.myCollection');
+        fallbackTitleText = t('canvas.myCollection');
+        if (targetItems.length === 0) { alert(t('canvas.noCollected')); return; }
     } else if (mode === 'missing') {
         targetItems = baseSprites.filter(s => !s.unreleased && !obtainedSprites.includes(s.id));
-        titleL1 = "FORTNITE SPRITES TRACKER:";
-        titleL2 = "I'M LOOKING FOR THESE!";
-        fallbackTitleText = "MISSING SPRITES";
+        titleL1 = t('canvas.tracker');
+        titleL2 = t('canvas.lookingFor');
+        fallbackTitleText = t('canvas.missingSprites');
         titleColor = "#ef4444";
         fileName = "fnsprites-missing";
-        if (targetItems.length === 0) { alert("You aren't missing any released sprites!"); return; }
+        if (targetItems.length === 0) { alert(t('canvas.noMissing')); return; }
     }
 
     const canvas = document.createElement('canvas');
@@ -399,8 +405,8 @@ function exportCanvasImage(mode) {
 
         let fullCombinedText = `${titleL1} ${titleL2}`;
         if (mode === 'missing' && targetItems.length === 1) {
-            fullCombinedText = "MISSING";
-            fallbackTitleText = "MISSING";
+            fullCombinedText = t('canvas.missing');
+            fallbackTitleText = t('canvas.missing');
         }
 
         let useFallback = false;
@@ -445,7 +451,7 @@ function exportCanvasImage(mode) {
                 let rightEdge = canvas.width - borderThickness - padding;
 
                 ctx.fillStyle = '#22c55e';
-                ctx.fillText(`COLLECTION: ${colCount}/${totalReleased}`, rightEdge - (bWidth * 2) - 25, borderThickness + 16);
+                ctx.fillText(`${t('canvas.collection')} ${colCount}/${totalReleased}`, rightEdge - (bWidth * 2) - 25, borderThickness + 16);
                 ctx.fillStyle = '#0e1117';
                 ctx.fillRect(rightEdge - (bWidth * 2) - 25, borderThickness + 31, bWidth, 12);
                 ctx.strokeStyle = '#3b4253';
@@ -455,7 +461,7 @@ function exportCanvasImage(mode) {
                 ctx.fillRect(rightEdge - (bWidth * 2) - 25, borderThickness + 32, (bWidth) * colPct, 10);
 
                 ctx.fillStyle = '#ffd700';
-                ctx.fillText(`MASTERY: ${masCount}/${totalReleased}`, rightEdge - bWidth, borderThickness + 16);
+                ctx.fillText(`${t('canvas.mastery')} ${masCount}/${totalReleased}`, rightEdge - bWidth, borderThickness + 16);
                 ctx.fillStyle = '#0e1117';
                 ctx.fillRect(rightEdge - bWidth, borderThickness + 31, bWidth, 12);
                 ctx.strokeRect(rightEdge - bWidth, borderThickness + 31, bWidth, 12);
@@ -467,7 +473,7 @@ function exportCanvasImage(mode) {
 
                 let colY = borderThickness + 54;
                 ctx.fillStyle = '#22c55e';
-                ctx.fillText(`COLLECTION: ${colCount} / ${totalReleased}`, borderThickness + padding, colY);
+                ctx.fillText(`${t('canvas.collection')} ${colCount} / ${totalReleased}`, borderThickness + padding, colY);
                 ctx.fillStyle = '#0e1117';
                 ctx.fillRect(borderThickness + padding, colY + 10, fullBarW, 12);
                 ctx.strokeStyle = '#3b4253';
@@ -477,7 +483,7 @@ function exportCanvasImage(mode) {
 
                 let masY = borderThickness + 94;
                 ctx.fillStyle = '#ffd700';
-                ctx.fillText(`MASTERY: ${masCount} / ${totalReleased}`, borderThickness + padding, masY);
+                ctx.fillText(`${t('canvas.mastery')} ${masCount} / ${totalReleased}`, borderThickness + padding, masY);
                 ctx.fillStyle = '#0e1117';
                 ctx.fillRect(borderThickness + padding, masY + 10, fullBarW, 12);
                 ctx.strokeStyle = '#3b4253';
@@ -489,7 +495,7 @@ function exportCanvasImage(mode) {
                 let midY = borderThickness + 68;
 
                 ctx.fillStyle = '#22c55e';
-                ctx.fillText(`COLLECTION: ${colCount} / ${totalReleased}`, borderThickness + padding, midY);
+                ctx.fillText(`${t('canvas.collection')} ${colCount} / ${totalReleased}`, borderThickness + padding, midY);
                 ctx.fillStyle = '#0e1117';
                 ctx.fillRect(borderThickness + padding + 135, midY - 6, 85, 12);
                 ctx.strokeStyle = '#3b4253';
@@ -498,7 +504,7 @@ function exportCanvasImage(mode) {
                 ctx.fillRect(borderThickness + padding + 135, midY - 5, 85 * colPct, 10);
 
                 ctx.fillStyle = '#ffd700';
-                ctx.fillText(`MASTERY: ${masCount} / ${totalReleased}`, borderThickness + padding + 240, midY);
+                ctx.fillText(`${t('canvas.mastery')} ${masCount} / ${totalReleased}`, borderThickness + padding + 240, midY);
                 ctx.fillStyle = '#0e1117';
                 ctx.fillRect(borderThickness + padding + 335, midY - 6, 85, 12);
                 ctx.strokeRect(borderThickness + padding + 335, midY - 6, 85, 12);
@@ -593,7 +599,7 @@ function exportCanvasImage(mode) {
                         ctx.shadowBlur = 3;
                         ctx.textAlign = 'left';
                         ctx.textBaseline = 'top';
-                        ctx.fillText('MASTERED', x + 6, y + 6);
+                        ctx.fillText(t('card.mastered'), x + 6, y + 6);
                         ctx.restore();
                     } else {
                         ctx.save();
@@ -603,7 +609,7 @@ function exportCanvasImage(mode) {
                         ctx.shadowBlur = 3;
                         ctx.textAlign = 'left';
                         ctx.textBaseline = 'top';
-                        ctx.fillText('COLLECTED', x + 6, y + 6);
+                        ctx.fillText(t('card.collected'), x + 6, y + 6);
                         ctx.restore();
                     }
                 }
@@ -632,11 +638,12 @@ function exportCanvasImage(mode) {
                 ctx.fill();
                 ctx.restore();
 
+                const rarityKey = rarity.toLowerCase()
                 ctx.fillStyle = txtColor;
                 ctx.font = '900 13px "Oswald", sans-serif';
                 ctx.textAlign = 'left';
                 ctx.textBaseline = 'middle';
-                ctx.fillText(rarity === 'Mythic' ? 'MYTHIC' : rarity.toUpperCase(), x + 6, y + innerH - 9);
+                ctx.fillText(t('rarity.' + rarityKey), x + 6, y + innerH - 9);
 
                 ctx.fillStyle = 'rgba(15, 20, 29, 0.9)';
                 ctx.fillRect(x, y + innerH, cardW, 38);
@@ -685,7 +692,7 @@ function finalizeCanvas(canvas, footerLinkHeight, borderThickness, fileName) {
     ctx.fillRect(borderThickness, canvas.height - footerLinkHeight - borderThickness, canvas.width - (borderThickness * 2), footerLinkHeight);
 
     ctx.fillStyle = '#ffffff';
-    let cleanUrlString = "itskreisler.github.io/fnsprites/";
+    let cleanUrlString = t('canvas.footer');
     let targetFontPix = 24;
     ctx.font = `bold ${targetFontPix}px "Oswald", sans-serif`;
     ctx.textAlign = 'center';
@@ -709,4 +716,5 @@ function finalizeCanvas(canvas, footerLinkHeight, borderThickness, fileName) {
 imageBtn.addEventListener('click', () => exportCanvasImage('collected'));
 missingImageBtn.addEventListener('click', () => exportCanvasImage('missing'));
 
+applyTranslations(t)
 renderGrid();

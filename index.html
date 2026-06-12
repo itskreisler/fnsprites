@@ -9,7 +9,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght=500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700;900&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="styles.css">
     
@@ -21,43 +21,43 @@
     <header class="fn-navbar">
         <div class="brand-container">
             <img src="siteimages/staticsprite.png" alt="Mascot" class="brand-mascot">
-            <div class="brand-title">FORTNITE SPRITES TRACKER</div>
+            <div class="brand-title" data-i18n="app.title">FORTNITE SPRITES TRACKER</div>
         </div>
         <div class="nav-controls-right">
             <div class="progress-wrapper">
                 <div class="live-progress-box">
-                    <div class="live-progress-text">COLLECTION PROGRESS: <span id="live-counter-ratio">0 / 0</span></div>
+                    <div class="live-progress-text"><span data-i18n="app.collectionProgress">COLLECTION PROGRESS:</span> <span id="live-counter-ratio">0 / 0</span></div>
                     <div class="live-progress-bar-bg">
                         <div class="live-progress-bar-fill" id="live-counter-bar"></div>
                     </div>
                 </div>
                 <div class="live-progress-box">
-                    <div class="live-progress-text">MASTERY PROGRESS: <span id="mastery-counter-ratio">0 / 0</span></div>
+                    <div class="live-progress-text"><span data-i18n="app.masteryProgress">MASTERY PROGRESS:</span> <span id="mastery-counter-ratio">0 / 0</span></div>
                     <div class="live-progress-bar-bg">
                         <div class="live-progress-bar-fill mastery-fill" id="mastery-counter-bar"></div>
                     </div>
                 </div>
             </div>
-            <button class="missing-image-btn" id="missingImageBtn">GENERATE MISSING SPRITES IMAGE</button>
-            <button class="image-btn" id="imageBtn">GENERATE COLLECTION IMAGE</button>
-            <button class="share-btn" id="shareBtn">SHARE COLLECTION</button>
+            <button class="missing-image-btn" id="missingImageBtn" data-i18n="app.generateMissing">GENERATE MISSING SPRITES IMAGE</button>
+            <button class="image-btn" id="imageBtn" data-i18n="app.generateCollection">GENERATE COLLECTION IMAGE</button>
+            <button class="share-btn" id="shareBtn" data-i18n="app.shareCollection">SHARE COLLECTION</button>
         </div>
     </header>
 
     <div class="view-mode-banner" id="viewModeBanner" style="display: none;">
-        👀 VIEWING A SHARED COLLECTION. ITEMS ARE FILTERED TO SHOW COLLECTED ONLY.
-        <a href="index.html">GO TO MY PERSONAL TRACKER</a>
+        <span data-i18n="viewMode.banner">👀 VIEWING A SHARED COLLECTION. ITEMS ARE FILTERED TO SHOW COLLECTED ONLY.</span>
+        <a href="index.html" data-i18n="viewMode.goToPersonal">GO TO MY PERSONAL TRACKER</a>
     </div>
 
     <div class="app-layout">
         <div class="sidebar">
             <aside class="panel-box">
-                <div class="filter-header">SEARCH BOX</div>
-                <input type="text" id="search" class="fn-input" placeholder="Type to search...">
+                <div class="filter-header" data-i18n="sidebar.searchBox">SEARCH BOX</div>
+                <input type="text" id="search" class="fn-input" data-i18n-placeholder="sidebar.searchPlaceholder" placeholder="Type to search...">
                 
-                <div class="filter-header">SORT BY THEME</div>
+                <div class="filter-header" data-i18n="sidebar.sortByTheme">SORT BY THEME</div>
                 <select id="theme-filter" class="fn-select">
-                    <option value="all">ALL THEMES</option>
+                    <option value="all" data-i18n="sidebar.allThemes">ALL THEMES</option>
                     <option value="Basic">BASIC</option>
                     <option value="Gold">GOLD</option>
                     <option value="Candy">CANDY</option>
@@ -67,38 +67,38 @@
                     <option value="Rift">RIFT</option>
                 </select>
 
-                <div class="filter-header">COLLECTION PROGRESS</div>
+                <div class="filter-header" data-i18n="sidebar.collectionProgress">COLLECTION PROGRESS</div>
                 <div class="toggle-container">
-                    <button class="toggle-btn active" id="toggle-all">ALL</button>
-                    <button class="toggle-btn" id="toggle-owned">OWNED</button>
-                    <button class="toggle-btn" id="toggle-unowned">UNOWNED</button>
+                    <button class="toggle-btn active" id="toggle-all" data-i18n="sidebar.all">ALL</button>
+                    <button class="toggle-btn" id="toggle-owned" data-i18n="sidebar.owned">OWNED</button>
+                    <button class="toggle-btn" id="toggle-unowned" data-i18n="sidebar.unowned">UNOWNED</button>
                 </div>
 
                 <div class="switch-row">
-                    <span class="switch-label">COMPRESSED GRID MODE</span>
+                    <span class="switch-label" data-i18n="sidebar.compressedGrid">COMPRESSED GRID MODE</span>
                     <input type="checkbox" id="compressed-grid-switch" class="switch-input">
                 </div>
 
                 <div class="switch-row">
-                    <span class="switch-label">SHOW UNRELEASED</span>
+                    <span class="switch-label" data-i18n="sidebar.showUnreleased">SHOW UNRELEASED</span>
                     <input type="checkbox" id="unreleased-switch" class="switch-input">
                 </div>
 
                 <div class="switch-row">
-                    <span class="switch-label">LOW FIDELITY MODE</span>
+                    <span class="switch-label" data-i18n="sidebar.lowFidelity">LOW FIDELITY MODE</span>
                     <input type="checkbox" id="low-fidelity-switch" class="switch-input">
                 </div>
             </aside>
 
             <div class="panel-box creator-card">
                 <button class="close-creator-btn" id="closeCreatorBtn" title="Hide for this session">❌</button>
-                <div class="creator-title">Made by Kreisler</div>
+                <div class="creator-title" data-i18n="creator.madeBy">Made by Kreisler</div>
                 <a href="https://youtube.com/@itskreisler" class="creator-link" target="_blank">
                     <img src="siteimages/kreislerpfp.png" class="creator-img" alt="Kreisler">
                 </a>
-                <a href="https://youtube.com/@itskreisler?sub_confirmation=1" class="sub-btn" target="_blank">sub 2 me</a>
-                <div class="creator-subtext">
-                    ⭐ Star the repo if you find this useful!
+                <a href="https://youtube.com/@itskreisler?sub_confirmation=1" class="sub-btn" target="_blank" data-i18n="creator.sub">sub 2 me</a>
+                <div class="creator-subtext" data-i18n="creator.helpText">
+                    Help me reach 1,000 subscribers so I can put a creator code here.
                 </div>
             </div>
         </div>
