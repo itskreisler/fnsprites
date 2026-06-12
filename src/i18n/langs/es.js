@@ -34,8 +34,8 @@ export const es = {
     },
     creator: {
         madeBy: 'Hecho por Kreisler',
-        sub: 'suscr\u00EDbete',
-        helpText: 'Ay\u00FAdame a llegar a 4,000 suscriptores para poder poner un c\u00F3digo de creador aqu\u00ED.',
+        sub: 'C\u00D3DIGO KLEI',
+        helpText: '\u00A1Ap\u00F3yame usando el C\u00F3digo de Creador KLEI en la Tienda de Fortnite!',
     },
     share: {
         linkCopied: '\u00A1Enlace copiado!',

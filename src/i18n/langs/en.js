@@ -34,8 +34,8 @@ export const en = {
     },
     creator: {
         madeBy: 'Made by Kreisler',
-        sub: 'sub 2 me',
-        helpText: 'Help me reach 4,000 subscribers so I can put a creator code here.',
+        sub: 'CREATOR CODE KLEI',
+        helpText: 'Support me by using Creator Code KLEI in the Fortnite Item Shop!',
     },
     share: {
         linkCopied: 'Share link copied!',
