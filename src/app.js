@@ -4,6 +4,7 @@ import { useTranslations } from '@src/i18n/index.js'
 import { applyTranslations } from '@src/i18n/dom.js'
 
 let currentLocale = localStorage.getItem('fn_locale') || (navigator.language.startsWith('es') ? 'es' : 'en')
+document.documentElement.lang = currentLocale
 let t = useTranslations(currentLocale)
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -50,8 +51,12 @@ const toggleUnowned = document.getElementById('toggle-unowned');
 function setStatusFilter(filterValue, activeButton) {
     if (isViewMode) return;
     currentStatusFilter = filterValue;
-    [toggleAll, toggleOwned, toggleUnowned].forEach(btn => btn.classList.remove('active'));
+    [toggleAll, toggleOwned, toggleUnowned].forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
+    });
     activeButton.classList.add('active');
+    activeButton.setAttribute('aria-pressed', 'true');
     renderGrid();
 }
 
@@ -93,6 +98,7 @@ langBtn.addEventListener('click', () => {
     const newLocale = currentLocale === 'es' ? 'en' : 'es';
     currentLocale = newLocale;
     localStorage.setItem('fn_locale', newLocale);
+    document.documentElement.lang = newLocale;
     t = useTranslations(newLocale);
     langBtn.textContent = newLocale === 'es' ? 'EN' : 'ES';
     applyTranslations(t);
