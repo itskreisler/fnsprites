@@ -40,6 +40,7 @@ export const baseSprites = [
     { id: "demon_basic", name: "Demon", theme: "Basic", rarity: "Epic", unreleased: false },
     { id: "demon_gold", name: "Gold Demon", theme: "Gold", rarity: "Special", unreleased: false },
     { id: "demon_candy", name: "Gummy Demon", theme: "Candy", rarity: "Special", unreleased: false },
+    { id: "demon_galaxy", name: "Galaxy Demon", theme: "Galaxy", rarity: "Special", unreleased: true },
     { id: "demon_gem", name: "Gem Demon", theme: "Gem", rarity: "Special", unreleased: true },
 
 	{ id: "punk_basic", name: "Punk", theme: "Basic", rarity: "Legendary", unreleased: false },
@@ -62,5 +63,5 @@ export const baseSprites = [
     { id: "zeropoint_gem", name: "Gem Zero Point", theme: "Gem", rarity: "Special", unreleased: true },
     { id: "zeropoint_holofoil", name: "Holofoil Zero Point", theme: "Holofoil", rarity: "Special", unreleased: true },
 	
-    { id: "theburntpeanut_basic", name: "TheBurntPeanut", theme: "Basic", rarity: "Mythic", unreleased: false },
+    { id: "theburntpeanut_basic", name: "Burnt Peanut", theme: "Basic", rarity: "Mythic", unreleased: false },
 ];
