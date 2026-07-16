@@ -92,17 +92,27 @@ export const baseSprites = [
     { id: "grim_candy", name: "Gummy Grim", theme: "Candy", rarity: "Special", unreleased: false },
     { id: "grim_galaxy", name: "Galaxy Grim", theme: "Galaxy", rarity: "Special", unreleased: false },
 
-    { id: "air_basic", name: "Air", theme: "Basic", rarity: "Rare", unreleased: true },
-    { id: "air_gold", name: "Gold Air", theme: "Gold", rarity: "Special", unreleased: true },
-    { id: "air_candy", name: "Gummy Air", theme: "Candy", rarity: "Special", unreleased: true },
-    { id: "air_galaxy", name: "Galaxy Air", theme: "Galaxy", rarity: "Special", unreleased: true },
-    { id: "air_holofoil", name: "Holofoil Air", theme: "Holofoil", rarity: "Special", unreleased: true },
+    { id: "air_basic", name: "Air", theme: "Basic", rarity: "Rare", unreleased: false },
+    { id: "air_gold", name: "Gold Air", theme: "Gold", rarity: "Special", unreleased: false },
+    { id: "air_candy", name: "Gummy Air", theme: "Candy", rarity: "Special", unreleased: false },
+    { id: "air_galaxy", name: "Galaxy Air", theme: "Galaxy", rarity: "Special", unreleased: false },
+    { id: "air_holofoil", name: "Holofoil Air", theme: "Holofoil", rarity: "Special", unreleased: false },
 	
-    { id: "seven_basic", name: "Seven", theme: "Basic", rarity: "Legendary", unreleased: true },
-    { id: "seven_gold", name: "Gold Seven", theme: "Gold", rarity: "Special", unreleased: true },
-    { id: "seven_candy", name: "Gummy Seven", theme: "Candy", rarity: "Special", unreleased: true },
-    { id: "seven_galaxy", name: "Galaxy Seven", theme: "Galaxy", rarity: "Special", unreleased: true },
-    { id: "seven_holofoil", name: "Holofoil Seven", theme: "Holofoil", rarity: "Special", unreleased: true },
+    { id: "seven_basic", name: "Seven", theme: "Basic", rarity: "Legendary", unreleased: false },
+    { id: "seven_gold", name: "Gold Seven", theme: "Gold", rarity: "Special", unreleased: false },
+    { id: "seven_candy", name: "Gummy Seven", theme: "Candy", rarity: "Special", unreleased: false },
+    { id: "seven_galaxy", name: "Galaxy Seven", theme: "Galaxy", rarity: "Special", unreleased: false },
+    { id: "seven_holofoil", name: "Holofoil Seven", theme: "Holofoil", rarity: "Special", unreleased: false },
+
+    { id: "batman_basic", name: "Batman", theme: "Basic", rarity: "Mythic", unreleased: false },
+    { id: "batman_gold", name: "Gold Batman", theme: "Gold", rarity: "Special", unreleased: false },
+    { id: "batman_candy", name: "Gummy Batman", theme: "Candy", rarity: "Special", unreleased: false },
+    { id: "batman_galaxy", name: "Galaxy Batman", theme: "Galaxy", rarity: "Special", unreleased: false },
+    { id: "batman_holofoil", name: "Holofoil Batman", theme: "Holofoil", rarity: "Special", unreleased: false },
+
+    { id: "pollo_basic", name: "Pollo", theme: "Basic", rarity: "Mythic", unreleased: false },
+
+    { id: "vini_basic", name: "Vini Jr.", theme: "Basic", rarity: "Mythic", unreleased: false },
 
 	{ id: "wick_basic", name: "John Wick", theme: "Basic", rarity: "Mythic", unreleased: true },
 ];
