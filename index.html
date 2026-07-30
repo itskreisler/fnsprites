@@ -3,119 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fortnite Sprite Tracker - Collection Progress</title>
-    <meta name="description" content="Track your Fortnite Sprite collection and mastery progress. Filter by theme, search sprites, and export your collection.">
-    <meta property="og:title" content="Fortnite Sprite Tracker">
-    <meta property="og:description" content="Track your Fortnite Sprite collection and mastery progress.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://itskreisler.github.io/fnsprites/">
-    <meta property="og:image" content="https://itskreisler.github.io/fnsprites/siteimages/staticsprite.png">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Fortnite Sprite Tracker">
-    <meta name="twitter:description" content="Track your Fortnite Sprite collection and mastery progress.">
-    
+    <meta name="description" content="Track, manage, and share your Fortnite Sprites collection and mastery progress.">
+    <title>Fortnite Sprites Tracker</title>
     <link rel="icon" type="image/png" href="siteimages/staticsprite.png">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700;900&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    
-    <script type="module" src="/src/app.js"></script>
+    <script src="sprites-data.js" defer></script>
+    <script type="module" src="app.js"></script>
 </head>
 <body>
 
-<div class="container">
-    <header class="fn-navbar">
-        <div class="brand-container">
-            <img src="siteimages/staticsprite.png" alt="Mascot" class="brand-mascot">
-            <div class="brand-title" data-i18n="app.title">FORTNITE SPRITES TRACKER</div>
+<div class="banner" id="viewBanner" hidden>
+    <span>Viewing a shared collection - showing collected sprites only.</span>
+    <a href="index.html">Go to my tracker</a>
+</div>
+
+<div class="app">
+    <header class="header">
+        <div class="brand">
+            <img src="siteimages/staticsprite.png" alt="" class="brand-icon" width="36" height="36">
+            <h1>Sprites Tracker</h1>
         </div>
-        <div class="nav-controls-right">
-            <div class="progress-wrapper">
-                <div class="live-progress-box">
-                    <div class="live-progress-text"><span data-i18n="app.collectionProgress">COLLECTION PROGRESS:</span> <span id="live-counter-ratio">0 / 0</span></div>
-                    <div class="live-progress-bar-bg">
-                        <div class="live-progress-bar-fill" id="live-counter-bar"></div>
-                    </div>
+        <div class="progress-group">
+            <div class="progress-item">
+                <div class="progress-meta">
+                    <span class="progress-label">Collection</span>
+                    <span class="progress-value" id="collectionRatio">0 / 0</span>
                 </div>
-                <div class="live-progress-box">
-                    <div class="live-progress-text"><span data-i18n="app.masteryProgress">MASTERY PROGRESS:</span> <span id="mastery-counter-ratio">0 / 0</span></div>
-                    <div class="live-progress-bar-bg">
-                        <div class="live-progress-bar-fill mastery-fill" id="mastery-counter-bar"></div>
-                    </div>
-                </div>
+                <div class="progress-track"><div class="progress-fill" id="collectionFill"></div></div>
             </div>
-            <button class="missing-image-btn" id="missingImageBtn" data-i18n="app.generateMissing">GENERATE MISSING SPRITES IMAGE</button>
-            <button class="image-btn" id="imageBtn" data-i18n="app.generateCollection">GENERATE COLLECTION IMAGE</button>
-            <button class="share-btn" id="shareBtn" data-i18n="app.shareCollection">SHARE COLLECTION</button>
+            <div class="progress-item">
+                <div class="progress-meta">
+                    <span class="progress-label">Mastery</span>
+                    <span class="progress-value" id="masteryRatio">0 / 0</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill mastery" id="masteryFill"></div></div>
+            </div>
         </div>
     </header>
 
-    <div class="view-mode-banner" id="viewModeBanner" style="display: none;" role="alert">
-        <span data-i18n="viewMode.banner">👀 VIEWING A SHARED COLLECTION. ITEMS ARE FILTERED TO SHOW COLLECTED ONLY.</span>
-        <a href="index.html" data-i18n="viewMode.goToPersonal">GO TO MY PERSONAL TRACKER</a>
-    </div>
-
-    <div class="app-layout">
-        <div class="sidebar" role="complementary" aria-label="Filters and settings">
-            <aside class="panel-box">
-                <label class="filter-header" for="search" data-i18n="sidebar.searchBox">SEARCH BOX</label>
-                <input type="text" id="search" class="fn-input" data-i18n-placeholder="sidebar.searchPlaceholder" placeholder="Type to search...">
-                
-                <label class="filter-header" for="theme-filter" data-i18n="sidebar.sortByTheme">SORT BY THEME</label>
-                <select id="theme-filter" class="fn-select">
-                    <option value="all" data-i18n="sidebar.allThemes">ALL THEMES</option>
-                    <option value="Basic">BASIC</option>
-                    <option value="Gold">GOLD</option>
-                    <option value="Candy">CANDY</option>
-                    <option value="Galaxy">GALAXY</option>
-                    <option value="Gem">GEM</option>
-                    <option value="Holofoil">HOLOFOIL</option>
-                    <option value="Rift">RIFT</option>
-                </select>
-
-                <div class="filter-header" data-i18n="sidebar.collectionProgress">COLLECTION PROGRESS</div>
-                <div class="toggle-container">
-                    <button class="toggle-btn active" id="toggle-all" aria-pressed="true" data-i18n="sidebar.all">ALL</button>
-                    <button class="toggle-btn" id="toggle-owned" aria-pressed="false" data-i18n="sidebar.owned">OWNED</button>
-                    <button class="toggle-btn" id="toggle-unowned" aria-pressed="false" data-i18n="sidebar.unowned">UNOWNED</button>
-                </div>
-
-                <div class="switch-row">
-                    <span class="switch-label" id="compressed-grid-label" data-i18n="sidebar.compressedGrid">COMPRESSED GRID MODE</span>
-                    <input type="checkbox" id="compressed-grid-switch" class="switch-input" aria-labelledby="compressed-grid-label">
-                </div>
-
-                <div class="switch-row">
-                    <span class="switch-label" id="unreleased-label" data-i18n="sidebar.showUnreleased">SHOW UNRELEASED</span>
-                    <input type="checkbox" id="unreleased-switch" class="switch-input" aria-labelledby="unreleased-label">
-                </div>
-
-                <div class="switch-row">
-                    <span class="switch-label" id="low-fidelity-label" data-i18n="sidebar.lowFidelity">LOW FIDELITY MODE</span>
-                    <input type="checkbox" id="low-fidelity-switch" class="switch-input" aria-labelledby="low-fidelity-label">
-                </div>
-
-                <button class="lang-btn" id="langBtn">ES</button>
-            </aside>
-
-            <div class="panel-box creator-card">
-                <button class="close-creator-btn" id="closeCreatorBtn" aria-label="Hide creator card for this session">❌</button>
-                <div class="creator-title" data-i18n="creator.madeBy">Made by Kreisler</div>
-                <a href="https://youtube.com/@itskreisler" class="creator-link" target="_blank">
-                    <img src="siteimages/kreislerpfp.png" class="creator-img" alt="Kreisler">
-                </a>
-                <a href="https://www.fortnite.com/item-shop?creator-code=klei" class="sub-btn" target="_blank" data-i18n="creator.sub">KLEI</a>
-                <div class="creator-subtext" data-i18n="creator.helpText">
-                    Support me by using Creator Code KLEI in the Fortnite Item Shop!
-                </div>
+    <nav class="toolbar">
+        <div class="toolbar-row">
+            <label class="sr-only" for="searchInput">Search sprites</label>
+            <input type="search" id="searchInput" class="input" placeholder="Search sprites…" autocomplete="off" spellcheck="false">
+            <label class="sr-only" for="themeFilter">Filter by theme</label>
+            <select id="themeFilter" class="select">
+                <option value="all">All themes</option>
+            </select>
+            <label class="sr-only" for="sortOrder">Sort sprites</label>
+            <select id="sortOrder" class="select">
+                <option value="theme">Group by theme</option>
+                <option value="sprite">Group by sprite</option>
+                <option value="name">Alphabetical (A-Z)</option>
+                <option value="rarity">Sort by rarity</option>
+            </select>
+            <div class="pills" id="statusPills">
+                <button type="button" class="pill active" data-status="all">All</button>
+                <button type="button" class="pill" data-status="owned">Owned</button>
+                <button type="button" class="pill" data-status="missing">Missing</button>
             </div>
         </div>
+        <div class="toolbar-row">
+            <div class="switches">
+                <label class="switch"><input type="checkbox" id="hideMastered"><span>Hide mastered</span></label>
+                <label class="switch"><input type="checkbox" id="showUnreleased"><span>Unreleased</span></label>
+                <label class="switch"><input type="checkbox" id="lowFidelity"><span>Low fidelity</span></label>
+            </div>
+            <div class="actions">
+                <div class="dropdown" id="exportDropdown">
+                    <button type="button" class="btn" id="exportToggle" aria-haspopup="true" aria-expanded="false">Export</button>
+                    <div class="dropdown-menu" aria-label="Export options">
+                        <button type="button" data-export="collected"><span class="dot dot-collected"></span>Collection image</button>
+                        <button type="button" data-export="missing"><span class="dot dot-missing"></span>Missing sprites</button>
+                        <button type="button" data-export="unmastered"><span class="dot dot-unmastered"></span>Unmastered sprites</button>
+                        <button type="button" data-export="mastered"><span class="dot dot-mastered"></span>Mastered sprites</button>
+                        <button type="button" data-export="trade"><span class="dot dot-trade"></span>Trade card image</button>
+                        <hr class="dropdown-divider">
+                        <button type="button" id="exportBackupBtn"><span class="dot dot-backup"></span>Backup data (JSON)</button>
+                    </div>
+                </div>
+                <button type="button" class="btn" id="importBtn">Import</button>
+                <input type="file" id="importInput" class="file-input" accept=".json">
+                <div class="dropdown" id="copyDropdown">
+                    <button type="button" class="btn" id="copyToggle" aria-haspopup="true" aria-expanded="false">Copy trade list</button>
+                    <div class="dropdown-menu" aria-label="Copy options">
+                        <button type="button" id="copyTradeTextBtn"><span class="dot dot-text"></span>Trade list (text)</button>
+                        <button type="button" id="copyTradeGridBtn"><span class="dot dot-backup"></span>Trade grid (text)</button>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-accent" id="shareBtn">Share</button>
+            </div>
+        </div>
+    </nav>
 
-        <main class="sprite-grid" id="spriteGrid"></main>
-    </div>
+    <main class="grid" id="spriteGrid" aria-label="Sprites collection"></main>
 </div>
 
 </body>
