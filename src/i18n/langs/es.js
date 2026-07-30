@@ -17,6 +17,7 @@ export const es = {
         hideMastered: 'Ocultar maestr\u00EDa',
         showUnreleased: 'No lanzados',
         lowFidelity: 'Baja fidelidad',
+        downloadExports: 'Descargar Exportaciones',
         export: 'Exportar',
         collectionImage: 'Imagen de colecci\u00F3n',
         missingSprites: 'Sprites faltantes',

@@ -13,6 +13,7 @@ const KEYS = {
     sortOrder: 'fn_state_sort_order',
     showUnreleased: 'fn_state_unreleased',
     lowFidelity: 'fn_state_low_fidelity',
+    openExports: 'fn_state_open_exports',
 };
 
 const THEME_ORDER = ['Basic', 'Gold', 'Candy', 'Galaxy', 'Gem', 'Holofoil', 'Cube', 'Rift', 'Quack'];
@@ -57,6 +58,7 @@ const state = {
         sortOrder: 'theme',
         showUnreleased: false,
         lowFidelity: false,
+        openExports: false,
     },
 };
 
@@ -74,6 +76,8 @@ const dom = {
     hideMastered: document.getElementById('hideMastered'),
     showUnreleased: document.getElementById('showUnreleased'),
     lowFidelity: document.getElementById('lowFidelity'),
+    openExports: document.getElementById('openExports'), // ADD THIS
+    exportModeSwitch: document.getElementById('exportModeSwitch'),
     exportDropdown: document.getElementById('exportDropdown'),
     exportToggle: document.getElementById('exportToggle'),
     copyDropdown: document.getElementById('copyDropdown'),
@@ -120,6 +124,11 @@ function saveCollection() {
     persist(KEYS.mastered, state.mastered);
 }
 
+function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
 function load() {
     const validIds = getSpriteIdSet();
     state.obtained = uniqueValidIds(readStoredArray(KEYS.obtained), validIds);
@@ -143,6 +152,7 @@ function load() {
 
     state.settings.showUnreleased = localStorage.getItem(KEYS.showUnreleased) === 'true';
     state.settings.lowFidelity = localStorage.getItem(KEYS.lowFidelity) === 'true';
+    state.settings.openExports = localStorage.getItem(KEYS.openExports) === 'true';
 }
 
 function applyStateToDOM() {
@@ -153,7 +163,19 @@ function applyStateToDOM() {
     dom.showUnreleased.checked = state.settings.showUnreleased;
     dom.lowFidelity.checked = state.settings.lowFidelity;
     document.body.classList.toggle('low-fidelity', state.settings.lowFidelity);
+   
+    if (isIOS()) {
+            if (dom.exportModeSwitch) dom.exportModeSwitch.hidden = true;
+        } else {
+            dom.openExports.checked = !state.settings.openExports;
+            const switchLabel = dom.exportModeSwitch.querySelector('span');
+            if (switchLabel) {
+                switchLabel.textContent = dom.openExports.checked ? 'Download Exports' : 'Open Exports';
+            }
+        }
 
+
+   
     dom.statusPills.querySelectorAll('.pill').forEach(pill => {
         const match =
             (pill.dataset.status === 'all' && state.filters.status === 'all') ||
@@ -1154,12 +1176,26 @@ function exportImage(mode) {
         ctx.textBaseline = 'middle';
         ctx.fillText('itskreisler.github.io/fnsprites/', canvasW / 2, canvasH - layout.border - layout.footerH / 2);
 
-        // Download
-        const link = document.createElement('a');
-        link.download = `${config.filename}.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-        toast('Image exported successfully!', 'success');
+        // Handle export mode (forced open on iOS or when toggle is disabled)
+        const shouldOpenInNewTab = isIOS() || state.settings.openExports;
+        
+        if (shouldOpenInNewTab) {
+            canvas.toBlob((blob) => {
+                if (!blob) {
+                    toast('Failed to generate image', 'error');
+                    return;
+                }
+                const url = URL.createObjectURL(blob);
+                window.open(url, '_blank');
+                toast('Image opened in new tab!', 'success');
+            }, 'image/png');
+        } else {
+            const link = document.createElement('a');
+            link.download = `${config.filename}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            toast('Image exported successfully!', 'success');
+        }
     });
 }
 
@@ -1334,15 +1370,21 @@ function bindEvents() {
     });
 
     /* Toggle switches */
-    const switchKeys = ['hideMastered', 'showUnreleased', 'lowFidelity'];
+    const switchKeys = ['hideMastered', 'showUnreleased', 'lowFidelity', 'openExports'];
     switchKeys.forEach(key => {
         dom[key].addEventListener('change', () => {
-            state.settings[key] = dom[key].checked;
-            persist(KEYS[key], state.settings[key]);
-            if (key === 'lowFidelity') {
-                document.body.classList.toggle('low-fidelity', dom[key].checked);
+            if (key === 'openExports') {
+                state.settings.openExports = !dom.openExports.checked;
+                persist(KEYS.openExports, state.settings.openExports);
+                applyStateToDOM();
+            } else {
+                state.settings[key] = dom[key].checked;
+                persist(KEYS[key], state.settings[key]);
+                if (key === 'lowFidelity') {
+                    document.body.classList.toggle('low-fidelity', dom[key].checked);
+                }
+                renderGrid();
             }
-            renderGrid();
         });
     });
 

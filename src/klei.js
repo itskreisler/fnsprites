@@ -29,7 +29,6 @@ function patchStatusPills() {
 }
 
 function patchHideMasteredLabel() {
-    const label = document.querySelector('.switch:has(#hideMastered) span, label[for="hideMastered"] span, .switch span')
     document.querySelectorAll('.switch').forEach(sw => {
         const cb = sw.querySelector('input[type="checkbox"]')
         const sp = sw.querySelector('span')
@@ -37,6 +36,7 @@ function patchHideMasteredLabel() {
         if (cb.id === 'hideMastered') sp.textContent = t('toolbar.hideMastered')
         else if (cb.id === 'showUnreleased') sp.textContent = t('toolbar.showUnreleased')
         else if (cb.id === 'lowFidelity') sp.textContent = t('toolbar.lowFidelity')
+        else if (cb.id === 'openExports') sp.textContent = t('toolbar.downloadExports')
     })
 }
 

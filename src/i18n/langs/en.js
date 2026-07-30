@@ -17,6 +17,7 @@ export const en = {
         hideMastered: 'Hide mastered',
         showUnreleased: 'Unreleased',
         lowFidelity: 'Low fidelity',
+        downloadExports: 'Download Exports',
         export: 'Export',
         collectionImage: 'Collection image',
         missingSprites: 'Missing sprites',

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Track, manage, and share your Fortnite Sprites collection and mastery progress.">
-    <title data-i18n="app.title">Fortnite Sprites Tracker</title>
+    <title>Fortnite Sprites Tracker</title>
     <link rel="icon" type="image/png" href="siteimages/staticsprite.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,23 +15,28 @@
 </head>
 <body>
 
+<div class="banner" id="viewBanner" hidden>
+    <span>Viewing a shared collection - showing collected sprites only.</span>
+    <a href="index.html">Go to my tracker</a>
+</div>
+
 <div class="app">
     <header class="header">
         <div class="brand">
             <img src="siteimages/staticsprite.png" alt="" class="brand-icon" width="36" height="36">
-            <h1 data-i18n="app.title">Sprites Tracker</h1>
+            <h1>Sprites Tracker</h1>
         </div>
         <div class="progress-group">
             <div class="progress-item">
                 <div class="progress-meta">
-                    <span class="progress-label" data-i18n="app.collection">Collection</span>
+                    <span class="progress-label">Collection</span>
                     <span class="progress-value" id="collectionRatio">0 / 0</span>
                 </div>
                 <div class="progress-track"><div class="progress-fill" id="collectionFill"></div></div>
             </div>
             <div class="progress-item">
                 <div class="progress-meta">
-                    <span class="progress-label" data-i18n="app.mastery">Mastery</span>
+                    <span class="progress-label">Mastery</span>
                     <span class="progress-value" id="masteryRatio">0 / 0</span>
                 </div>
                 <div class="progress-track"><div class="progress-fill mastery" id="masteryFill"></div></div>
@@ -41,42 +46,43 @@
 
     <nav class="toolbar">
         <div class="toolbar-row">
-            <label class="sr-only" for="searchInput" data-i18n="toolbar.searchPlaceholder">Search sprites</label>
+            <label class="sr-only" for="searchInput">Search sprites</label>
             <input type="search" id="searchInput" class="input" placeholder="Search sprites&hellip;" autocomplete="off" spellcheck="false">
-            <label class="sr-only" for="themeFilter" data-i18n="toolbar.allThemes">Filter by theme</label>
+            <label class="sr-only" for="themeFilter">Filter by theme</label>
             <select id="themeFilter" class="select">
-                <option value="all" data-i18n="toolbar.allThemes">All themes</option>
+                <option value="all">All themes</option>
             </select>
-            <label class="sr-only" for="sortOrder" data-i18n="toolbar.sortTheme">Sort sprites</label>
+            <label class="sr-only" for="sortOrder">Sort sprites</label>
             <select id="sortOrder" class="select">
-                <option value="theme" data-i18n="toolbar.sortTheme">Group by theme</option>
-                <option value="sprite" data-i18n="toolbar.sortSprite">Group by sprite</option>
-                <option value="name" data-i18n="toolbar.sortName">Alphabetical (A-Z)</option>
-                <option value="rarity" data-i18n="toolbar.sortRarity">Sort by rarity</option>
+                <option value="theme">Group by theme</option>
+                <option value="sprite">Group by sprite</option>
+                <option value="name">Alphabetical (A-Z)</option>
+                <option value="rarity">Sort by rarity</option>
             </select>
             <div class="pills" id="statusPills">
-                <button type="button" class="pill active" data-status="all" data-i18n="toolbar.all">All</button>
-                <button type="button" class="pill" data-status="owned" data-i18n="toolbar.owned">Owned</button>
-                <button type="button" class="pill" data-status="missing" data-i18n="toolbar.missing">Missing</button>
+                <button type="button" class="pill active" data-status="all">All</button>
+                <button type="button" class="pill" data-status="owned">Owned</button>
+                <button type="button" class="pill" data-status="missing">Missing</button>
             </div>
         </div>
         <div class="toolbar-row">
             <div class="switches">
-                <label class="switch"><input type="checkbox" id="hideMastered"><span data-i18n="toolbar.hideMastered">Hide mastered</span></label>
-                <label class="switch"><input type="checkbox" id="showUnreleased"><span data-i18n="toolbar.showUnreleased">Unreleased</span></label>
-                <label class="switch"><input type="checkbox" id="lowFidelity"><span data-i18n="toolbar.lowFidelity">Low fidelity</span></label>
+                <label class="switch"><input type="checkbox" id="hideMastered"><span>Hide mastered</span></label>
+                <label class="switch"><input type="checkbox" id="showUnreleased"><span>Unreleased</span></label>
+                <label class="switch"><input type="checkbox" id="lowFidelity"><span>Low fidelity</span></label>
+                <label class="switch" id="exportModeSwitch"><input type="checkbox" id="openExports"><span>Download Exports</span></label>
             </div>
             <div class="actions">
                 <div class="dropdown" id="exportDropdown">
                     <button type="button" class="btn" id="exportToggle" aria-haspopup="true" aria-expanded="false">Export</button>
                     <div class="dropdown-menu" aria-label="Export options">
-                        <button type="button" data-export="collected"><span class="dot dot-collected"></span><span data-i18n="toolbar.collectionImage">Collection image</span></button>
-                        <button type="button" data-export="missing"><span class="dot dot-missing"></span><span data-i18n="toolbar.missingSprites">Missing sprites</span></button>
-                        <button type="button" data-export="unmastered"><span class="dot dot-unmastered"></span><span data-i18n="toolbar.unmasteredSprites">Unmastered sprites</span></button>
-                        <button type="button" data-export="mastered"><span class="dot dot-mastered"></span><span data-i18n="toolbar.masteredSprites">Mastered sprites</span></button>
-                        <button type="button" data-export="trade"><span class="dot dot-trade"></span><span data-i18n="toolbar.tradeCard">Trade card image</span></button>
+                        <button type="button" data-export="collected"><span class="dot dot-collected"></span>Collection image</button>
+                        <button type="button" data-export="missing"><span class="dot dot-missing"></span>Missing sprites</button>
+                        <button type="button" data-export="unmastered"><span class="dot dot-unmastered"></span>Unmastered sprites</button>
+                        <button type="button" data-export="mastered"><span class="dot dot-mastered"></span>Mastered sprites</button>
+                        <button type="button" data-export="trade"><span class="dot dot-trade"></span>Trade card image</button>
                         <hr class="dropdown-divider">
-                        <button type="button" id="exportBackupBtn"><span class="dot dot-backup"></span><span data-i18n="toolbar.backupData">Backup data (JSON)</span></button>
+                        <button type="button" id="exportBackupBtn"><span class="dot dot-backup"></span>Backup data (JSON)</button>
                     </div>
                 </div>
                 <button type="button" class="btn" id="importBtn">Import</button>
@@ -84,11 +90,11 @@
                 <div class="dropdown" id="copyDropdown">
                     <button type="button" class="btn" id="copyToggle" aria-haspopup="true" aria-expanded="false">Copy trade list</button>
                     <div class="dropdown-menu" aria-label="Copy options">
-                        <button type="button" id="copyTradeTextBtn"><span class="dot dot-text"></span><span data-i18n="toolbar.copyTradeText">Trade list (text)</span></button>
-                        <button type="button" id="copyTradeGridBtn"><span class="dot dot-backup"></span><span data-i18n="toolbar.copyTradeGrid">Trade grid (text)</span></button>
+                        <button type="button" id="copyTradeTextBtn"><span class="dot dot-text"></span>Trade list (text)</button>
+                        <button type="button" id="copyTradeGridBtn"><span class="dot dot-backup"></span>Trade grid (text)</button>
                     </div>
                 </div>
-                <button type="button" class="btn btn-accent" id="shareBtn" data-i18n="toolbar.share">Share</button>
+                <button type="button" class="btn btn-accent" id="shareBtn">Share</button>
             </div>
         </div>
     </nav>
