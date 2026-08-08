@@ -819,6 +819,36 @@ body.low-fidelity .rarity-Special .card-rarity { background: #51f7cc; }
     .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+
+    .card:hover,
+    .card.obtained:hover {
+        transform: none;
+    }
+}
+
+/* Season tag */
+.card-season {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    z-index: 3;
+    height: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.card-season img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+}
+
 .lang-btn {
     min-width: 48px;
     font-weight: 700;
@@ -839,17 +869,4 @@ body.low-fidelity .rarity-Special .card-rarity { background: #51f7cc; }
     border: 2px solid var(--border);
     border-radius: var(--radius);
     background: var(--surface);
-}
-
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        transition-duration: 0.01ms !important;
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-    }
-
-    .card:hover,
-    .card.obtained:hover {
-        transform: none;
-    }
 }

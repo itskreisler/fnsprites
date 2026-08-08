@@ -10,8 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="sprites-data.js" defer></script>
-  <script type="module" crossorigin src="/fnsprites/assets/index-C69uD8-F.js"></script>
-  <link rel="stylesheet" crossorigin href="/fnsprites/assets/index-DzdXPRJl.css">
+  <script type="module" crossorigin src="/fnsprites/assets/index-DCgJeN9-.js"></script>
+  <link rel="stylesheet" crossorigin href="/fnsprites/assets/index-DwQCIEbJ.css">
 </head>
 <body>
 
@@ -47,17 +47,23 @@
     <nav class="toolbar">
         <div class="toolbar-row">
             <label class="sr-only" for="searchInput">Search sprites</label>
-            <input type="search" id="searchInput" class="input" placeholder="Search sprites&hellip;" autocomplete="off" spellcheck="false">
+            <input type="search" id="searchInput" class="input" placeholder="Search sprites…" autocomplete="off" spellcheck="false">
             <label class="sr-only" for="themeFilter">Filter by theme</label>
             <select id="themeFilter" class="select">
-                <option value="all">All themes</option>
+                <option value="all">All Themes</option>
             </select>
-            <label class="sr-only" for="sortOrder">Sort sprites</label>
+            <label class="sr-only" for="seasonFilter">Filter by Season</label>
+            <select id="seasonFilter" class="select">
+                <option value="all">All Seasons</option>
+                <option value="Runners">Runners - C7S3</option>
+                <option value="Override">Override - C7S4</option>
+            </select>
+            <label class="sr-only" for="sortOrder">Sort Sprites</label>
             <select id="sortOrder" class="select">
-                <option value="theme">Group by theme</option>
-                <option value="sprite">Group by sprite</option>
+                <option value="theme">Group by Theme</option>
+                <option value="sprite">Group by Sprite</option>
                 <option value="name">Alphabetical (A-Z)</option>
-                <option value="rarity">Sort by rarity</option>
+                <option value="rarity">Sort by Rarity</option>
             </select>
             <div class="pills" id="statusPills">
                 <button type="button" class="pill active" data-status="all">All</button>

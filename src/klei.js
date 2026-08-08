@@ -28,6 +28,14 @@ function patchStatusPills() {
     })
 }
 
+function patchSeasonFilter() {
+    const sel = document.getElementById('seasonFilter')
+    if (!sel) return
+    Array.from(sel.options).forEach(opt => {
+        if (opt.value === 'all') opt.textContent = t('toolbar.allSeasons')
+    })
+}
+
 function patchHideMasteredLabel() {
     document.querySelectorAll('.switch').forEach(sw => {
         const cb = sw.querySelector('input[type="checkbox"]')
@@ -75,6 +83,7 @@ function patchCopyDropdown() {
 function patchLabels() {
     patchThemeFilter()
     patchStatusPills()
+    patchSeasonFilter()
     patchHideMasteredLabel()
     patchExportDropdown()
     patchCopyDropdown()

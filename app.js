@@ -1,4 +1,5 @@
 import '@src/klei.js'
+
 /* ===================================================
    Constants
    =================================================== */
@@ -14,6 +15,7 @@ const KEYS = {
     showUnreleased: 'fn_state_unreleased',
     lowFidelity: 'fn_state_low_fidelity',
     openExports: 'fn_state_open_exports',
+    season: 'fn_state_season',
 };
 
 const THEME_ORDER = ['Basic', 'Gold', 'Candy', 'Galaxy', 'Gem', 'Holofoil', 'Cube', 'Rift', 'Quack'];
@@ -52,7 +54,7 @@ const state = {
     obtained: [],
     mastered: [],
     viewMode: false,
-    filters: { search: '', theme: 'all', status: 'all' },
+    filters: { search: '', theme: 'all', season: 'all', status: 'all' },
     settings: {
         hideMastered: false,
         sortOrder: 'theme',
@@ -76,6 +78,7 @@ const dom = {
     hideMastered: document.getElementById('hideMastered'),
     showUnreleased: document.getElementById('showUnreleased'),
     lowFidelity: document.getElementById('lowFidelity'),
+    seasonFilter: document.getElementById('seasonFilter'),
     openExports: document.getElementById('openExports'), // ADD THIS
     exportModeSwitch: document.getElementById('exportModeSwitch'),
     exportDropdown: document.getElementById('exportDropdown'),
@@ -136,6 +139,7 @@ function load() {
         .filter(id => state.obtained.includes(id));
     state.filters.search = localStorage.getItem(KEYS.search) || '';
     state.filters.theme = localStorage.getItem(KEYS.theme) || 'all';
+    state.filters.season = localStorage.getItem(KEYS.season) || 'all';
 
     let savedStatus = localStorage.getItem(KEYS.status) || 'all';
     if (savedStatus === 'obtained') savedStatus = 'owned';
@@ -158,6 +162,7 @@ function load() {
 function applyStateToDOM() {
     dom.searchInput.value = state.filters.search;
     dom.themeFilter.value = state.filters.theme;
+    dom.seasonFilter.value = state.filters.season;
     dom.sortOrder.value = state.settings.sortOrder;
     dom.hideMastered.checked = state.settings.hideMastered;
     dom.showUnreleased.checked = state.settings.showUnreleased;
@@ -302,8 +307,18 @@ function getSpriteIdSet(sprites = baseSprites) {
     return new Set(sprites.map(sprite => sprite.id));
 }
 
+function getSeasonData(season) {
+    if (season === 'Runners') return { name: 'Runners', img: 'siteimages/s_runners.png' };
+    if (season === 'Override') return { name: 'Override', img: 'siteimages/s_override.png' };
+    return { name: 'Unknown', img: 'siteimages/s_unknown.png' };
+}
+
 function getReleasedSprites() {
-    return baseSprites.filter(sprite => !sprite.unreleased);
+    return baseSprites.filter(sprite => {
+        if (sprite.unreleased) return false;
+        if (state.filters.season !== 'all' && (sprite.season || 'Unknown') !== state.filters.season) return false;
+        return true;
+    });
 }
 
 function getFamilyKeys(sprites = getReleasedSprites()) {
@@ -410,6 +425,7 @@ function filterSprites() {
 
         const matchesSearch = !search || sprite.name.toLowerCase().includes(search);
         const matchesTheme = state.filters.theme === 'all' || sprite.theme === state.filters.theme;
+        const matchesSeason = state.filters.season === 'all' || (sprite.season || 'Unknown') === state.filters.season;
 
         let matchesStatus = true;
         if (!state.viewMode) {
@@ -418,7 +434,7 @@ function filterSprites() {
             if (state.filters.status === 'missing') matchesStatus = !isOwned;
         }
 
-        return matchesSearch && matchesTheme && matchesStatus;
+        return matchesSearch && matchesTheme && matchesSeason && matchesStatus;
     });
 }
 
@@ -508,6 +524,8 @@ function buildCardHTML(sprite, obtained, mastered) {
     const imgPath = `sprites/${encodeURIComponent(sprite.id)}.png`;
     const safeName = escapeHTML(sprite.name);
     const safeRarity = escapeHTML(rarityLabel);
+    const seasonData = getSeasonData(sprite.season);
+    const safeSeasonName = escapeHTML(seasonData.name);
 
     let badge = '';
     if (sprite.unreleased) {
@@ -533,6 +551,9 @@ function buildCardHTML(sprite, obtained, mastered) {
             ${crownDisplay}
             <img src="${imgPath}" alt="${safeName}" loading="lazy">
             <div class="card-rarity">${safeRarity}</div>
+            <div class="card-season" title="${safeSeasonName}">
+                <img src="${seasonData.img}" alt="${safeSeasonName}" title="${safeSeasonName}">
+            </div>
         </div>
         <div class="card-name"><span>${safeName}</span></div>`;
 }
@@ -611,36 +632,36 @@ function getRarityTagColors(rarity) {
 
 function getExportConfig(mode) {
     const releasedSprites = getReleasedSprites();
+    let rawItems = [];
+
+    if (mode === 'collected') rawItems = releasedSprites.filter(sprite => isObtained(sprite.id));
+    else if (mode === 'missing') rawItems = releasedSprites.filter(sprite => !isObtained(sprite.id));
+    else if (mode === 'unmastered') rawItems = releasedSprites.filter(sprite => isObtained(sprite.id) && !isMastered(sprite.id));
+    else if (mode === 'mastered') rawItems = releasedSprites.filter(sprite => isObtained(sprite.id) && isMastered(sprite.id));
+    else if (mode === 'trade') rawItems = releasedSprites;
+
+    const items = mode === 'trade' ? rawItems : sortSprites(rawItems, state.settings.sortOrder);
+
     const configs = {
         collected: {
-            items: releasedSprites.filter(sprite => isObtained(sprite.id)),
-            titleL1: 'FORTNITE SPRITES TRACKER:', titleL2: 'MY COLLECTION',
-            color: '#32cd32',
-            filename: 'fnsprites-collection', emptyMsg: 'No collected sprites to export!',
+            items, titleL1: 'FORTNITE SPRITES TRACKER:', titleL2: 'MY COLLECTION',
+            color: '#32cd32', filename: 'fnsprites-collection', emptyMsg: 'No collected sprites to export!',
         },
         missing: {
-            items: releasedSprites.filter(sprite => !isObtained(sprite.id)),
-            titleL1: 'FORTNITE SPRITES TRACKER:', titleL2: "I'M LOOKING FOR THESE!",
-            color: '#ef4444',
-            filename: 'fnsprites-missing', emptyMsg: "You aren't missing any released sprites!",
+            items, titleL1: 'FORTNITE SPRITES TRACKER:', titleL2: "I'M LOOKING FOR THESE!",
+            color: '#ef4444', filename: 'fnsprites-missing', emptyMsg: "You aren't missing any released sprites!",
         },
         unmastered: {
-            items: releasedSprites.filter(sprite => isObtained(sprite.id) && !isMastered(sprite.id)),
-            titleL1: 'FORTNITE SPRITES TRACKER:', titleL2: 'UNMASTERED SPRITES',
-            color: '#00f0ff',
-            filename: 'fnsprites-unmastered', emptyMsg: "You don't have any unmastered sprites!",
+            items, titleL1: 'FORTNITE SPRITES TRACKER:', titleL2: 'UNMASTERED SPRITES',
+            color: '#00f0ff', filename: 'fnsprites-unmastered', emptyMsg: "You don't have any unmastered sprites!",
         },
         mastered: {
-            items: releasedSprites.filter(sprite => isObtained(sprite.id) && isMastered(sprite.id)),
-            titleL1: 'FORTNITE SPRITES TRACKER:', titleL2: 'MASTERED SPRITES',
-            color: '#ffd700',
-            filename: 'fnsprites-mastered', emptyMsg: "You don't have any mastered sprites!",
+            items, titleL1: 'FORTNITE SPRITES TRACKER:', titleL2: 'MASTERED SPRITES',
+            color: '#ffd700', filename: 'fnsprites-mastered', emptyMsg: "You don't have any mastered sprites!",
         },
         trade: {
-            items: releasedSprites,
-            titleL1: 'FORTNITE SPRITES TRACKER:', titleL2: 'TRADE CARD',
-            color: '#ffd700',
-            filename: 'fnsprites-trade-card', emptyMsg: 'No sprites to export!',
+            items, titleL1: 'FORTNITE SPRITES TRACKER:', titleL2: 'TRADE CARD',
+            color: '#ffd700', filename: 'fnsprites-trade-card', emptyMsg: 'No sprites to export!',
         },
     };
 
@@ -909,13 +930,6 @@ function exportImage(mode) {
     if (!config) return;
 
     const releasedSprites = getReleasedSprites();
-    const charKeys = getFamilyKeys(releasedSprites);
-    const familyThemeMap = getFamilyThemeMap(releasedSprites);
-    const allThemeColumns = getActiveThemes(releasedSprites).map(theme => ({
-        name: getExportThemeLabel(theme),
-        themeName: theme,
-    }));
-
     const imagesToLoad = [
         { id: 'mascot', src: 'siteimages/staticsprite.png' },
         ...releasedSprites.map(sprite => ({ id: sprite.id, src: `sprites/${encodeURIComponent(sprite.id)}.png` })),
@@ -931,35 +945,67 @@ function exportImage(mode) {
             }
         });
 
-        const activeCharKeys = charKeys.filter(charKey => {
-            return [...familyThemeMap.get(charKey).values()]
-                .some(sprite => getExportCardState(sprite, mode) !== 'empty');
-        });
-
-        const themeColumns = allThemeColumns.filter(t => {
-            return activeCharKeys.some(charKey => {
-                const sprite = familyThemeMap.get(charKey).get(t.themeName);
-                return sprite && getExportCardState(sprite, mode) !== 'empty';
-            });
-        });
-
         const layout = EXPORT_LAYOUT;
-        const tableColumnCount = activeCharKeys.length > layout.maxSingleColumnRows ? 2 : 1;
-        const half = tableColumnCount === 1 ? activeCharKeys.length : Math.ceil(activeCharKeys.length / 2);
-        const leftColumnKeys = activeCharKeys.slice(0, half);
-        const rightColumnKeys = activeCharKeys.slice(half);
+        let canvasW, canvasH, headerH, useCompactHeader;
+        let cols = 0, rows = 0, startGridY = 0, gridWidth = 0;
 
-        const maxRows = Math.max(leftColumnKeys.length, rightColumnKeys.length);
-        const rowH = layout.cardH + layout.rowGap;
-        const rowsH = maxRows * rowH;
-        const cardBlockW = themeColumns.length * layout.cardW + Math.max(0, themeColumns.length - 1) * layout.cardGap;
-        const colW = layout.labelW + cardBlockW;
-        const tableW = colW * tableColumnCount + layout.colGap * Math.max(0, tableColumnCount - 1);
-        const canvasW = Math.max(layout.minCanvasW, tableW + layout.border * 2 + layout.sidePad * 2);
-        const useCompactHeader = canvasW < layout.compactHeaderW;
-        const headerH = useCompactHeader ? layout.compactHeaderH : layout.headerH;
-        const canvasH = layout.border * 2 + headerH + layout.colHeaderH + rowsH + layout.footerH;
-         
+        // Trade Card Layout Variables
+        let charKeys, familyThemeMap, themeColumns, leftColumnKeys, rightColumnKeys, tableColumnCount, colW, tableW;
+
+        if (mode === 'trade') {
+            charKeys = getFamilyKeys(releasedSprites);
+            familyThemeMap = getFamilyThemeMap(releasedSprites);
+            themeColumns = getActiveThemes(releasedSprites).map(theme => ({
+                name: getExportThemeLabel(theme),
+                themeName: theme,
+            }));
+
+            const activeCharKeys = charKeys.filter(charKey => {
+                return [...familyThemeMap.get(charKey).values()]
+                    .some(sprite => getExportCardState(sprite, mode) !== 'empty');
+            });
+
+            themeColumns = themeColumns.filter(t => {
+                return activeCharKeys.some(charKey => {
+                    const sprite = familyThemeMap.get(charKey).get(t.themeName);
+                    return sprite && getExportCardState(sprite, mode) !== 'empty';
+                });
+            });
+
+            tableColumnCount = activeCharKeys.length > layout.maxSingleColumnRows ? 2 : 1;
+            const half = tableColumnCount === 1 ? activeCharKeys.length : Math.ceil(activeCharKeys.length / 2);
+            leftColumnKeys = activeCharKeys.slice(0, half);
+            rightColumnKeys = activeCharKeys.slice(half);
+
+            const maxRows = Math.max(leftColumnKeys.length, rightColumnKeys.length);
+            const rowH = layout.cardH + layout.rowGap;
+            const rowsH = maxRows * rowH;
+            const cardBlockW = themeColumns.length * layout.cardW + Math.max(0, themeColumns.length - 1) * layout.cardGap;
+            colW = layout.labelW + cardBlockW;
+            tableW = colW * tableColumnCount + layout.colGap * Math.max(0, tableColumnCount - 1);
+            canvasW = Math.max(layout.minCanvasW, tableW + layout.border * 2 + layout.sidePad * 2);
+            useCompactHeader = canvasW < layout.compactHeaderW;
+            headerH = useCompactHeader ? layout.compactHeaderH : layout.headerH;
+            canvasH = layout.border * 2 + headerH + layout.colHeaderH + rowsH + layout.footerH;
+        } else {
+            // Square-optimized Compact Layout for non-trade cards
+            const totalItems = config.items.length;
+            const cardAspect = (layout.cardW + layout.cardGap) / (layout.cardH + layout.rowGap);
+
+            // Compute ideal column count to make overall layout aspect ratio as close to 1:1 as possible
+            cols = Math.max(1, Math.round(Math.sqrt(totalItems / cardAspect)));
+            rows = Math.ceil(totalItems / cols);
+
+            gridWidth = cols * layout.cardW + (cols - 1) * layout.cardGap;
+            const gridHeight = rows * layout.cardH + (rows - 1) * layout.rowGap;
+
+            canvasW = Math.max(layout.minCanvasW, gridWidth + layout.border * 2 + layout.sidePad * 2);
+            useCompactHeader = canvasW < layout.compactHeaderW;
+            headerH = useCompactHeader ? layout.compactHeaderH : layout.headerH;
+            
+            canvasH = layout.border * 2 + headerH + layout.sidePad + gridHeight + layout.sidePad + layout.footerH;
+            startGridY = layout.border + headerH + layout.sidePad;
+        }
 
         const scale = 2;
         const canvas = document.createElement('canvas');
@@ -967,11 +1013,7 @@ function exportImage(mode) {
         canvas.height = canvasH * scale;
 
         const ctx = canvas.getContext('2d');
-
-        // Scale all drawing operations so your layout code stays unchanged
         ctx.scale(scale, scale);
-
-        // Enable high-quality image smoothing
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = 'high';
 
@@ -1091,80 +1133,88 @@ function exportImage(mode) {
             drawProgressBlock('MASTERY', masteredCount, totalCount, masPct, masteryX, layout.border + 28, '#ffd700');
         }
 
-        const startTableY = layout.border + headerH + layout.colHeaderH;
+        if (mode === 'trade') {
+            const startTableY = layout.border + headerH + layout.colHeaderH;
 
-        // Column headers drawing helper
-        const drawColHeaders = (startX) => {
-            ctx.fillStyle = '#8891a5';
-            ctx.font = 'bold 12px "Oswald", sans-serif';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'bottom';
-            themeColumns.forEach((t, i) => {
-                const cx = startX + layout.labelW + i * (layout.cardW + layout.cardGap) + layout.cardW / 2;
-                ctx.fillText(t.name, cx, startTableY - 8);
-            });
-        };
+            const drawColHeaders = (startX) => {
+                ctx.fillStyle = '#8891a5';
+                ctx.font = 'bold 12px "Oswald", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                themeColumns.forEach((t, i) => {
+                    const cx = startX + layout.labelW + i * (layout.cardW + layout.cardGap) + layout.cardW / 2;
+                    ctx.fillText(t.name, cx, startTableY - 8);
+                });
+            };
 
-        const leftTableX = layout.border + (canvasW - layout.border * 2 - tableW) / 2;
-        const rightTableX = leftTableX + colW + layout.colGap;
+            const leftTableX = layout.border + (canvasW - layout.border * 2 - tableW) / 2;
+            const rightTableX = leftTableX + colW + layout.colGap;
 
-        drawColHeaders(leftTableX);
-        if (rightColumnKeys.length > 0) {
-            drawColHeaders(rightTableX);
-        }
-
-
-
-        // Drawing a single character family row
-        const drawRow = (charKey, startX, y) => {
-            const name = getCharName(charKey);
-            const displayName = getDisplayName(name);
-
-            // Draw label
-            ctx.fillStyle = '#ffffff';
-            let fontSize = 14;
-            ctx.font = `bold ${fontSize}px "Oswald", sans-serif`;
-            ctx.textAlign = 'right';
-            ctx.textBaseline = 'middle';
-            while (ctx.measureText(displayName).width > layout.labelW - 12 && fontSize > 8) {
-                fontSize -= 0.5;
-                ctx.font = `bold ${fontSize}px "Oswald", sans-serif`;
+            drawColHeaders(leftTableX);
+            if (rightColumnKeys.length > 0) {
+                drawColHeaders(rightTableX);
             }
-            ctx.fillText(displayName, startX + layout.labelW - 10, y + layout.cardH / 2);
 
-            // Draw cards
-            const rowCards = themeColumns.map(t => familyThemeMap.get(charKey).get(t.themeName));
+            const drawRow = (charKey, startX, y) => {
+                const name = getCharName(charKey);
+                const displayName = getDisplayName(name);
 
-            rowCards.forEach((s, colIndex) => {
-                const cx = startX + layout.labelW + colIndex * (layout.cardW + layout.cardGap);
-
-                if (s) {
-                    const cardState = getExportCardState(s, mode);
-                    drawMiniCard(ctx, s, cx, y, layout.cardW, layout.cardH, cardState, imageMap);
-                } else {
-                    // Empty slot dashed outline
-                    ctx.save();
-                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-                    ctx.lineWidth = 1;
-                    ctx.setLineDash([4, 4]);
-                    ctx.beginPath();
-                    drawRoundRect(ctx, cx, y, layout.cardW, layout.cardH, 8);
-                    ctx.stroke();
-                    ctx.restore();
+                ctx.fillStyle = '#ffffff';
+                let fontSize = 14;
+                ctx.font = `bold ${fontSize}px "Oswald", sans-serif`;
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'middle';
+                while (ctx.measureText(displayName).width > layout.labelW - 12 && fontSize > 8) {
+                    fontSize -= 0.5;
+                    ctx.font = `bold ${fontSize}px "Oswald", sans-serif`;
                 }
+                ctx.fillText(displayName, startX + layout.labelW - 10, y + layout.cardH / 2);
+
+                const rowCards = themeColumns.map(t => familyThemeMap.get(charKey).get(t.themeName));
+
+                rowCards.forEach((s, colIndex) => {
+                    const cx = startX + layout.labelW + colIndex * (layout.cardW + layout.cardGap);
+
+                    if (s) {
+                        const cardState = getExportCardState(s, mode);
+                        drawMiniCard(ctx, s, cx, y, layout.cardW, layout.cardH, cardState, imageMap);
+                    } else {
+                        ctx.save();
+                        ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+                        ctx.lineWidth = 1;
+                        ctx.setLineDash([4, 4]);
+                        ctx.beginPath();
+                        drawRoundRect(ctx, cx, y, layout.cardW, layout.cardH, 8);
+                        ctx.stroke();
+                        ctx.restore();
+                    }
+                });
+            };
+
+            leftColumnKeys.forEach((charKey, idx) => {
+                const y = startTableY + idx * (layout.cardH + layout.rowGap);
+                drawRow(charKey, leftTableX, y);
             });
-        };
 
-        // Draw columns
-        leftColumnKeys.forEach((charKey, idx) => {
-            const y = startTableY + idx * rowH;
-            drawRow(charKey, leftTableX, y);
-        });
+            rightColumnKeys.forEach((charKey, idx) => {
+                const y = startTableY + idx * (layout.cardH + layout.rowGap);
+                drawRow(charKey, rightTableX, y);
+            });
+        } else {
+            // Render non-trade compact grid
+            const startGridX = (canvasW - gridWidth) / 2;
 
-        rightColumnKeys.forEach((charKey, idx) => {
-            const y = startTableY + idx * rowH;
-            drawRow(charKey, rightTableX, y);
-        });
+            config.items.forEach((sprite, index) => {
+                const col = index % cols;
+                const row = Math.floor(index / cols);
+
+                const x = startGridX + col * (layout.cardW + layout.cardGap);
+                const y = startGridY + row * (layout.cardH + layout.rowGap);
+
+                const cardState = getExportCardState(sprite, mode);
+                drawMiniCard(ctx, sprite, x, y, layout.cardW, layout.cardH, cardState, imageMap);
+            });
+        }
 
         // Footer
         ctx.fillStyle = '#0e1117';
@@ -1176,7 +1226,7 @@ function exportImage(mode) {
         ctx.textBaseline = 'middle';
         ctx.fillText('itskreisler.github.io/fnsprites/', canvasW / 2, canvasH - layout.border - layout.footerH / 2);
 
-        // Handle export mode (forced open on iOS or when toggle is disabled)
+        // Export mode
         const shouldOpenInNewTab = isIOS() || state.settings.openExports;
         
         if (shouldOpenInNewTab) {
@@ -1352,6 +1402,14 @@ function bindEvents() {
         renderGrid();
     });
 
+    /* Season filter */
+    dom.seasonFilter.addEventListener('change', () => {
+        state.filters.season = dom.seasonFilter.value;
+        persist(KEYS.season, state.filters.season);
+        renderGrid();
+    });
+
+   
     /* Sort order dropdown */
     dom.sortOrder.addEventListener('change', () => {
         state.settings.sortOrder = dom.sortOrder.value;

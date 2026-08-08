@@ -7,6 +7,7 @@ export const es = {
     toolbar: {
         searchPlaceholder: 'Buscar sprites\u2026',
         allThemes: 'Todos los temas',
+        allSeasons: 'Todas las temporadas',
         sortTheme: 'Agrupar por tema',
         sortSprite: 'Agrupar por sprite',
         sortName: 'Alfab\u00E9tico (A-Z)',
