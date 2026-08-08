@@ -870,3 +870,88 @@ body.low-fidelity .rarity-Special .card-rarity { background: #51f7cc; }
     border-radius: var(--radius);
     background: var(--surface);
 }
+
+/* ===================================================
+   Footer & Static Pages
+   =================================================== */
+
+.footer {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--gap-lg);
+    padding-top: var(--gap);
+    border-top: 2px solid var(--border-hover);
+    color: var(--muted, #a0aec0);
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap);
+    flex-wrap: wrap;
+}
+
+.footer-disclaimer {
+    margin: 0;
+}
+
+.footer-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.footer-links a {
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+.page-wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--gap-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+}
+
+.page-panel {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--gap-lg);
+}
+
+.page-panel h2 {
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 8px;
+}
+
+.page-panel p {
+    margin: 0 0 12px;
+    line-height: 1.6;
+}
+
+.page-panel p:last-child {
+    margin-bottom: 0;
+}
+
+.page-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap);
+    flex-wrap: wrap;
+}
+
+.lang-slot {
+    display: flex;
+    align-items: center;
+}

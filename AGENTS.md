@@ -1,5 +1,22 @@
 # fnsprites — Maintenance Notes
 
+## IMPORTANTE: Términos, Privacidad y Comunidad
+
+> **PENDIENTE — prioridad alta.** El sitio ya incluye pie de página con aviso de
+> "tracker no oficial" y dos páginas legales: `privacy.html` y `terms.html`
+> (bilingües, se construyen con Vite multi-página; entradas en
+> `vite.config.js` → `build.rollupOptions.input`).
+
+- La traducción de estas páginas vive en `src/i18n/langs/es.js` y `en.js`
+  bajo las claves `footer.*` y `pages.*`.
+- **Antes de lanzar cualquier propuesta de comunidad se DEBE actualizar**
+  `privacy.html` y `terms.html` (contenido y claves i18n) para cubrir las
+  nuevas funcionalidades.
+- **Próximo paso planificado:** explorar propuestas para crear una comunidad
+  alrededor del tracker. Al hacerlo, revisar primero la sección de contenido
+  legal/políticas.
+- Al añadir más páginas, recordar registrarlas en `rollupOptions.input`.
+
 ## Sprite data
 
 - **Date:** 2026-06-11
