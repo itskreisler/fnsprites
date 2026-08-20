@@ -1,4 +1,4 @@
 A Fortnite Sprites Tracker.
 
 Here's the live site:
-https://staticvacant.github.io/fnsprites/
+https://itskreisler.github.io/fnsprites/

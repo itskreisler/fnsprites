@@ -47,9 +47,16 @@ If new sprite data exists:
 
 ## Rules for upstream merges
 
-- Never overwrite `src/i18n/`, `src/app.js`, `src/share-utils.js`, `index.html`, `vite.config.js`, `package.json`.
+- Never overwrite `src/i18n/`, `src/klei.js`, `src/klei-codes.js`, `src/i18n/dom.js`.
 - Do not reference the original author (`staticvacant`, `Rick`) in any UI text or comments.
-- After merging data, rebuild: `npm run build && git add docs/ && git commit -m "Merge sprite updates from upstream"`
+- After merging, commit directly (no build step needed).
+
+## Branding rules
+
+- All references to `staticvacant.github.io/fnsprites` must be replaced with `itskreisler.github.io/fnsprites` in ALL files (app.js, HTML, JS, README, etc.).
+- Creator code is `KLEI`, never `BATTER`. This applies to: footer buttons, `item-shop` links (`creator-code=klei`), fallback strings in JS, and any UI text.
+- i18n translations for `creator.code` use `KLEI`. `support.*` keys reference creator code KLEI.
+- The `removeStaticvacantBranding()` function in klei.js is a safety net — keep it even after replacing URLs in source files.
 
 ## Download sprites from fortnite.gg
 

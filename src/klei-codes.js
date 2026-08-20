@@ -67,7 +67,7 @@ function patchSupportFooter() {
     const supportMsg = document.querySelector('.support-message')
     if (supportMsg) {
         const codeBtn = supportMsg.querySelector('.btn-copy-code')
-        const codeText = codeBtn ? codeBtn.textContent.trim() : 'BATTER'
+        const codeText = codeBtn ? codeBtn.textContent.trim() : 'KLEI'
         const link = supportMsg.querySelector('.item-shop-link')
         supportMsg.innerHTML = ''
         supportMsg.appendChild(document.createTextNode(t('support.useCode') + ' '))
