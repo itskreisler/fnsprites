@@ -125,13 +125,20 @@ function waitAndPatch() {
     rebuildAll()
 }
 
-function observeCodeChanges() {
-    const list = document.getElementById('codesList')
-    if (!list) return
-    const obs = new MutationObserver(() => {
+let patchRAF = null
+function schedulePatch() {
+    if (patchRAF) return
+    patchRAF = requestAnimationFrame(() => {
+        patchRAF = null
         patchCodeRows()
         patchEmptyState()
     })
+}
+
+function observeCodeChanges() {
+    const list = document.getElementById('codesList')
+    if (!list) return
+    const obs = new MutationObserver(schedulePatch)
     obs.observe(list, { childList: true, subtree: true })
 }
 

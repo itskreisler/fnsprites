@@ -261,13 +261,20 @@ function waitAndPatch() {
     observeGridChanges()
 }
 
-function observeGridChanges() {
-    const grid = document.getElementById('spriteGrid')
-    if (!grid) return
-    const obs = new MutationObserver(() => {
+let patchRAF = null
+function schedulePatch() {
+    if (patchRAF) return
+    patchRAF = requestAnimationFrame(() => {
+        patchRAF = null
         patchLabels()
         patchProgressLabels()
     })
+}
+
+function observeGridChanges() {
+    const grid = document.getElementById('spriteGrid')
+    if (!grid) return
+    const obs = new MutationObserver(schedulePatch)
     obs.observe(grid, { childList: true, subtree: true })
 }
 
