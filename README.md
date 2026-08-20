@@ -4,6 +4,8 @@ Track, manage, and share your **Fortnite Sprites** collection and mastery progre
 
 🔗 **Live site:** https://itskreisler.github.io/fnsprites/
 
+![Preview](siteimages/preview/screenshot.jpg)
+
 ## Features
 
 ### Compared to the [original tracker](https://github.com/staticvacant/fnsprites)
