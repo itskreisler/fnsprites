@@ -6,6 +6,7 @@
 
 import { es } from './langs/es.js'
 import { en } from './langs/en.js'
+import { de } from './langs/de.js'
 
 /**
  * Resolve a dot-notated path on a nested object.
@@ -85,7 +86,7 @@ export function createI18n(config) {
 /** @type {I18nInstance} */
 const i18n = createI18n({
     defaultLocale: 'es',
-    messages: { es, en }
+    messages: { es, en, de }
 })
 
 export const { useTranslations, getAvailableLocales, getDefaultLocale } = i18n

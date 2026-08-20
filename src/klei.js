@@ -160,22 +160,30 @@ function rebuildLabels() {
     applyTranslations(t)
 }
 
+const LANG_LABELS = { es: '🇪🇸 ES', en: '🇬🇧 EN', de: '🇩🇪 DE' }
+
 function addLangBtn() {
     if (document.getElementById(LANG_BTN_ID)) return
     const shareBtn = document.getElementById('shareBtn')
     if (!shareBtn) return
-    const btn = document.createElement('button')
-    btn.id = LANG_BTN_ID
-    btn.type = 'button'
-    btn.className = 'btn lang-btn'
-    btn.textContent = currentLocale === 'es' ? 'EN' : 'ES'
-    shareBtn.parentNode.insertBefore(btn, shareBtn.nextSibling)
-    btn.addEventListener('click', () => {
-        currentLocale = currentLocale === 'es' ? 'en' : 'es'
+    const sel = document.createElement('select')
+    sel.id = LANG_BTN_ID
+    sel.className = 'lang-select'
+    sel.setAttribute('aria-label', 'Language')
+    sel.style.cssText = 'background:#1a1a2e;color:#e0e0e0;border:1px solid #444;border-radius:4px;padding:4px 6px;font-size:13px;cursor:pointer'
+    for (const [code, label] of Object.entries(LANG_LABELS)) {
+        const opt = document.createElement('option')
+        opt.value = code
+        opt.textContent = label
+        if (code === currentLocale) opt.selected = true
+        sel.appendChild(opt)
+    }
+    shareBtn.parentNode.insertBefore(sel, shareBtn.nextSibling)
+    sel.addEventListener('change', () => {
+        currentLocale = sel.value
         localStorage.setItem(STORE_KEY, currentLocale)
         document.documentElement.lang = currentLocale
         t = useTranslations(currentLocale)
-        btn.textContent = currentLocale === 'es' ? 'EN' : 'ES'
         rebuildLabels()
         window.location.reload()
     })
