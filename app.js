@@ -5,6 +5,7 @@
 const KEYS = {
     obtained: 'fn_obtained_sprites',
     mastered: 'fn_mastered_sprites',
+    lost: 'fn_lost_sprites',
     search: 'fn_state_search',
     theme: 'fn_state_theme',
     status: 'fn_state_status_filter',
@@ -18,7 +19,7 @@ const KEYS = {
 
 const THEME_ORDER = ['Basic', 'Gold', 'Candy', 'Galaxy', 'Gem', 'Holofoil', 'Cube', 'Rift', 'Quack', 'Cheat'];
 const RARITY_ORDER = ['Mythic', 'Legendary', 'Epic', 'Rare', 'Special'];
-const STATUS_FILTERS = ['all', 'owned', 'missing'];
+const STATUS_FILTERS = ['all', 'owned', 'lost', 'missing'];
 const SORT_METHODS = ['theme', 'sprite', 'name', 'rarity'];
 const UI_THEME_LABELS = { Candy: 'Gummy' };
 const EXPORT_THEME_LABELS = { Basic: 'NORMAL', Candy: 'GUMMY' };
@@ -51,6 +52,7 @@ const EXPORT_LAYOUT = {
 const state = {
     obtained: [],
     mastered: [],
+    lost: [],
     viewMode: false,
     filters: { search: '', theme: 'all', season: 'all', status: 'all' },
     settings: {
@@ -123,6 +125,7 @@ function uniqueValidIds(ids, validIds = getSpriteIdSet()) {
 function saveCollection() {
     persist(KEYS.obtained, state.obtained);
     persist(KEYS.mastered, state.mastered);
+    persist(KEYS.lost, state.lost);
 }
 
 function isIOS() {
@@ -135,6 +138,8 @@ function load() {
     state.obtained = uniqueValidIds(readStoredArray(KEYS.obtained), validIds);
     state.mastered = uniqueValidIds(readStoredArray(KEYS.mastered), validIds)
         .filter(id => state.obtained.includes(id));
+    state.lost = uniqueValidIds(readStoredArray(KEYS.lost), validIds)
+        .filter(id => !state.obtained.includes(id));
     state.filters.search = localStorage.getItem(KEYS.search) || '';
     state.filters.theme = localStorage.getItem(KEYS.theme) || 'all';
     state.filters.season = localStorage.getItem(KEYS.season) || 'all';
@@ -180,10 +185,7 @@ function applyStateToDOM() {
 
    
     dom.statusPills.querySelectorAll('.pill').forEach(pill => {
-        const match =
-            (pill.dataset.status === 'all' && state.filters.status === 'all') ||
-            (pill.dataset.status === 'owned' && state.filters.status === 'owned') ||
-            (pill.dataset.status === 'missing' && state.filters.status === 'missing');
+        const match = pill.dataset.status === state.filters.status;
         pill.classList.toggle('active', match);
         pill.setAttribute('aria-pressed', String(match));
     });
@@ -409,7 +411,7 @@ function getTradeThemeLabel(theme) {
 function getCollectionCounts(sprites = getReleasedSprites()) {
     return {
         total: sprites.length,
-        collected: sprites.filter(sprite => isObtained(sprite.id)).length,
+        collected: sprites.filter(sprite => isObtained(sprite.id) || isLost(sprite.id)).length,
         mastered: sprites.filter(sprite => isMastered(sprite.id)).length,
     };
 }
@@ -429,6 +431,10 @@ function isObtained(id) {
 
 function isMastered(id) {
     return state.mastered.includes(id);
+}
+
+function isLost(id) {
+    return state.lost.includes(id);
 }
 
 function escapeHTML(value) {
@@ -472,8 +478,10 @@ function filterSprites() {
         let matchesStatus = true;
         if (!state.viewMode) {
             const isOwned = isObtained(sprite.id);
+            const isSpriteLost = isLost(sprite.id);
             if (state.filters.status === 'owned') matchesStatus = isOwned;
-            if (state.filters.status === 'missing') matchesStatus = !isOwned;
+            if (state.filters.status === 'lost') matchesStatus = isSpriteLost;
+            if (state.filters.status === 'missing') matchesStatus = !isOwned && !isSpriteLost;
         }
 
         return matchesSearch && matchesTheme && matchesSeason && matchesStatus;
@@ -549,6 +557,7 @@ function renderGrid() {
     for (const sprite of items) {
         const obtained = isObtained(sprite.id);
         const mastered = isMastered(sprite.id);
+        const lost = isLost(sprite.id);
         const hasHack = !obtained && hackableRewards.has(sprite.id);
 
         const card = document.createElement('div');
@@ -557,6 +566,7 @@ function renderGrid() {
         const classes = ['card', `rarity-${sprite.rarity}`, `theme-${sprite.theme}`];
         if (obtained) classes.push('obtained');
         if (mastered) classes.push('mastered');
+        if (lost) classes.push('lost');
         if (hasHack) classes.push('hack-available');
         card.className = classes.join(' ');
 
@@ -567,7 +577,7 @@ function renderGrid() {
             card.setAttribute('aria-label', `${obtained ? 'Remove' : 'Mark'} ${sprite.name} ${obtained ? 'from' : 'as part of'} your collection`);
         }
 
-        let cardHTML = buildCardHTML(sprite, obtained, mastered);
+        let cardHTML = buildCardHTML(sprite, obtained, mastered, lost);
         if (hasHack) {
             cardHTML = `<div class="hack-badge">Hack Available</div>` + cardHTML;
         }
@@ -583,7 +593,7 @@ function renderGrid() {
     updateProgress();
 }
 
-function buildCardHTML(sprite, obtained, mastered) {
+function buildCardHTML(sprite, obtained, mastered, lost) {
     const rarityLabel = sprite.rarity === 'Mythic' ? 'MYTHIC' : sprite.rarity.toUpperCase();
     const imgPath = `sprites/${encodeURIComponent(sprite.id)}.png`;
     const safeName = escapeHTML(sprite.name);
@@ -591,8 +601,12 @@ function buildCardHTML(sprite, obtained, mastered) {
     const seasonData = getSeasonData(sprite.season);
     const safeSeasonName = escapeHTML(seasonData.name);
 
+    const LOST_ICON = '<svg class="lost-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
+
     let badge = '';
-    if (sprite.unreleased) {
+    if (lost) {
+        badge = '<div class="card-badge lost-badge">LOST</div>';
+    } else if (sprite.unreleased) {
         badge = '<div class="card-badge unreleased-badge">Unreleased</div>';
     } else if (mastered) {
         badge = '<div class="card-badge mastered-badge">Mastered</div>';
@@ -601,16 +615,21 @@ function buildCardHTML(sprite, obtained, mastered) {
     }
 
     let crownAction = '';
-    if (obtained && !mastered && !state.viewMode) {
+    if (obtained && !mastered && !lost && !state.viewMode) {
         crownAction = `<button class="card-crown" type="button" title="Toggle mastery" aria-label="Mark ${safeName} as mastered">${CROWN_ICON}</button>`;
     }
 
     let crownDisplay = '';
-    if (mastered) {
+    if (mastered && !lost) {
         crownDisplay = `<div class="card-crown-display">${CROWN_ICON}</div>`;
     }
 
-    return `${badge}${crownAction}
+    let lostAction = '';
+    if ((obtained || mastered) && !lost && !state.viewMode) {
+        lostAction = `<button class="card-lost" type="button" title="Mark as lost" aria-label="Mark ${safeName} as lost">${LOST_ICON}</button>`;
+    }
+
+    return `${badge}${crownAction}${lostAction}
         <div class="card-display">
             ${crownDisplay}
             <img src="${imgPath}" alt="${safeName}" loading="lazy">
@@ -671,6 +690,21 @@ function toggleMastery(id) {
         state.mastered = state.mastered.filter(x => x !== id);
     } else {
         state.mastered.push(id);
+    }
+    saveCollection();
+    renderGrid();
+}
+
+function toggleLost(id) {
+    if (isLost(id)) {
+        // Revive: remove from lost, add to obtained
+        state.lost = state.lost.filter(x => x !== id);
+        if (!state.obtained.includes(id)) state.obtained.push(id);
+    } else {
+        // Mark as lost: remove from obtained + mastered, add to lost
+        state.obtained = state.obtained.filter(x => x !== id);
+        state.mastered = state.mastered.filter(x => x !== id);
+        if (!state.lost.includes(id)) state.lost.push(id);
     }
     saveCollection();
     renderGrid();
@@ -1449,6 +1483,7 @@ function bindEvents() {
     dom.grid.addEventListener('click', (e) => {
         if (state.viewMode) return;
         const crown = e.target.closest('.card-crown');
+        const lostBtn = e.target.closest('.card-lost');
         const card = e.target.closest('.card');
         if (!card) return;
 
@@ -1456,6 +1491,12 @@ function bindEvents() {
         if (crown) {
             e.stopPropagation();
             toggleMastery(id);
+        } else if (lostBtn) {
+            e.stopPropagation();
+            toggleLost(id);
+        } else if (isLost(id)) {
+            // Click on a lost card → revive it
+            toggleLost(id);
         } else {
             toggleObtained(id);
         }
@@ -1568,7 +1609,8 @@ function bindEvents() {
     dom.exportBackupBtn.addEventListener('click', () => {
         const data = {
             obtained: state.obtained,
-            mastered: state.mastered
+            mastered: state.mastered,
+            lost: state.lost,
         };
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
@@ -1607,9 +1649,12 @@ function bindEvents() {
                 const obtainedIds = new Set(obtained);
                 const mastered = uniqueValidIds(data.mastered, validIds)
                     .filter(id => obtainedIds.has(id));
+                const lost = uniqueValidIds(data.lost || [], validIds)
+                    .filter(id => !obtainedIds.has(id));
 
                 state.obtained = obtained;
                 state.mastered = mastered;
+                state.lost = lost;
 
                 saveCollection();
 

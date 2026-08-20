@@ -13,6 +13,7 @@ export const de = {
         sortRarity: 'Nach Seltenheit sortieren',
         all: 'Alle',
         owned: 'Besessen',
+        lost: 'Verloren',
         missing: 'Fehlend',
         hideMastered: 'Beherrschte ausblenden',
         showUnreleased: 'Nicht veröffentlicht',

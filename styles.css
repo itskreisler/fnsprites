@@ -568,6 +568,7 @@ a { color: var(--mastered); }
 .card-badge.collected { background: rgba(34, 197, 94, 0.85); color: #fff; }
 .card-badge.mastered-badge { background: rgba(255, 215, 0, 0.9); color: #1a1200; }
 .card-badge.unreleased-badge { background: rgba(239, 68, 68, 0.85); color: #fff; }
+.card-badge.lost-badge { background: rgba(168, 85, 247, 0.9); color: #fff; }
 
 /* Crown icon SVG styles */
 .crown-icon {
@@ -617,6 +618,48 @@ a { color: var(--mastered); }
     width: 18px;
     height: 18px;
     fill: var(--mastered);
+}
+
+/* Lost card state */
+.card.lost {
+    opacity: 0.55;
+    filter: grayscale(0.6);
+}
+.card.lost .card-name span {
+    text-decoration: line-through;
+    text-decoration-color: rgba(168, 85, 247, 0.7);
+}
+
+/* Mark-as-lost button */
+.card-lost {
+    position: absolute;
+    top: 4px;
+    right: 34px;
+    z-index: 5;
+    width: 28px;
+    height: 28px;
+    background: rgba(0, 0, 0, 0.55);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--ease), background var(--ease);
+}
+.card:hover .card-lost { opacity: 1; }
+.card-lost:hover { background: rgba(168, 85, 247, 0.4); }
+.card-lost:hover .lost-icon { fill: #a855f7; }
+
+@media (hover: none) {
+    .card-lost { opacity: 0.85; }
+    .card-lost .lost-icon { fill: #a855f7; }
+}
+
+.lost-icon {
+    width: 14px;
+    height: 14px;
+    fill: var(--text-soft);
+    transition: fill var(--ease);
 }
 
 /* Rarity tag */
