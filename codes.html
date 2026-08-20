@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sprites Tracker - Lobby Hacks</title>
+    <link rel="icon" type="image/png" href="siteimages/staticsprite.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="codes-data.js" defer></script>
+    <script type="module" src="codes-app.js"></script>
+    <script type="module" src="src/klei-codes.js"></script>
+</head>
+<body>
+
+<div class="app">
+    <header class="header">
+        <div class="brand">
+            <img src="siteimages/staticsprite.png" alt="" class="brand-icon" width="36" height="36">
+            <h1>Sprites Tracker - Lobby Hacks</h1>
+        </div>
+        <div class="actions">
+            <a href="index.html" class="btn btn-accent">Return</a>
+        </div>
+    </header>
+
+    <nav class="toolbar codes-toolbar">
+        <div class="toolbar-row">
+            <div class="switches">
+                <!-- <label class="switch">
+                    <input type="checkbox" id="alertNewCodesToggle" checked>
+                    <span>Alert for new codes</span>
+                </label> -->
+                <label class="switch">
+                    <input type="checkbox" id="hideRedeemedToggle" checked>
+                    <span>Hide redeemed codes</span>
+                </label>
+            </div>
+            <div class="codes-actions">
+                <button type="button" id="redeemAllBtn" class="btn btn-accent">Redeem All</button>
+                <button type="button" id="unredeemAllBtn" class="btn">Unredeem All</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="codes-table-container">
+        <div class="codes-table-header">
+            <span>CODE</span>
+            <span>REWARD</span>
+            <span>ACTIONS</span>
+        </div>
+        <div class="codes-list" id="codesList">
+            <!-- Codes rendered via JavaScript -->
+        </div>
+    </main>
+    <footer class="support-footer">
+    <p class="support-message">
+        Use code <button type="button" class="btn-copy-code" id="supportCodeBtn">BATTER</button> in the <a href="https://www.fortnite.com/item-shop?creator-code=batter" target="_blank" rel="noopener noreferrer" class="item-shop-link">item shop</a> to support me.
+    </p>
+    <p class="epic-partner">Thanks to you guys I'm an #EpicPartner.</p>
+</footer>
+</div>
+
+</body>
+</html>

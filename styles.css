@@ -2,10 +2,6 @@
     display: none !important;
 }
 
-/* ===================================================
-   Design Tokens
-   =================================================== */
-
 :root {
     --bg: #0b0d14;
     --surface: #141720;
@@ -849,109 +845,451 @@ body.low-fidelity .rarity-Special .card-rarity { background: #51f7cc; }
     object-fit: contain;
 }
 
-.lang-btn {
-    min-width: 48px;
-    font-weight: 700;
-    border: 2px solid var(--border);
-    background: var(--surface-raised);
-    color: var(--text);
-    transition: border-color var(--ease), background var(--ease);
-}
-.lang-btn:hover {
-    border-color: #ffd700;
-    color: #ffd700;
-}
 
-.creator-card {
-    text-align: center;
-    padding: 16px;
-    margin-top: 16px;
-    border: 2px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--surface);
-}
+/* ==========================================================================
+   Codes Subpage & Notification Badge
+   ========================================================================== */
 
-/* ===================================================
-   Footer & Static Pages
-   =================================================== */
-
-.footer {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: var(--gap-lg);
-    padding-top: var(--gap);
-    border-top: 2px solid var(--border-hover);
-    color: var(--muted, #a0aec0);
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--gap);
-    flex-wrap: wrap;
-}
-
-.footer-disclaimer {
-    margin: 0;
-}
-
-.footer-links {
-    display: flex;
+/* Codes Toolbar Button & Badge */
+.btn-codes {
+    position: relative;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.notification-dot {
+    width: 10px;
+    height: 10px;
+    background-color: var(--missing);
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 6px var(--missing);
+}
+
+.codes-toolbar .toolbar-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.codes-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.codes-table-container {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+/* 1. Explicit 3-column grid layout for Header and Rows to ensure perfect alignment */
+.codes-table-header,
+.code-row {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr auto; /* Adjusted middle column width to shift Reward left */
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+}
+
+/* Sub-category grouping wrapper with purple border */
+.code-category-group {
+    margin-bottom: 24px;
+    background: rgba(18, 22, 31, 0.6);
+    border: 1px solid rgba(168, 85, 247, 0.25);
+    border-top: 2px solid rgba(168, 85, 247, 0.7);
+    border-radius: 8px;
+    padding: 12px 16px 16px 16px;
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.1);
+}
+
+/* Table Header Notice */
+.codes-table-header {
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    text-align: center;
+}
+
+.codes-table-header span {
+    display: none; /* Hides CODE, REWARD, ACTIONS */
+}
+
+.codes-table-header::after {
+    content: "Click a code to copy it to your clipboard!";
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    color: var(--text-soft);
+    text-transform: none;
+}
+
+/* sub-category headers */
+.code-category-header {
+    font-family: "Oswald", sans-serif;
+    font-size: 1.15rem; 
+    font-weight: 400; 
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #a855f7; /* Swapped cyan for Lobby Hacks purple */
+    text-align: center;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Indented sub-collection items container */
+.code-category-items {
+    padding-left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Indented code row left border: updated cyan tint to purple */
+.code-category-items .code-row {
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 3px solid rgba(168, 85, 247, 0.5);
+    border-radius: 4px;
+}
+
+.codes-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.code-row {
+    border-bottom: 1px solid var(--border);
+}
+
+.code-row:last-child {
+    border-bottom: none;
+}
+
+.code-row.redeemed {
+    opacity: 0.4;
+}
+
+.code-value {
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    user-select: all;
+}
+
+.code-value:hover {
+    color: var(--accent);
+}
+
+/* reward column formatting */
+.code-reward {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 0.92rem;
+    font-weight: 400;
+    color: var(--text-soft);
+    text-align: left;
+}
+
+/* Align action buttons to the right side of their grid cell */
+.code-card-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* Source Cell & Link Formatting */
+.code-source-cell {
+    font-size: 15px;
+    color: var(--text-soft);
+    text-align: center;
+}
+
+.code-source-link {
+    color: #3b82f6; /* Bright blue */
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.code-source-link:hover {
+    color: #60a5fa; /* Lighter blue on hover */
+}
+
+/* Date Cell Formatting */
+.code-date-cell {
+    font-size: 13px;
+    color: var(--text-soft);
+    text-align: center;
     white-space: nowrap;
 }
 
-.footer-links a {
-    text-decoration: none;
-    font-weight: 700;
+
+.codes-empty {
+    padding: 24px;
+    text-align: center;
+    color: var(--text-soft);
+    font-style: italic;
 }
 
-.footer-links a:hover {
-    text-decoration: underline;
+
+/* ===================================================
+   Support Footer
+   =================================================== */
+
+.support-footer {
+    width: 100%;
+    margin-top: 40px;
+    padding: 20px 0 10px;
+    text-align: center;
+    color: #ffffff;
 }
 
-.page-wrap {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: var(--gap-lg);
-    display: flex;
-    flex-direction: column;
-    gap: var(--gap);
-}
-
-.page-panel {
-    background: var(--surface);
-    border: 2px solid var(--border);
-    border-radius: var(--radius);
-    padding: var(--gap-lg);
-}
-
-.page-panel h2 {
+.support-message {
     font-size: 18px;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.btn-copy-code {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font: inherit;
+    font-size: 1.3em;
     font-weight: 700;
+    cursor: pointer;
+    padding: 0 2px;
+    transition: transform var(--ease, 150ms ease), opacity var(--ease, 150ms ease);
+}
+
+.btn-copy-code:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+.item-shop-link {
+    color: #3b82f6;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.item-shop-link:hover {
+    color: #60a5fa;
+}
+
+.epic-partner {
+    font-size: 14px;
+    color: #ffffff;
+    margin-top: 2px;
+}
+
+/* ===================================================
+   Floating Copy Animation
+   =================================================== */
+
+.floating-copy-text {
+    position: fixed;
+    transform: translate(-50%, -100%);
+    color: #22c55e;
+    font-family: 'Oswald', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 8px rgba(34, 197, 94, 0.4);
+    pointer-events: none;
+    z-index: 9999;
+    white-space: nowrap;
+    animation: floatAndFade 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes floatAndFade {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -8px) scale(0.9);
+    }
+    15% {
+        opacity: 1;
+        transform: translate(-50%, -16px) scale(1.05);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--target-x, 0px)), var(--target-y, -50px)) scale(0.95);
+    }
+}
+
+/* Cheat Sprite Theme Styles */
+
+/* Theme Card Base */
+.card.theme-Cheat {
+    background: linear-gradient(180deg, #002b00 0%, #000a00 100%);
+    border-color: #00ff41;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Matrix Code Falling Animation Overlay */
+.card.theme-Cheat::before {
+    content: "";
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.25;
+background-image: 
+        linear-gradient(180deg, 
+            transparent 0%, 
+            #00ff41 20%, 
+            transparent 40%, 
+            #00ff41 60%, 
+            transparent 80%, 
+            #00ff41 100%
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            transparent 4px,
+            rgba(0, 255, 65, 0.3) 5px,
+            transparent 6px
+        );
+    background-size: 100% 50px, 12px 100%;
+    animation: matrixFall 4s linear infinite;
+}
+
+/* Low-fidelity Fallback (Disables animation for performance) */
+body.low-fidelity .card.theme-Cheat::before {
+    animation: none;
+    top: 0;
+    height: 100%;
+    opacity: 0.15;
+}
+
+/* Keyframes for smooth performant movement */
+@keyframes matrixFall {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(50px);
+    }
+}
+
+.card.hack-available {
+    outline: 2px solid #a855f7 !important;
+    outline-offset: -2px;
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.7) !important;
+    opacity: 1 !important; /* Keep container un-faded so the badge stays crisp */
+}
+
+/*
+.card {
+    position: relative;
+}*/
+
+/* Dim only the inner card contents (image, background, text) when uncollected */
+.card:not(.obtained) .card-content,
+.card:not(.obtained) .sprite-img,
+.card:not(.obtained) .sprite-name,
+.card:not(.obtained) .sprite-details {
+    opacity: 0.4;
+    filter: grayscale(80%);
+}
+
+/* Badge centered over the middle with 100% full opacity and pop */
+.hack-badge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #a855f7;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin: 0 0 8px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #ffffff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7), 0 0 10px rgba(168, 85, 247, 0.9);
+    z-index: 20;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 1 !important;
+    filter: none !important;
 }
 
-.page-panel p {
-    margin: 0 0 12px;
-    line-height: 1.6;
+/* Purple outline on the Lobby Hacks button */
+.btn-hack-active {
+    outline: 2px solid #a855f7 !important;
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.5);
 }
 
-.page-panel p:last-child {
-    margin-bottom: 0;
-}
+/* mobile codes page stuff */
 
-.page-actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--gap);
-    flex-wrap: wrap;
-}
+@media (max-width: 640px) {
+    /* Reduce outer group padding for tight screens */
+    .code-category-group {
+        padding: 12px 10px 14px 10px;
+    }
 
-.lang-slot {
-    display: flex;
-    align-items: center;
+    /* Remove sub-item left indent to maximize horizontal space */
+    .code-category-items {
+        padding-left: 0;
+    }
+
+    /* Hide the desktop grid header message on mobile */
+    .codes-table-header {
+        display: none;
+    }
+
+    /* Convert row grid into a stacked vertical card layout */
+    .code-category-items .code-row {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding: 12px;
+        border-left: 3px solid #a855f7;
+        margin-bottom: 6px;
+    }
+
+    /* Make code value prominent at the top */
+    .code-value {
+        font-size: 1.1rem;
+        word-break: break-all;
+    }
+
+    /* Reward text spans naturally below code */
+    .code-reward {
+        font-size: 0.88rem;
+        line-height: 1.35;
+    }
+
+    /* Full-width action container aligned to bottom right */
+    .code-card-actions {
+        width: 100%;
+        justify-content: flex-end;
+        padding-top: 4px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Touch-friendly full-width or large copy button */
+    .code-card-actions .btn {
+        width: 100%;
+        min-height: 40px;
+    }
 }

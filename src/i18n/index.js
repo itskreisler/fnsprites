@@ -1,21 +1,10 @@
-import { createI18n } from '@kreisler/i18n'
-import { es } from '@src/i18n/langs/es'
-import { en } from '@src/i18n/langs/en'
-import { z } from 'zod'
+import { createI18n } from 'https://cdn.jsdelivr.net/npm/@kreisler/i18n@1.0.1/+esm'
+import { es } from './langs/es.js'
+import { en } from './langs/en.js'
 
-export const translations = {
-    es,
-    en
-}
-
-export const i18n = createI18n({
+const i18n = createI18n({
     defaultLocale: 'es',
-    messages: {
-        es,
-        en
-    }
+    messages: { es, en }
 })
 
-export const { getAvailableLocales, getDefaultLocale, useTranslations } = i18n
-
-export const localeSchema = z.enum(getAvailableLocales())
+export const { useTranslations, getAvailableLocales, getDefaultLocale } = i18n

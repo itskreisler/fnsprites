@@ -1,5 +1,3 @@
-import '@src/klei.js'
-
 /* ===================================================
    Constants
    =================================================== */
@@ -18,31 +16,31 @@ const KEYS = {
     season: 'fn_state_season',
 };
 
-const THEME_ORDER = ['Basic', 'Gold', 'Candy', 'Galaxy', 'Gem', 'Holofoil', 'Cube', 'Rift', 'Quack'];
+const THEME_ORDER = ['Basic', 'Gold', 'Candy', 'Galaxy', 'Gem', 'Holofoil', 'Cube', 'Rift', 'Quack', 'Cheat'];
 const RARITY_ORDER = ['Mythic', 'Legendary', 'Epic', 'Rare', 'Special'];
 const STATUS_FILTERS = ['all', 'owned', 'missing'];
 const SORT_METHODS = ['theme', 'sprite', 'name', 'rarity'];
 const UI_THEME_LABELS = { Candy: 'Gummy' };
 const EXPORT_THEME_LABELS = { Basic: 'NORMAL', Candy: 'GUMMY' };
 const TRADE_THEME_LABELS = { Basic: 'Base', Candy: 'Gummy' };
-const TRACKER_URL = 'https://itskreisler.github.io/fnsprites/';
+const TRACKER_URL = 'https://staticvacant.github.io/fnsprites/';
 const CROWN_ICON = '<svg class="crown-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2 19h20v2H2v-2zM2 5l5 3.5L12 2l5 6.5L22 5v12H2V5z"/></svg>';
 
 const EXPORT_LAYOUT = {
-    border: 8,
-    sidePad: 20,
-    minCanvasW: 360,
+    border: 4,
+    sidePad: 8,
+    minCanvasW: 240,
     compactHeaderW: 760,
-    headerH: 80,
-    compactHeaderH: 132,
-    colHeaderH: 35,
-    cardW: 80,
-    cardH: 100,
-    rowGap: 12,
-    cardGap: 8,
-    labelW: 120,
-    colGap: 60,
-    footerH: 60,
+    headerH: 50,
+    compactHeaderH: 80,
+    colHeaderH: 25,
+    cardW: 110,
+    cardH: 138,
+    rowGap: 6,
+    cardGap: 6,
+    labelW: 90,
+    colGap: 16,
+    footerH: 32,
     maxSingleColumnRows: 6,
 };
 
@@ -189,6 +187,50 @@ function applyStateToDOM() {
         pill.classList.toggle('active', match);
         pill.setAttribute('aria-pressed', String(match));
     });
+}
+
+function checkUnredeemedCodes() {
+    const notifDot = document.getElementById('codesNotification');
+    const codesBtn = document.getElementById('codesBtn');
+    if (typeof baseCodes === 'undefined') return;
+
+    let showAlerts = true;
+    try {
+        const storedSetting = localStorage.getItem('fn_alert_new_codes');
+        if (storedSetting !== null) {
+            showAlerts = JSON.parse(storedSetting);
+        }
+    } catch {
+        showAlerts = true;
+    }
+
+    if (!showAlerts) {
+        if (notifDot) notifDot.hidden = true;
+        if (codesBtn) codesBtn.classList.remove('btn-hack-active');
+        return;
+    }
+
+    let redeemed = [];
+    try {
+        redeemed = JSON.parse(localStorage.getItem('fn_redeemed_codes')) || [];
+    } catch {
+        redeemed = [];
+    }
+
+    const hasUnredeemed = baseCodes.some(c => c.active && !redeemed.includes(c.code));
+    if (notifDot) notifDot.hidden = !hasUnredeemed;
+
+    // Outline button if any unredeemed code matches an uncollected sprite
+    const hasUncollectedReward = baseCodes.some(c => 
+        c.active && 
+        !redeemed.includes(c.code) && 
+        c.internalreward && 
+        !isObtained(c.internalreward)
+    );
+
+    if (codesBtn) {
+        codesBtn.classList.toggle('btn-hack-active', hasUncollectedReward);
+    }
 }
 
 /* ===================================================
@@ -489,11 +531,25 @@ function renderGrid() {
     let items = filterSprites();
     items = sortSprites(items, state.settings.sortOrder);
 
+    // Get unredeemed active code rewards
+    let redeemed = [];
+    try {
+        redeemed = JSON.parse(localStorage.getItem('fn_redeemed_codes')) || [];
+    } catch {
+        redeemed = [];
+    }
+    const hackableRewards = new Set(
+        baseCodes
+            .filter(c => c.active && !redeemed.includes(c.code) && c.internalreward)
+            .map(c => c.internalreward)
+    );
+
     const frag = document.createDocumentFragment();
 
     for (const sprite of items) {
         const obtained = isObtained(sprite.id);
         const mastered = isMastered(sprite.id);
+        const hasHack = !obtained && hackableRewards.has(sprite.id);
 
         const card = document.createElement('div');
         card.dataset.id = sprite.id;
@@ -501,7 +557,9 @@ function renderGrid() {
         const classes = ['card', `rarity-${sprite.rarity}`, `theme-${sprite.theme}`];
         if (obtained) classes.push('obtained');
         if (mastered) classes.push('mastered');
+        if (hasHack) classes.push('hack-available');
         card.className = classes.join(' ');
+
         if (!state.viewMode) {
             card.tabIndex = 0;
             card.setAttribute('role', 'button');
@@ -509,7 +567,13 @@ function renderGrid() {
             card.setAttribute('aria-label', `${obtained ? 'Remove' : 'Mark'} ${sprite.name} ${obtained ? 'from' : 'as part of'} your collection`);
         }
 
-        card.innerHTML = buildCardHTML(sprite, obtained, mastered);
+        let cardHTML = buildCardHTML(sprite, obtained, mastered);
+        if (hasHack) {
+            cardHTML = `<div class="hack-badge">Hack Available</div>` + cardHTML;
+        }
+       
+
+        card.innerHTML = cardHTML;
         frag.appendChild(card);
     }
 
@@ -617,6 +681,7 @@ function getRarityGradient(rarity, theme) {
         Cube: ['#4c1d95', '#1e0b3d'],
         Rift: ['#154b5e', '#04161c'],
         Quack: ['#322554', '#12091f'],
+        Cheat: ['#003b00', '#000800'],
     };
     return themes[theme] || themes.Basic;
 }
@@ -865,12 +930,12 @@ function drawMiniCard(ctx, sprite, x, y, w, h, cardState, imageMap) {
     ctx.fillRect(x, y + innerH, w, 22);
 
     ctx.fillStyle = isMissing ? '#ef4444' : '#ffffff';
-    let fontSize = 9.5;
+    let fontSize = 14.25;
     const name = sprite.name.toUpperCase();
     ctx.font = `bold ${fontSize}px "Oswald", sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    while (ctx.measureText(name).width > w - 6 && fontSize > 6.5) {
+    while (ctx.measureText(name).width > w - 6 && fontSize > 9.75) {
         fontSize -= 0.5;
         ctx.font = `bold ${fontSize}px "Oswald", sans-serif`;
     }
@@ -1081,7 +1146,7 @@ function exportImage(mode) {
             ctx.fillRect(x, y + 16, bw * pct, 10);
         };
 
-        if (useCompactHeader) {
+if (useCompactHeader) {
             const topY = layout.border + 24;
             const mascotSize = 24;
             const mascotGap = mascotImg ? 8 : 0;
@@ -1103,11 +1168,13 @@ function exportImage(mode) {
             ctx.textAlign = 'center';
             ctx.fillText(config.titleL2, canvasW / 2, layout.border + 52);
 
-            const statsW = bw * 2 + statGap;
-            const statsX = (canvasW - statsW) / 2;
-            const statsY = layout.border + 86;
-            drawProgressBlock('COLLECTION', ownedCount, totalCount, colPct, statsX, statsY, '#22c55e');
-            drawProgressBlock('MASTERY', masteredCount, totalCount, masPct, statsX + bw + statGap, statsY, '#ffd700');
+            if (mode === 'trade') {
+                const statsW = bw * 2 + statGap;
+                const statsX = (canvasW - statsW) / 2;
+                const statsY = layout.border + 86;
+                drawProgressBlock('COLLECTION', ownedCount, totalCount, colPct, statsX, statsY, '#22c55e');
+                drawProgressBlock('MASTERY', masteredCount, totalCount, masPct, statsX + bw + statGap, statsY, '#ffd700');
+            }
         } else {
             const statsRight = canvasW - layout.border - layout.sidePad;
             const collectionX = statsRight - bw * 2 - statGap;
@@ -1115,7 +1182,7 @@ function exportImage(mode) {
             const titleX = layout.border + layout.sidePad;
             const mascotSize = 32;
             const mascotGap = mascotImg ? 10 : 0;
-            const titleMaxW = collectionX - titleX - 20;
+            const titleMaxW = (mode === 'trade') ? (collectionX - titleX - 20) : (canvasW - titleX - layout.border - layout.sidePad);
 
             fitFont(fullTitle, titleMaxW - (mascotImg ? mascotSize + mascotGap : 0), 26, 16, 'italic 900');
             ctx.fillStyle = borderGrad;
@@ -1129,8 +1196,10 @@ function exportImage(mode) {
             }
             ctx.fillText(fullTitle, textLeft, layout.border + headerH / 2);
 
-            drawProgressBlock('COLLECTION', ownedCount, totalCount, colPct, collectionX, layout.border + 28, '#22c55e');
-            drawProgressBlock('MASTERY', masteredCount, totalCount, masPct, masteryX, layout.border + 28, '#ffd700');
+            if (mode === 'trade') {
+                drawProgressBlock('COLLECTION', ownedCount, totalCount, colPct, collectionX, layout.border + 28, '#22c55e');
+                drawProgressBlock('MASTERY', masteredCount, totalCount, masPct, masteryX, layout.border + 28, '#ffd700');
+            }
         }
 
         if (mode === 'trade') {
@@ -1224,7 +1293,7 @@ function exportImage(mode) {
         ctx.font = 'bold 16px "Oswald", sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('itskreisler.github.io/fnsprites/', canvasW / 2, canvasH - layout.border - layout.footerH / 2);
+        ctx.fillText('staticvacant.github.io/fnsprites/', canvasW / 2, canvasH - layout.border - layout.footerH / 2);
 
         // Export mode
         const shouldOpenInNewTab = isIOS() || state.settings.openExports;
@@ -1560,6 +1629,92 @@ function bindEvents() {
     });
 }
 
+
+
+// Floating copy notification & clipboard helper
+function showFloatingCopyText(anchorElement) {
+    const textEl = document.createElement('div');
+    textEl.className = 'floating-copy-text';
+    textEl.textContent = 'Code copied to clipboard!';
+
+    // Calculate absolute position on the viewport
+    const rect = anchorElement.getBoundingClientRect();
+    const startX = rect.left + rect.width / 2;
+    const startY = rect.top;
+
+    // Random horizontal trajectory (-25px to +25px offset)
+    const randomAngleX = (Math.random() - 0.5) * 50;
+    const endY = -40 - Math.random() * 20; // Float up 40px to 60px
+
+    textEl.style.setProperty('--target-x', `${randomAngleX}px`);
+    textEl.style.setProperty('--target-y', `${endY}px`);
+    textEl.style.left = `${startX}px`;
+    textEl.style.top = `${startY}px`;
+
+    document.body.appendChild(textEl);
+
+    // Remove element when animation completes
+    textEl.addEventListener('animationend', () => {
+        textEl.remove();
+    });
+}
+
+function copySupportCode(buttonEl) {
+    const code = buttonEl.textContent.trim();
+
+    // Trigger visual feedback immediately on user click
+    showFloatingCopyText(buttonEl);
+
+    // Attempt clipboard write
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).catch(() => {
+            fallbackCopy(code);
+        });
+    } else {
+        fallbackCopy(code);
+    }
+}
+
+function fallbackCopy(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    
+    // Prevent scrolling or zooming on mobile Safari/Chrome
+    textArea.style.position = 'fixed';
+    textArea.style.top = '0';
+    textArea.style.left = '0';
+    textArea.style.width = '2em';
+    textArea.style.height = '2em';
+    textArea.style.padding = '0';
+    textArea.style.border = 'none';
+    textArea.style.outline = 'none';
+    textArea.style.boxShadow = 'none';
+    textArea.style.background = 'transparent';
+    
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+        document.execCommand('copy');
+    } catch (err) {
+        console.error('Fallback copy failed:', err);
+    }
+
+    document.body.removeChild(textArea);
+}
+
+// Attach listener when DOM content loads
+document.addEventListener('DOMContentLoaded', () => {
+    const supportBtn = document.getElementById('supportCodeBtn');
+    if (supportBtn) {
+        supportBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            copySupportCode(supportBtn);
+        });
+    }
+});
+
 /* ===================================================
    Initialization
    =================================================== */
@@ -1587,6 +1742,8 @@ function init() {
     applyStateToDOM();
     renderGrid();
     bindEvents();
+    checkUnredeemedCodes();
 }
 
 init();
+

@@ -1,5 +1,5 @@
-import { useTranslations } from '@src/i18n/index.js'
-import { applyTranslations } from '@src/i18n/dom.js'
+import { useTranslations } from './i18n/index.js'
+import { applyTranslations } from './i18n/dom.js'
 
 const STORE_KEY = 'fn_locale'
 const LANG_BTN_ID = 'fn-lang-btn'
@@ -80,6 +80,16 @@ function patchCopyDropdown() {
     if (copyToggle) copyToggle.textContent = t('toolbar.copyTradeList')
 }
 
+function patchCodesBtn() {
+    const codesBtn = document.getElementById('codesBtn')
+    if (codesBtn) {
+        // Preserve the notification dot
+        const dot = codesBtn.querySelector('.notification-dot')
+        const dotHTML = dot ? dot.outerHTML : ''
+        codesBtn.innerHTML = t('toolbar.lobbyHacks') + dotHTML
+    }
+}
+
 function patchLabels() {
     patchThemeFilter()
     patchStatusPills()
@@ -87,6 +97,7 @@ function patchLabels() {
     patchHideMasteredLabel()
     patchExportDropdown()
     patchCopyDropdown()
+    patchCodesBtn()
     const importBtn = document.getElementById('importBtn')
     if (importBtn) importBtn.textContent = t('toolbar.import')
     const shareBtn = document.getElementById('shareBtn')
@@ -101,6 +112,47 @@ function patchLabels() {
     }
     const searchInput = document.getElementById('searchInput')
     if (searchInput) searchInput.placeholder = t('toolbar.searchPlaceholder')
+    patchHackBadges()
+}
+
+function patchHackBadges() {
+    document.querySelectorAll('.hack-badge').forEach(el => {
+        el.textContent = t('card.hackAvailable')
+    })
+}
+
+function patchViewBanner() {
+    const viewBanner = document.getElementById('viewBanner')
+    if (viewBanner) {
+        const span = viewBanner.querySelector('span')
+        if (span) span.textContent = t('viewMode.banner')
+        const link = viewBanner.querySelector('a')
+        if (link) link.textContent = t('viewMode.goToPersonal')
+    }
+}
+
+function patchSupportFooter() {
+    const supportMsg = document.querySelector('.support-message')
+    if (supportMsg) {
+        const codeBtn = supportMsg.querySelector('.btn-copy-code')
+        const codeText = codeBtn ? codeBtn.textContent.trim() : 'BATTER'
+        const link = supportMsg.querySelector('.item-shop-link')
+        supportMsg.innerHTML = ''
+        supportMsg.appendChild(document.createTextNode(t('support.useCode') + ' '))
+        const btn = document.createElement('button')
+        btn.type = 'button'
+        btn.className = 'btn-copy-code'
+        btn.id = 'supportCodeBtn'
+        btn.textContent = codeText
+        supportMsg.appendChild(btn)
+        supportMsg.appendChild(document.createTextNode(' ' + t('support.itemShop') + ' '))
+        if (link) {
+            supportMsg.appendChild(link)
+        }
+        supportMsg.appendChild(document.createTextNode(' ' + t('support.supportMe')))
+    }
+    const epicPartner = document.querySelector('.epic-partner')
+    if (epicPartner) epicPartner.textContent = t('support.epicPartner')
 }
 
 function rebuildLabels() {
@@ -137,8 +189,8 @@ function patchHeaderTitle() {
 
 function patchProgressLabels() {
     document.querySelectorAll('.progress-label').forEach(el => {
-        if (el.textContent === 'Collection' || el.textContent === 'COLECCI\u00D3N') el.textContent = t('app.collection')
-        else if (el.textContent === 'Mastery' || el.textContent === 'MAESTR\u00CDA') el.textContent = t('app.mastery')
+        if (el.textContent === 'Collection' || el.textContent === 'COLECCIÓN') el.textContent = t('app.collection')
+        else if (el.textContent === 'Mastery' || el.textContent === 'MAESTRÍA') el.textContent = t('app.mastery')
     })
 }
 
@@ -192,14 +244,17 @@ function removeStaticvacantBranding() {
 }
 
 function waitAndPatch() {
-    if (!document.querySelector('#spriteGrid')) {
+    if (!document.querySelector('#spriteGrid') && !document.querySelector('#codesList')) {
         requestAnimationFrame(waitAndPatch)
         return
     }
+
     addLangBtn()
     patchHeaderTitle()
     patchProgressLabels()
     patchLabels()
+    patchViewBanner()
+    patchSupportFooter()
     removeStaticvacantBranding()
     addCreatorCard()
     applyTranslations(t)
