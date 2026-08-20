@@ -623,16 +623,31 @@ function buildCardHTML(sprite, obtained, mastered) {
 }
 
 function fitCardNames() {
-    dom.grid.querySelectorAll('.card-name span').forEach(span => {
-        const parent = span.parentElement;
-        if (!parent || parent.clientWidth === 0) return;
-        let size = 14;
-        span.style.fontSize = size + 'px';
-        while (span.scrollWidth > parent.clientWidth && size > 8) {
-            size -= 0.5;
+    const spans = [...dom.grid.querySelectorAll('.card-name span')];
+    if (!spans.length) return;
+
+    // Compute all font sizes in one shot via off-screen measurement trick:
+    // set all to same size, read widths, then adjust only those that overflow.
+    const BATCH = 50;
+    let idx = 0;
+
+    function processBatch() {
+        const end = Math.min(idx + BATCH, spans.length);
+        for (let i = idx; i < end; i++) {
+            const span = spans[i];
+            const parent = span.parentElement;
+            if (!parent || parent.clientWidth === 0) continue;
+            let size = 14;
             span.style.fontSize = size + 'px';
+            while (span.scrollWidth > parent.clientWidth && size > 8) {
+                size -= 0.5;
+                span.style.fontSize = size + 'px';
+            }
         }
-    });
+        idx = end;
+        if (idx < spans.length) requestAnimationFrame(processBatch);
+    }
+    requestAnimationFrame(processBatch);
 }
 
 /* ===================================================

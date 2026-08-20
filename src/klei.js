@@ -261,20 +261,20 @@ function waitAndPatch() {
     observeGridChanges()
 }
 
-let patchRAF = null
-function schedulePatch() {
-    if (patchRAF) return
-    patchRAF = requestAnimationFrame(() => {
-        patchRAF = null
-        patchLabels()
-        patchProgressLabels()
+let hackRAF = null
+/** Only re-patch hack badges on grid mutations (elements INSIDE the grid). */
+function scheduleHackPatch() {
+    if (hackRAF) return
+    hackRAF = requestAnimationFrame(() => {
+        hackRAF = null
+        patchHackBadges()
     })
 }
 
 function observeGridChanges() {
     const grid = document.getElementById('spriteGrid')
     if (!grid) return
-    const obs = new MutationObserver(schedulePatch)
+    const obs = new MutationObserver(scheduleHackPatch)
     obs.observe(grid, { childList: true, subtree: true })
 }
 
