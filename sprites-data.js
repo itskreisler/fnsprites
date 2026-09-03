@@ -215,8 +215,22 @@ const baseSprites = [
     { id: "crown_basic", name: "Crown", theme: "Basic", rarity: "Mythic", unreleased: false, season: "Override" },
     { id: "crown_gold", name: "Gold Crown", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
     { id: "crown_cheat", name: "Cheat Master Crown", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
-	
-	{ id: "xray_basic", name: "X-Ray", theme: "Basic", rarity: "Mythic", unreleased: true, season: "Override" },
+	{ id: "crown_loot", name: "Loot Crown", theme: "Loot", rarity: "Special", unreleased: false, season: "Override" },
+
+	{ id: "xray_basic", name: "X-Ray", theme: "Basic", rarity: "Mythic", unreleased: false, season: "Override" },
+	{ id: "xray_gold", name: "Gold X-Ray", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "xray_cheat", name: "Cheat Master X-Ray", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
+
+    { id: "megaman_basic", name: "Mega Man", theme: "Basic", rarity: "Rare", unreleased: false, season: "Override" },
+
+    { id: "overshield_basic", name: "Overshield", theme: "Basic", rarity: "Rare", unreleased: false, season: "Override" },
+    { id: "overshield_gold", name: "Gold Overshield", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "overshield_cheat", name: "Cheat Master Overshield", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
+
+    { id: "onigiri_basic", name: "Onigiri", theme: "Basic", rarity: "Rare", unreleased: false, season: "Override" },
+    { id: "onigiri_gold", name: "Gold Onigiri", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "onigiri_cheat", name: "Cheat Master Onigiri", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
+
 	{ id: "pond_basic", name: "Pond", theme: "Basic", rarity: "Mythic", unreleased: true, season: "Override" },
 	{ id: "honey_basic", name: "Honey", theme: "Basic", rarity: "Mythic", unreleased: true, season: "Override" },
 	{ id: "dumpster_basic", name: "Dumpster Dive", theme: "Basic", rarity: "Mythic", unreleased: true, season: "Override" },
