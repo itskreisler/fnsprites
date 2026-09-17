@@ -1,3 +1,8 @@
+/**
+ * @file en.js
+ * @description English translations dictionary.
+ */
+
 export const en = {
     app: {
         title: 'Sprites Tracker',
@@ -35,13 +40,23 @@ export const en = {
     },
     card: {
         hackAvailable: 'Hack Available',
+        unreleased: 'Unreleased',
+        mastered: 'Mastered',
+        collected: 'Collected',
+        lost: 'Lost',
+        removeCollection: 'Remove {name} from your collection',
+        addCollection: 'Mark {name} in your collection',
+        toggleMastery: 'Toggle mastery of {name}',
+        markLost: 'Mark {name} as lost',
     },
     viewMode: {
         banner: 'Viewing a shared collection - showing collected sprites only.',
         goToPersonal: 'Go to my tracker',
+        cannotImport: 'Cannot import in view-only mode!',
     },
     support: {
         useCode: 'Use code',
+        inThe: 'in the',
         itemShop: 'item shop',
         supportMe: 'to support me.',
         epicPartner: 'Thanks to you guys I\'m an #EpicPartner.',
@@ -60,6 +75,13 @@ export const en = {
         redeemed: 'Redeemed',
         empty: 'No codes to display',
     },
+    category: {
+        cat1: 'Sprites',
+        cat2: 'Loading Screens & Locker Items',
+        cat3: 'Consumable Resources',
+        cat4: 'Fun Effects',
+        cat5: 'Miscellaneous',
+    },
     theme: {
         Basic: 'Basic',
         Gold: 'Gold',
@@ -77,5 +99,42 @@ export const en = {
         madeBy: 'Made by Kreisler',
         code: 'CREATOR CODE KLEI',
         helpText: 'Support me by using Creator Code KLEI in the Fortnite Item Shop!',
+    },
+    toasts: {
+        backupExported: 'Backup file exported!',
+        importSuccess: 'Collection imported successfully!',
+        importError: 'Failed to import: invalid JSON format',
+        shareCopied: 'Share link copied to clipboard!',
+        shareCopyError: 'Failed to copy link',
+        imageOpenedTab: 'Image opened in new tab!',
+        imageExported: 'Image exported successfully!',
+        tradeListCopied: 'Trade list copied to clipboard!',
+        tradeListCopyError: 'Failed to copy trade list',
+        tradeGridCopied: 'Trade grid copied to clipboard!',
+        tradeGridCopyError: 'Failed to copy trade grid',
+        codeCopied: 'Code copied to clipboard!',
+        generatingExport: 'Generating image export…',
+        failedExport: 'Failed to generate image',
+        emptyExportCollection: 'No collected sprites to export!',
+        emptyExportMissing: 'You aren\'t missing any released sprites!',
+        emptyExportUnmastered: 'You don\'t have any unmastered sprites!',
+        emptyExportMastered: 'You don\'t have any mastered sprites!',
+        emptyExportTrade: 'No sprites to export!',
+    },
+    exportTitle: {
+        trackerTitle: 'FORTNITE SPRITES TRACKER:',
+        myCollection: 'MY COLLECTION',
+        lookingForThese: 'I\'M LOOKING FOR THESE!',
+        unmasteredSprites: 'UNMASTERED SPRITES',
+        masteredSprites: 'MASTERED SPRITES',
+        tradeCard: 'TRADE CARD',
+    },
+    tradeText: {
+        lookingFor: 'LOOKING FOR',
+        have: 'HAVE',
+        stillNeedToMaster: 'STILL NEED TO MASTER',
+        collected: 'Collected',
+        mastered: 'Mastered',
+        trackYours: 'Track yours',
     },
 };

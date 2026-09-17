@@ -265,3 +265,7 @@ const baseSprites = [
 	{ id: "bullet_basic", name: "Bullet", theme: "Basic", rarity: "Mythic", unreleased: true, season: "Override" },
 
 ];
+
+if (typeof window !== 'undefined') {
+    window.baseSprites = baseSprites;
+}

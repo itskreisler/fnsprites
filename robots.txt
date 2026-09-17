@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://itskreisler.github.io/fnsprites/sitemap.xml

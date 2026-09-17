@@ -1,3 +1,8 @@
+/**
+ * @file de.js
+ * @description German translations dictionary.
+ */
+
 export const de = {
     app: {
         title: 'Sprites Tracker',
@@ -35,13 +40,23 @@ export const de = {
     },
     card: {
         hackAvailable: 'Hack verfügbar',
+        unreleased: 'Unveröffentlicht',
+        mastered: 'Beherrscht',
+        collected: 'Gesammelt',
+        lost: 'Verloren',
+        removeCollection: '{name} aus deiner Sammlung entfernen',
+        addCollection: '{name} als gesammelt markieren',
+        toggleMastery: 'Beherrschung von {name} umschalten',
+        markLost: '{name} als verloren markieren',
     },
     viewMode: {
         banner: 'Geteilte Sammlung wird angezeigt – nur gesammelte Sprites.',
         goToPersonal: 'Zu meinem Tracker',
+        cannotImport: 'Im schreibgeschützten Modus kann nicht importiert werden!',
     },
     support: {
         useCode: 'Nutze den Code',
+        inThe: 'im',
         itemShop: 'Item-Shop',
         supportMe: 'um mich zu unterstützen.',
         epicPartner: 'Danke an euch bin ich #EpicPartner.',
@@ -60,6 +75,13 @@ export const de = {
         redeemed: 'Eingelöst',
         empty: 'Keine Codes vorhanden',
     },
+    category: {
+        cat1: 'Sprites',
+        cat2: 'Ladebildschirme & Spind-Gegenstände',
+        cat3: 'Verbrauchsressourcen',
+        cat4: 'Lustige Effekte',
+        cat5: 'Verschiedenes',
+    },
     theme: {
         Basic: 'Basis',
         Gold: 'Gold',
@@ -71,10 +93,48 @@ export const de = {
         Rift: 'Rift',
         Quack: 'Quack',
         Cheat: 'Cheat',
+        Hacker: 'Loot Hacker',
     },
     creator: {
         madeBy: 'Erstellt von Kreisler',
         code: 'CREATOR-CODE KLEI',
         helpText: 'Unterstütze mich mit dem Creator-Code KLEI im Fortnite Item Shop!',
+    },
+    toasts: {
+        backupExported: 'Sicherungsdatei exportiert!',
+        importSuccess: 'Sammlung erfolgreich importiert!',
+        importError: 'Import fehlgeschlagen: Ungültiges JSON-Format',
+        shareCopied: 'Freigabelink in die Zwischenablage kopiert!',
+        shareCopyError: 'Link konnte nicht kopiert werden',
+        imageOpenedTab: 'Bild in neuem Tab geöffnet!',
+        imageExported: 'Bild erfolgreich exportiert!',
+        tradeListCopied: 'Tauschliste in die Zwischenablage kopiert!',
+        tradeListCopyError: 'Tauschliste konnte nicht kopiert werden',
+        tradeGridCopied: 'Tauschraster in die Zwischenablage kopiert!',
+        tradeGridCopyError: 'Tauschraster konnte nicht kopiert werden',
+        codeCopied: 'Code in die Zwischenablage kopiert!',
+        generatingExport: 'Bildexport wird erstellt…',
+        failedExport: 'Bild konnte nicht erstellt werden',
+        emptyExportCollection: 'Keine gesammelten Sprites zum Exportieren!',
+        emptyExportMissing: 'Dir fehlen keine veröffentlichten Sprites!',
+        emptyExportUnmastered: 'Du hast keine unbeherrschten Sprites!',
+        emptyExportMastered: 'Du hast keine beherrschten Sprites!',
+        emptyExportTrade: 'Keine Sprites zum Exportieren!',
+    },
+    exportTitle: {
+        trackerTitle: 'FORTNITE SPRITES TRACKER:',
+        myCollection: 'MEINE SAMMLUNG',
+        lookingForThese: 'ICH SUCHE DIESE!',
+        unmasteredSprites: 'UNBEHERRSCHTE SPRITES',
+        masteredSprites: 'BEHERRSCHTE SPRITES',
+        tradeCard: 'TAUSCHKARTE',
+    },
+    tradeText: {
+        lookingFor: 'SUCHE',
+        have: 'HABE',
+        stillNeedToMaster: 'MUSS NOCH BEHERRSCHT WERDEN',
+        collected: 'Gesammelt',
+        mastered: 'Beherrscht',
+        trackYours: 'Verfolge deine',
     },
 };
