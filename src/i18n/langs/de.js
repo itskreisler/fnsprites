@@ -137,4 +137,8 @@ export const de = {
         mastered: 'Beherrscht',
         trackYours: 'Verfolge deine',
     },
+    offline: {
+        offlineStatus: 'Offlinemodus aktiv',
+        onlineStatus: 'Verbindung wiederhergestellt',
+    },
 };

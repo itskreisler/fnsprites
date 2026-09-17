@@ -5,7 +5,7 @@
 
 import { STORAGE_KEYS } from './src/constants.js';
 import { copyToClipboard, copySupportCode } from './src/utils/clipboard.js';
-import { getTranslator } from './src/ui/commonUi.js';
+import { getTranslator, initOfflineAndPWA } from './src/ui/commonUi.js';
 
 /**
  * Get array of redeemed codes from LocalStorage.
@@ -186,6 +186,7 @@ function initToolbar() {
 document.addEventListener('DOMContentLoaded', () => {
     initToolbar();
     renderCodes();
+    initOfflineAndPWA();
 
     const supportBtn = document.getElementById('supportCodeBtn');
     if (supportBtn) {

@@ -6,6 +6,7 @@
 import { STORAGE_KEYS, URLS, CREATOR_CODE } from '../constants.js';
 import { useTranslations } from '../i18n/index.js';
 import { applyTranslations } from '../i18n/dom.js';
+import { showToast } from '../utils/toast.js';
 
 const LANG_BTN_ID = 'fn-lang-btn';
 const LANG_LABELS = { es: '🇪🇸 ES', en: '🇬🇧 EN', de: '🇩🇪 DE' };
@@ -176,4 +177,25 @@ export function addCreatorCard() {
  */
 export function updateDomTranslations() {
     applyTranslations(t);
+}
+
+/**
+ * Initializes offline/online connectivity listeners and Service Worker registration.
+ */
+export function initOfflineAndPWA() {
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js').catch((err) => {
+                console.warn('Service Worker registration failed:', err);
+            });
+        });
+    }
+
+    window.addEventListener('online', () => {
+        showToast(t('offline.onlineStatus'));
+    });
+
+    window.addEventListener('offline', () => {
+        showToast(t('offline.offlineStatus'));
+    });
 }

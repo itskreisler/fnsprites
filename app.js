@@ -30,7 +30,7 @@ import {
 
 import { exportCanvasImage } from './src/export/canvasExport.js';
 import { generateTradeText, generateTradeGridText } from './src/export/tradeText.js';
-import { getTranslator } from './src/ui/commonUi.js';
+import { getTranslator, initOfflineAndPWA } from './src/ui/commonUi.js';
 
 /* ===================================================
    State Management
@@ -933,6 +933,7 @@ function init() {
     renderGrid();
     bindEvents();
     checkUnredeemedCodes();
+    initOfflineAndPWA();
 }
 
 init();

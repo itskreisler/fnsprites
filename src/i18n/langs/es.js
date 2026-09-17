@@ -137,4 +137,8 @@ export const es = {
         mastered: 'Maestrados',
         trackYours: 'Rastrea el tuyo',
     },
+    offline: {
+        offlineStatus: 'Modo sin conexión activo',
+        onlineStatus: 'Conexión restablecida',
+    },
 };
