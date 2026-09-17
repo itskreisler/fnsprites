@@ -1,4 +1,12 @@
-const CACHE_NAME = 'fn-sprites-v1';
+/**
+ * @file sw.js
+ * @description Service Worker providing offline support, PWA asset caching, and automatic cache invalidation for new sprites/codes.
+ */
+
+// Bump version when adding new sprites, codes, or assets
+const CACHE_VERSION = 'v1.0.1';
+const CACHE_NAME = `fn-sprites-${CACHE_VERSION}`;
+
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -28,7 +36,7 @@ const STATIC_ASSETS = [
   './src/i18n/langs/de.js'
 ];
 
-// Install Event: Pre-cache core static assets
+// Install Event: Cache core static assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -37,58 +45,55 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Activate Event: Clean old caches
+// Activate Event: Immediately purge old cache versions when CACHE_VERSION changes
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames
-          .filter((name) => name !== CACHE_NAME)
+          .filter((name) => name.startsWith('fn-sprites-') && name !== CACHE_NAME)
           .map((name) => caches.delete(name))
       );
     }).then(() => self.clients.claim())
   );
 });
 
-// Fetch Event: Cache-First for static assets, Network-First for dynamic/external requests
+// Fetch Event: Stale-While-Revalidate strategy for static assets & network-first for new sprites
 self.addEventListener('fetch', (event) => {
-  // Only handle GET requests
   if (event.request.method !== 'GET') return;
 
   const url = new URL(event.request.url);
-
-  // Ignore cross-origin non-http(s) requests
   if (!url.protocol.startsWith('http')) return;
 
+  // For sprite PNG image requests: Network-First with Cache Fallback to ensure newly added sprite images load immediately
+  if (url.pathname.includes('/sprites/')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseToCache));
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Stale-while-revalidate for core app files
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        // Return cached response, update cache in background (Stale-while-revalidate)
-        fetch(event.request).then((networkResponse) => {
+      const fetchPromise = fetch(event.request)
+        .then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
             caches.open(CACHE_NAME).then((cache) => cache.put(event.request, networkResponse));
           }
-        }).catch(() => {/* Offline fallback, suppress network errors */});
-
-        return cachedResponse;
-      }
-
-      // If not in cache, fetch from network and store in cache
-      return fetch(event.request).then((networkResponse) => {
-        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
           return networkResponse;
-        }
+        })
+        .catch(() => {/* Offline fallback */});
 
-        const responseToCache = networkResponse.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseToCache));
-
-        return networkResponse;
-      }).catch(() => {
-        // Handle offline fallback for navigation requests
-        if (event.request.mode === 'navigate') {
-          return caches.match('./index.html');
-        }
-      });
+      return cachedResponse || fetchPromise;
     })
   );
 });

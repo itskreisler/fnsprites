@@ -185,9 +185,14 @@ export function updateDomTranslations() {
 export function initOfflineAndPWA() {
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js').catch((err) => {
-                console.warn('Service Worker registration failed:', err);
-            });
+            navigator.serviceWorker.register('./sw.js')
+                .then((reg) => {
+                    // Check for updated Service Worker on page load
+                    reg.update().catch(() => {/* Ignore update check errors when offline */});
+                })
+                .catch((err) => {
+                    console.warn('Service Worker registration failed:', err);
+                });
         });
     }
 
