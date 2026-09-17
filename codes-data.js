@@ -18,12 +18,14 @@ const baseCodes = [
     { code: "GottaGoFast", reward: "Cheat Master Sonic Sprite", internalreward: "sonic_cheat", category: "cat1", active: true },
     { code: "IWannaFlyHigh", reward: "Cheat Master Tails Sprite", internalreward: "tails_cheat", category: "cat1", active: true },
     { code: "Play4All", reward: "Cheat Master Jonesy Sprite", internalreward: "jonesy_cheat", category: "cat1", active: true },
-    { code: "GatherAndCraft", reward: "Cheat Master Bush Sprite (Requires Quest In-Game)", internalreward: "bush_cheat", category: "cat1", active: true },
+    { code: "GatherAndCraft", reward: "Cheat Master Bush Sprite (Requires Quest Completion)", internalreward: "bush_cheat", category: "cat1", active: true },
     { code: "JonesyIsGolden", reward: "Gold Jonesy Sprite", internalreward: "jonesy_gold", category: "cat1", active: true },
-
+	
     // --- cat2
-    { code: "BeMoreAlien", reward: "Override Ready Loading Screen", internalreward: null, category: "cat2", active: true },
+    { code: "YourThoughtsAreMine", reward: "Void Master Geno Style & 5,000 Sprite Dust (Requires Quest Completion)", internalreward: null, category: "cat2", active: true },
+	{ code: "BeMoreAlien", reward: "Override Ready Loading Screen", internalreward: null, category: "cat2", active: true },
     { code: "ReachYourImpossible", reward: "Block Party Loading Screen", internalreward: null, category: "cat2", active: true },
+	{ code: "SAYH12WR1X3L", reward: "Wrixel's Hero Portrait Spray", internalreward: null, category: "cat2", active: true },
 
     // --- cat3
     { code: "OverrideXP", reward: "40,000 XP", internalreward: null, category: "cat3", active: true },
@@ -37,10 +39,23 @@ const baseCodes = [
     { code: "TakeYourHeart", reward: "2 Extraction Accelerators", internalreward: null, category: "cat3", active: true },
     { code: "PerfectOrder", reward: "4 Spicy Tacos", internalreward: null, category: "cat3", active: true },
     { code: "O2Override", reward: "1 Llama Supply Drop & 1 Portable Extractor", internalreward: null, category: "cat3", active: true },
+	{ code: "ChatWhereDoYouFindTheKey", reward: "2 Extraction Accelerators", internalreward: null, category: "cat3", active: true },
+	{ code: "InvalidCheat", reward: "2 Cheat Code Locators", internalreward: null, category: "cat3", active: true },
+	{ code: "BLINKYINKYPINKYCLYDE", reward: "5,000 Sprite Dust", internalreward: null, category: "cat3", active: true },
+	{ code: "PLAYTOLEVELUP", reward: "2,000 Sprite Dust", internalreward: null, category: "cat3", active: true },
+	{ code: "BeamMeUp", reward: "2 Extraction Accelerators", internalreward: null, category: "cat3", active: true },
+	{ code: "DESTINYAWAITS", reward: "2 Llama Supply Drops", internalreward: null, category: "cat3", active: true },
+	{ code: "NOCTURNEOP55N1", reward: "2 Extraction Accelerators", internalreward: null, category: "cat3", active: true },
+	{ code: "DustInTheWind", reward: "5,000 Sprite Dust", internalreward: null, category: "cat3", active: true },
+	{ code: "NOPROLLAMA", reward: "1 Llama Supply Drop", internalreward: null, category: "cat3", active: true },
+	{ code: "WhereIsTheDustyTree", reward: "5,000 Sprite Dust", internalreward: null, category: "cat3", active: true },
+    { code: "INVALIDCHEAT", reward: "2 Cheat Code Locators", internalreward: null, category: "cat3", active: true },
 
     // --- cat4
     { code: "DontBlockMe", reward: "Turns you into a Tetrimino.", internalreward: null, category: "cat4", active: true },
-    { code: "LetsBlockAndRoll", reward: "Turns you into a Tetrimino.", internalreward: null, category: "cat4", active: true }
+    { code: "LetsBlockAndRoll", reward: "Turns you into a Tetrimino.", internalreward: null, category: "cat4", active: true },
+	{ code: "BRB", reward: "Turns you into a toilet.", internalreward: null, category: "cat4", active: true },
+	{ code: "InsertCoinToContinue", reward: "Turns you into an arcade machine.", internalreward: null, category: "cat4", active: true }
     
     // --- cat5
     //{ code: "Looper1", reward: "Unknown", internalreward: null, category: "cat5", active: false },

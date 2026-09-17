@@ -694,6 +694,7 @@ a { color: var(--mastered); }
 .rarity-Special.theme-Quack .card-display { background: linear-gradient(180deg, #322554, #12091f); }
 .rarity-Special.theme-Cube .card-display { background: linear-gradient(180deg, #4c1d95, #1e0b3d); }
 .rarity-Special.theme-Rift .card-display { background: linear-gradient(180deg, #154b5e, #04161c); }
+.rarity-Special.theme-Hacker .card-display { background: linear-gradient(180deg, #4a1060, #1c0429); }
 
 /* Special rarity rainbow overlay */
 .rarity-Special .card-display::after {
@@ -742,6 +743,7 @@ body.low-fidelity .rarity-Special.theme-Holofoil .card-display { background: #20
 body.low-fidelity .rarity-Special.theme-Quack .card-display { background: #322554; }
 body.low-fidelity .rarity-Special.theme-Cube .card-display { background: #4c1d95; }
 body.low-fidelity .rarity-Special.theme-Rift .card-display { background: #154b5e; }
+body.low-fidelity .rarity-Special.theme-Hacker .card-display { background: #4a1060; }
 
 body.low-fidelity .rarity-Special .card-rarity { background: #51f7cc; }
 
@@ -1219,6 +1221,21 @@ body.low-fidelity .card.theme-Cheat::before {
     top: 0;
     height: 100%;
     opacity: 0.15;
+}
+
+/* Hacker Sprite Theme Styles */
+
+/* Theme Card Base */
+.card.theme-Hacker {
+    background: linear-gradient(180deg, #1a0630 0%, #05000f 100%);
+    border-color: #a855f7;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Low-fidelity Fallback */
+body.low-fidelity .card.theme-Hacker {
+    background: #12042a;
 }
 
 /* Keyframes for smooth performant movement */

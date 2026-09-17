@@ -71,6 +71,7 @@ export const en = {
         Rift: 'Rift',
         Quack: 'Quack',
         Cheat: 'Cheat',
+        Hacker: 'Loot Hacker',
     },
     creator: {
         madeBy: 'Made by Kreisler',

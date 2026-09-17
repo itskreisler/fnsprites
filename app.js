@@ -17,13 +17,13 @@ const KEYS = {
     season: 'fn_state_season',
 };
 
-const THEME_ORDER = ['Basic', 'Gold', 'Candy', 'Galaxy', 'Gem', 'Holofoil', 'Cube', 'Rift', 'Quack', 'Cheat'];
+const THEME_ORDER = ['Basic', 'Gold', 'Candy', 'Galaxy', 'Gem', 'Holofoil', 'Cube', 'Rift', 'Quack', 'Cheat', 'Hacker'];
 const RARITY_ORDER = ['Mythic', 'Legendary', 'Epic', 'Rare', 'Special'];
 const STATUS_FILTERS = ['all', 'owned', 'lost', 'missing'];
 const SORT_METHODS = ['theme', 'sprite', 'name', 'rarity'];
-const UI_THEME_LABELS = { Candy: 'Gummy' };
-const EXPORT_THEME_LABELS = { Basic: 'NORMAL', Candy: 'GUMMY' };
-const TRADE_THEME_LABELS = { Basic: 'Base', Candy: 'Gummy' };
+const UI_THEME_LABELS = { Candy: 'Gummy', Hacker: 'Loot Hacker' };
+const EXPORT_THEME_LABELS = { Basic: 'NORMAL', Candy: 'GUMMY', Hacker: 'LOOT HACKER' };
+const TRADE_THEME_LABELS = { Basic: 'Base', Candy: 'Gummy', Hacker: 'Loot Hacker' };
 const TRACKER_URL = 'https://itskreisler.github.io/fnsprites/';
 const CROWN_ICON = '<svg class="crown-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2 19h20v2H2v-2zM2 5l5 3.5L12 2l5 6.5L22 5v12H2V5z"/></svg>';
 
@@ -731,6 +731,7 @@ function getRarityGradient(rarity, theme) {
         Rift: ['#154b5e', '#04161c'],
         Quack: ['#322554', '#12091f'],
         Cheat: ['#003b00', '#000800'],
+        Hacker: ['#4a1060', '#1c0429'],
     };
     return themes[theme] || themes.Basic;
 }
