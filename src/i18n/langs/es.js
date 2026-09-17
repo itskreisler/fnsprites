@@ -1,3 +1,8 @@
+/**
+ * @file es.js
+ * @description Spanish translations dictionary.
+ */
+
 export const es = {
     app: {
         title: 'SPRITES TRACKER',
@@ -35,13 +40,23 @@ export const es = {
     },
     card: {
         hackAvailable: 'Hack Disponible',
+        unreleased: 'No lanzado',
+        mastered: 'Maestrado',
+        collected: 'Coleccionado',
+        lost: 'Perdido',
+        removeCollection: 'Eliminar {name} de tu colección',
+        addCollection: 'Marcar {name} en tu colección',
+        toggleMastery: 'Alternar maestría de {name}',
+        markLost: 'Marcar {name} como perdido',
     },
     viewMode: {
         banner: 'Viendo una colección compartida - mostrando solo sprites coleccionados.',
         goToPersonal: 'Ir a mi tracker',
+        cannotImport: '¡No se puede importar en modo de solo lectura!',
     },
     support: {
         useCode: 'Usa el código',
+        inThe: 'en la',
         itemShop: 'tienda de objetos',
         supportMe: 'para apoyarme.',
         epicPartner: 'Gracias a ustedes soy #EpicPartner.',
@@ -60,6 +75,13 @@ export const es = {
         redeemed: 'Canjeado',
         empty: 'No hay códigos para mostrar',
     },
+    category: {
+        cat1: 'Sprites',
+        cat2: 'Pantallas de carga y objetos de casillero',
+        cat3: 'Recursos consumibles',
+        cat4: 'Efectos divertidos',
+        cat5: 'Varios',
+    },
     theme: {
         Basic: 'BÁSICO',
         Gold: 'DORADO',
@@ -77,5 +99,46 @@ export const es = {
         madeBy: 'Hecho por Kreisler',
         code: 'CÓDIGO KLEI',
         helpText: '¡Apóyame usando el Código de Creador KLEI en la Tienda de Fortnite!',
+    },
+    toasts: {
+        backupExported: '¡Archivo de respaldo exportado!',
+        importSuccess: '¡Colección importada con éxito!',
+        importError: 'Error al importar: formato JSON no válido',
+        shareCopied: '¡Enlace para compartir copiado al portapapeles!',
+        shareCopyError: 'Error al copiar el enlace',
+        imageOpenedTab: '¡Imagen abierta en una nueva pestaña!',
+        imageExported: '¡Imagen exportada con éxito!',
+        tradeListCopied: '¡Lista de intercambio copiada al portapapeles!',
+        tradeListCopyError: 'Error al copiar la lista de intercambio',
+        tradeGridCopied: '¡Cuadrícula de intercambio copiada al portapapeles!',
+        tradeGridCopyError: 'Error al copiar la cuadrícula de intercambio',
+        codeCopied: '¡Código copiado al portapapeles!',
+        generatingExport: 'Generando exportación de imagen…',
+        failedExport: 'Error al generar la imagen',
+        emptyExportCollection: '¡No hay sprites coleccionados para exportar!',
+        emptyExportMissing: '¡No te falta ningún sprite lanzado!',
+        emptyExportUnmastered: '¡No tienes sprites sin maestrar!',
+        emptyExportMastered: '¡No tienes sprites maestrados!',
+        emptyExportTrade: '¡No hay sprites para exportar!',
+    },
+    exportTitle: {
+        trackerTitle: 'FORTNITE SPRITES TRACKER:',
+        myCollection: 'MI COLECCIÓN',
+        lookingForThese: '¡BUSCO ESTOS!',
+        unmasteredSprites: 'SPRITES SIN MAESTRAR',
+        masteredSprites: 'SPRITES MAESTRADOS',
+        tradeCard: 'TARJETA DE INTERCAMBIO',
+    },
+    tradeText: {
+        lookingFor: 'BUSCO',
+        have: 'TENGO',
+        stillNeedToMaster: 'AÚN ME FALTA MAESTRAR',
+        collected: 'Coleccionados',
+        mastered: 'Maestrados',
+        trackYours: 'Rastrea el tuyo',
+    },
+    offline: {
+        offlineStatus: 'Modo sin conexión activo',
+        onlineStatus: 'Conexión restablecida',
     },
 };

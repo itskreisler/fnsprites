@@ -1,4 +1,12 @@
-// display strings
+/**
+ * @file codes-data.js
+ * @description Master data configuration sheet for lobby hack codes and categories.
+ */
+
+/**
+ * Category title mapping for code rewards.
+ * @type {Record<string, string>}
+ */
 const codeCategories = {
     cat1: "Sprites",
     cat2: "Loading Screens & Locker Items",
@@ -7,10 +15,16 @@ const codeCategories = {
     cat5: "Miscellaneous"
 };
 
-// category ordering
+/**
+ * Category ordering preference.
+ * @type {string[]}
+ */
 const CATEGORY_ORDER = ["cat1", "cat2", "cat3", "cat4", "cat5"];
 
-// code data sheet
+/**
+ * Code data sheet definition.
+ * @type {Array<{code: string, reward: string, internalreward: string|null, category: string, active: boolean}>}
+ */
 const baseCodes = [
     // --- cat1
     { code: "Born2Play", reward: "Cheat Master Adventure Sprite", internalreward: "adventure_cheat", category: "cat1", active: true },
@@ -20,12 +34,12 @@ const baseCodes = [
     { code: "Play4All", reward: "Cheat Master Jonesy Sprite", internalreward: "jonesy_cheat", category: "cat1", active: true },
     { code: "GatherAndCraft", reward: "Cheat Master Bush Sprite (Requires Quest Completion)", internalreward: "bush_cheat", category: "cat1", active: true },
     { code: "JonesyIsGolden", reward: "Gold Jonesy Sprite", internalreward: "jonesy_gold", category: "cat1", active: true },
-	
+
     // --- cat2
     { code: "YourThoughtsAreMine", reward: "Void Master Geno Style & 5,000 Sprite Dust (Requires Quest Completion)", internalreward: null, category: "cat2", active: true },
-	{ code: "BeMoreAlien", reward: "Override Ready Loading Screen", internalreward: null, category: "cat2", active: true },
+    { code: "BeMoreAlien", reward: "Override Ready Loading Screen", internalreward: null, category: "cat2", active: true },
     { code: "ReachYourImpossible", reward: "Block Party Loading Screen", internalreward: null, category: "cat2", active: true },
-	{ code: "SAYH12WR1X3L", reward: "Wrixel's Hero Portrait Spray", internalreward: null, category: "cat2", active: true },
+    { code: "SAYH12WR1X3L", reward: "Wrixel's Hero Portrait Spray", internalreward: null, category: "cat2", active: true },
 
     // --- cat3
     { code: "OverrideXP", reward: "40,000 XP", internalreward: null, category: "cat3", active: true },
@@ -39,25 +53,20 @@ const baseCodes = [
     { code: "TakeYourHeart", reward: "2 Extraction Accelerators", internalreward: null, category: "cat3", active: true },
     { code: "PerfectOrder", reward: "4 Spicy Tacos", internalreward: null, category: "cat3", active: true },
     { code: "O2Override", reward: "1 Llama Supply Drop & 1 Portable Extractor", internalreward: null, category: "cat3", active: true },
-	{ code: "ChatWhereDoYouFindTheKey", reward: "2 Extraction Accelerators", internalreward: null, category: "cat3", active: true },
-	{ code: "InvalidCheat", reward: "2 Cheat Code Locators", internalreward: null, category: "cat3", active: true },
-	{ code: "BLINKYINKYPINKYCLYDE", reward: "5,000 Sprite Dust", internalreward: null, category: "cat3", active: true },
-	{ code: "PLAYTOLEVELUP", reward: "2,000 Sprite Dust", internalreward: null, category: "cat3", active: true },
-	{ code: "BeamMeUp", reward: "2 Extraction Accelerators", internalreward: null, category: "cat3", active: true },
-	{ code: "DESTINYAWAITS", reward: "2 Llama Supply Drops", internalreward: null, category: "cat3", active: true },
-	{ code: "NOCTURNEOP55N1", reward: "2 Extraction Accelerators", internalreward: null, category: "cat3", active: true },
-	{ code: "DustInTheWind", reward: "5,000 Sprite Dust", internalreward: null, category: "cat3", active: true },
-	{ code: "NOPROLLAMA", reward: "1 Llama Supply Drop", internalreward: null, category: "cat3", active: true },
-	{ code: "WhereIsTheDustyTree", reward: "5,000 Sprite Dust", internalreward: null, category: "cat3", active: true },
-    { code: "INVALIDCHEAT", reward: "2 Cheat Code Locators", internalreward: null, category: "cat3", active: true },
+    { code: "ChatWhereDoYouFindTheKey", reward: "2 Extraction Accelerators", internalreward: null, category: "cat3", active: true },
+    { code: "InvalidCheat", reward: "2 Cheat Code Locators", internalreward: null, category: "cat3", active: true },
+    { code: "BLINKYINKYPINKYCLYDE", reward: "5,000 Sprite Dust", internalreward: null, category: "cat3", active: true },
+    { code: "PLAYTOLEVELUP", reward: "2,000 Sprite Dust", internalreward: null, category: "cat3", active: true },
+    { code: "BeamMeUp", reward: "2 Extraction Accelerators", internalreward: null, category: "cat3", active: true },
+    { code: "DESTINYAWAITS", reward: "2 Llama Supply Drops", internalreward: null, category: "cat3", active: true },
+    { code: "NOCTURNEOP55N1", reward: "2 Extraction Accelerators", internalreward: null, category: "cat3", active: true },
+    { code: "DustInTheWind", reward: "5,000 Sprite Dust", internalreward: null, category: "cat3", active: true },
+    { code: "NOPROLLAMA", reward: "1 Llama Supply Drop", internalreward: null, category: "cat3", active: true },
+    { code: "WhereIsTheDustyTree", reward: "5,000 Sprite Dust", internalreward: null, category: "cat3", active: true },
 
     // --- cat4
     { code: "DontBlockMe", reward: "Turns you into a Tetrimino.", internalreward: null, category: "cat4", active: true },
     { code: "LetsBlockAndRoll", reward: "Turns you into a Tetrimino.", internalreward: null, category: "cat4", active: true },
-	{ code: "BRB", reward: "Turns you into a toilet.", internalreward: null, category: "cat4", active: true },
-	{ code: "InsertCoinToContinue", reward: "Turns you into an arcade machine.", internalreward: null, category: "cat4", active: true }
-    
-    // --- cat5
-    //{ code: "Looper1", reward: "Unknown", internalreward: null, category: "cat5", active: false },
-    //{ code: "fishstick1", reward: "Unknown", internalreward: null, category: "cat5", active: false }
+    { code: "BRB", reward: "Turns you into a toilet.", internalreward: null, category: "cat4", active: true },
+    { code: "InsertCoinToContinue", reward: "Turns you into an arcade machine.", internalreward: null, category: "cat4", active: true }
 ];

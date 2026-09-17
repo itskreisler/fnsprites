@@ -1,10 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Track, manage, and share your Fortnite Sprites collection and mastery progress.">
-    <title>Sprites Tracker</title>
+    <title data-i18n="app.title">Sprites Tracker - Fortnite Sprites Collection & Mastery</title>
+    <meta name="description" content="Track, manage, and share your Fortnite Sprites collection and mastery progress. Export custom trade cards, track lost sprites, and redeem lobby hacks.">
+    <meta name="keywords" content="Fortnite Sprites, Sprites Tracker, Fortnite, Fortnite Codes, Fortnite Lobby Hacks, Fortnite Sprites Mastery, Fortnite Item Shop Creator Code KLEI">
+    <meta name="author" content="Kreisler">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0d1117">
+    <link rel="manifest" href="manifest.json">
+    <link rel="canonical" href="https://itskreisler.github.io/fnsprites/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://itskreisler.github.io/fnsprites/">
+    <meta property="og:title" content="Sprites Tracker - Fortnite Sprites Collection & Mastery">
+    <meta property="og:description" content="Track, manage, and share your Fortnite Sprites collection and mastery progress. Export custom trade cards and redeem lobby hacks.">
+    <meta property="og:image" content="https://itskreisler.github.io/fnsprites/siteimages/preview/screenshot.jpg">
+    <meta property="og:site_name" content="Sprites Tracker">
+    <meta property="og:locale" content="es_ES">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://itskreisler.github.io/fnsprites/">
+    <meta name="twitter:title" content="Sprites Tracker - Fortnite Sprites Collection">
+    <meta name="twitter:description" content="Track, manage, and share your Fortnite Sprites collection and mastery progress.">
+    <meta name="twitter:image" content="https://itskreisler.github.io/fnsprites/siteimages/preview/screenshot.jpg">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Sprites Tracker",
+      "url": "https://itskreisler.github.io/fnsprites/",
+      "description": "Track, manage, and share your Fortnite Sprites collection and mastery progress.",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "All",
+      "author": {
+        "@type": "Person",
+        "name": "Kreisler"
+      }
+    }
+    </script>
+
     <link rel="icon" type="image/png" href="siteimages/staticsprite.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,27 +58,27 @@
 <body>
 
 <div class="banner" id="viewBanner" hidden>
-    <span>Viewing a shared collection - showing collected sprites only.</span>
-    <a href="index.html">Go to my tracker</a>
+    <span data-i18n="viewMode.banner">Viewing a shared collection - showing collected sprites only.</span>
+    <a href="index.html" data-i18n="viewMode.goToPersonal">Go to my tracker</a>
 </div>
 
 <div class="app">
     <header class="header">
         <div class="brand">
-            <img src="siteimages/staticsprite.png" alt="" class="brand-icon" width="36" height="36">
-            <h1>Sprites Tracker</h1>
+            <img src="siteimages/staticsprite.png" alt="Sprites Tracker Logo" class="brand-icon" width="36" height="36">
+            <h1 data-i18n="app.title">Sprites Tracker</h1>
         </div>
         <div class="progress-group">
             <div class="progress-item">
                 <div class="progress-meta">
-                    <span class="progress-label">Collection</span>
+                    <span class="progress-label" data-i18n="app.collection">Collection</span>
                     <span class="progress-value" id="collectionRatio">0 / 0</span>
                 </div>
                 <div class="progress-track"><div class="progress-fill" id="collectionFill"></div></div>
             </div>
             <div class="progress-item">
                 <div class="progress-meta">
-                    <span class="progress-label">Mastery</span>
+                    <span class="progress-label" data-i18n="app.mastery">Mastery</span>
                     <span class="progress-value" id="masteryRatio">0 / 0</span>
                 </div>
                 <div class="progress-track"><div class="progress-fill mastery" id="masteryFill"></div></div>
@@ -48,75 +88,78 @@
 
     <nav class="toolbar">
         <div class="toolbar-row">
-            <label class="sr-only" for="searchInput">Search sprites</label>
-            <input type="search" id="searchInput" class="input" placeholder="Search sprites…" autocomplete="off" spellcheck="false">
+            <label class="sr-only" for="searchInput" data-i18n="toolbar.searchPlaceholder">Search sprites</label>
+            <input type="search" id="searchInput" class="input" placeholder="Search sprites…" data-i18n-placeholder="toolbar.searchPlaceholder" autocomplete="off" spellcheck="false">
             <label class="sr-only" for="themeFilter">Filter by theme</label>
             <select id="themeFilter" class="select">
                 <option value="all">All Themes</option>
             </select>
             <label class="sr-only" for="seasonFilter">Filter by Season</label>
             <select id="seasonFilter" class="select">
-                <option value="all">All Seasons</option>
+                <option value="all" data-i18n="toolbar.allSeasons">All Seasons</option>
                 <option value="Runners">Runners - C7S3</option>
                 <option value="Override">Override - C7S4</option>
             </select>
             <label class="sr-only" for="sortOrder">Sort Sprites</label>
             <select id="sortOrder" class="select">
-                <option value="theme">Group by Theme</option>
-                <option value="sprite">Group by Sprite</option>
-                <option value="name">Alphabetical (A-Z)</option>
-                <option value="rarity">Sort by Rarity</option>
+                <option value="theme" data-i18n="toolbar.sortTheme">Group by Theme</option>
+                <option value="sprite" data-i18n="toolbar.sortSprite">Group by Sprite</option>
+                <option value="name" data-i18n="toolbar.sortName">Alphabetical (A-Z)</option>
+                <option value="rarity" data-i18n="toolbar.sortRarity">Sort by Rarity</option>
             </select>
             <div class="pills" id="statusPills">
-                <button type="button" class="pill active" data-status="all">All</button>
-                <button type="button" class="pill" data-status="owned">Owned</button>
-                <button type="button" class="pill" data-status="lost">Lost</button>
-                <button type="button" class="pill" data-status="missing">Missing</button>
+                <button type="button" class="pill active" data-status="all" data-i18n="toolbar.all">All</button>
+                <button type="button" class="pill" data-status="owned" data-i18n="toolbar.owned">Owned</button>
+                <button type="button" class="pill" data-status="lost" data-i18n="toolbar.lost">Lost</button>
+                <button type="button" class="pill" data-status="missing" data-i18n="toolbar.missing">Missing</button>
             </div>
         </div>
         <div class="toolbar-row">
             <div class="switches">
-                <label class="switch"><input type="checkbox" id="hideMastered"><span>Hide mastered</span></label>
-                <label class="switch"><input type="checkbox" id="showUnreleased"><span>Unreleased</span></label>
-                <label class="switch"><input type="checkbox" id="lowFidelity"><span>Low fidelity</span></label>
-                <label class="switch" id="exportModeSwitch"><input type="checkbox" id="openExports"><span>Download Exports</span></label>
+                <label class="switch"><input type="checkbox" id="hideMastered"><span data-i18n="toolbar.hideMastered">Hide mastered</span></label>
+                <label class="switch"><input type="checkbox" id="showUnreleased"><span data-i18n="toolbar.showUnreleased">Unreleased</span></label>
+                <label class="switch"><input type="checkbox" id="lowFidelity"><span data-i18n="toolbar.lowFidelity">Low fidelity</span></label>
+                <label class="switch" id="exportModeSwitch"><input type="checkbox" id="openExports"><span data-i18n="toolbar.downloadExports">Download Exports</span></label>
             </div>
             <div class="actions">
-                <a href="codes" class="btn btn-codes" id="codesBtn">Lobby Hacks<span class="notification-dot" id="codesNotification" hidden></span></a>
+                <a href="codes.html" class="btn btn-codes" id="codesBtn"><span data-i18n="toolbar.lobbyHacks">Lobby Hacks</span><span class="notification-dot" id="codesNotification" hidden></span></a>
                 <div class="dropdown" id="exportDropdown">
-                    <button type="button" class="btn" id="exportToggle" aria-haspopup="true" aria-expanded="false">Export</button>
+                    <button type="button" class="btn" id="exportToggle" aria-haspopup="true" aria-expanded="false" data-i18n="toolbar.export">Export</button>
                     <div class="dropdown-menu" aria-label="Export options">
-                        <button type="button" data-export="collected"><span class="dot dot-collected"></span>Collection image</button>
-                        <button type="button" data-export="missing"><span class="dot dot-missing"></span>Missing sprites</button>
-                        <button type="button" data-export="unmastered"><span class="dot dot-unmastered"></span>Unmastered sprites</button>
-                        <button type="button" data-export="mastered"><span class="dot dot-mastered"></span>Mastered sprites</button>
-                        <button type="button" data-export="trade"><span class="dot dot-trade"></span>Trade card image</button>
+                        <button type="button" data-export="collected"><span class="dot dot-collected"></span><span data-i18n="toolbar.collectionImage">Collection image</span></button>
+                        <button type="button" data-export="missing"><span class="dot dot-missing"></span><span data-i18n="toolbar.missingSprites">Missing sprites</span></button>
+                        <button type="button" data-export="unmastered"><span class="dot dot-unmastered"></span><span data-i18n="toolbar.unmasteredSprites">Unmastered sprites</span></button>
+                        <button type="button" data-export="mastered"><span class="dot dot-mastered"></span><span data-i18n="toolbar.masteredSprites">Mastered sprites</span></button>
+                        <button type="button" data-export="trade"><span class="dot dot-trade"></span><span data-i18n="toolbar.tradeCard">Trade card image</span></button>
                         <hr class="dropdown-divider">
-                        <button type="button" id="exportBackupBtn"><span class="dot dot-backup"></span>Backup data (JSON)</button>
+                        <button type="button" id="exportBackupBtn"><span class="dot dot-backup"></span><span data-i18n="toolbar.backupData">Backup data (JSON)</span></button>
                     </div>
                 </div>
-                <button type="button" class="btn" id="importBtn">Import</button>
+                <button type="button" class="btn" id="importBtn" data-i18n="toolbar.import">Import</button>
                 <input type="file" id="importInput" class="file-input" accept=".json">
                 <div class="dropdown" id="copyDropdown">
-                    <button type="button" class="btn" id="copyToggle" aria-haspopup="true" aria-expanded="false">Copy trade list</button>
+                    <button type="button" class="btn" id="copyToggle" aria-haspopup="true" aria-expanded="false" data-i18n="toolbar.copyTradeList">Copy trade list</button>
                     <div class="dropdown-menu" aria-label="Copy options">
-                        <button type="button" id="copyTradeTextBtn"><span class="dot dot-text"></span>Trade list (text)</button>
-                        <button type="button" id="copyTradeGridBtn"><span class="dot dot-backup"></span>Trade grid (text)</button>
+                        <button type="button" id="copyTradeTextBtn"><span class="dot dot-text"></span><span data-i18n="toolbar.copyTradeText">Trade list (text)</span></button>
+                        <button type="button" id="copyTradeGridBtn"><span class="dot dot-backup"></span><span data-i18n="toolbar.copyTradeGrid">Trade grid (text)</span></button>
                     </div>
                 </div>
-                <button type="button" class="btn btn-accent" id="shareBtn">Share</button>
-                <!-- delete this and put the SUPPORT button here -->
+                <button type="button" class="btn btn-accent" id="shareBtn" data-i18n="toolbar.share">Share</button>
             </div>
         </div>
     </nav>
 
     <main class="grid" id="spriteGrid" aria-label="Sprites collection"></main>
     <footer class="support-footer">
-    <p class="support-message">
-        Use code <button type="button" class="btn-copy-code" id="supportCodeBtn">KLEI</button> in the <a href="https://www.fortnite.com/item-shop?creator-code=klei" target="_blank" rel="noopener noreferrer" class="item-shop-link">item shop</a> to support me.
-    </p>
-    <p class="epic-partner">Thanks to you guys I'm an #EpicPartner.</p>
-</footer>
+        <p class="support-message">
+            <span data-i18n="support.useCode">Use code</span>
+            <button type="button" class="btn-copy-code" id="supportCodeBtn">KLEI</button>
+            <span data-i18n="support.itemShop">in the item shop</span>
+            <a href="https://www.fortnite.com/item-shop?creator-code=klei" target="_blank" rel="noopener noreferrer" class="item-shop-link">item shop</a>
+            <span data-i18n="support.supportMe">to support me.</span>
+        </p>
+        <p class="epic-partner" data-i18n="support.epicPartner">Thanks to you guys I'm an #EpicPartner.</p>
+    </footer>
 </div>
 
 </body>
