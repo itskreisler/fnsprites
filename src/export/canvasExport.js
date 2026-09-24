@@ -340,6 +340,8 @@ export function exportCanvasImage({
     openInNewTab,
     getExportCardState,
     getCollectionCounts,
+    familyKeys = [],
+    familyThemeMap: familyThemeMapOption = new Map(),
     i18nLabels = {},
 }) {
     if (!config) return;
@@ -366,8 +368,8 @@ export function exportCanvasImage({
         let charKeys, familyThemeMap, themeColumns, leftColumnKeys, rightColumnKeys, tableColumnCount, colW, tableW;
 
         if (mode === 'trade') {
-            charKeys = getFamilyKeys(releasedSprites);
-            familyThemeMap = getFamilyThemeMap(releasedSprites);
+            charKeys = familyKeys;
+            familyThemeMap = familyThemeMapOption;
             themeColumns = activeThemes.map(theme => ({
                 name: getExportThemeLabel(theme),
                 themeName: theme,

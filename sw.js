@@ -5,7 +5,7 @@
 
 // Bump version on EVERY deploy (nuevo sprite, código, bugfix, UI...) para
 // invalidar el caché y que los cambios se vean al instante.
-const CACHE_VERSION = 'v1.0.3';
+const CACHE_VERSION = 'v1.0.4';
 const CACHE_NAME = `fn-sprites-${CACHE_VERSION}`;
 
 const STATIC_ASSETS = [
@@ -118,7 +118,7 @@ self.addEventListener('fetch', (event) => {
       const fetchPromise = fetch(event.request)
         .then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, networkResponse));
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, networkResponse.clone()));
           }
           return networkResponse;
         })

@@ -21,6 +21,7 @@ import {
     loadBackup,
     loadGisScript,
     mergePayloads,
+    mergeStates,
     signOut,
 } from './drive.js';
 
@@ -110,11 +111,75 @@ export function initDriveSync({ getState, applyRemoteState }) {
             || (state.lost && state.lost.length)));
     }
 
+    function formatBytes(bytes) {
+        if (!Number.isFinite(bytes) || bytes <= 0) return '0 B';
+        if (bytes < 1024) return `${bytes} B`;
+        if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+        return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+    }
+
+    function formatDateTime(iso) {
+        if (!iso) return '—';
+        const d = new Date(iso);
+        if (Number.isNaN(d.getTime())) return '—';
+        return `${d.toLocaleDateString()} ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    }
+
+    function stateCounts(state) {
+        state = state || {};
+        return {
+            owned: Array.isArray(state.obtained) ? state.obtained.length : 0,
+            mastered: Array.isArray(state.mastered) ? state.mastered.length : 0,
+            lost: Array.isArray(state.lost) ? state.lost.length : 0,
+        };
+    }
+
+    function payloadMeta(payload, file) {
+        const bytes = (file && Number(file.size)) || (payload
+            ? new TextEncoder().encode(JSON.stringify(payload)).length : 0);
+        return {
+            date: formatDateTime((file && file.modifiedTime) || (payload && payload.savedAt)),
+            size: formatBytes(bytes),
+            counts: stateCounts(payload && payload.state),
+        };
+    }
+
+    function buildConflictCard(label, meta, t) {
+        const card = document.createElement('div');
+        card.className = 'sync-conflict-card';
+        const title = document.createElement('h3');
+        title.textContent = label;
+        card.appendChild(title);
+        const rows = [
+            [t('sync.modifiedAt'), meta.date],
+            [t('sync.fileSize'), meta.size],
+            [t('sync.ownedLabel'), String(meta.counts.owned)],
+            [t('sync.masteredLabel'), String(meta.counts.mastered)],
+            [t('sync.lostLabel'), String(meta.counts.lost)],
+        ];
+        for (const [lbl, val] of rows) {
+            const row = document.createElement('div');
+            row.className = 'sync-conflict-row';
+            const l = document.createElement('span');
+            l.className = 'lbl';
+            l.textContent = lbl;
+            const v = document.createElement('span');
+            v.className = 'val';
+            v.textContent = val;
+            row.append(l, v);
+            card.appendChild(row);
+        }
+        return card;
+    }
+
     /**
      * Show a conflict-resolution modal asking which data to keep.
+     * @param {Object} localPayload - Local backup payload ({app, version, savedAt, state}).
+     * @param {Object} remotePayload - Remote backup payload from Drive.
+     * @param {Object} [remoteFile] - Drive file metadata ({modifiedTime, size}).
      * @returns {Promise<'local'|'remote'|'merge'>}
      */
-    function askSyncConflict() {
+    function askSyncConflict(localPayload, remotePayload, remoteFile) {
         return new Promise((resolve) => {
             const t = getTranslator();
             const overlay = document.createElement('div');
@@ -137,6 +202,25 @@ export function initDriveSync({ getState, applyRemoteState }) {
             body.className = 'sync-conflict-body';
             body.textContent = t('sync.conflictBody');
             modal.appendChild(body);
+
+            const grid = document.createElement('div');
+            grid.className = 'sync-conflict-grid';
+            grid.appendChild(buildConflictCard(t('sync.localLabel'), payloadMeta(localPayload, null), t));
+            grid.appendChild(buildConflictCard(t('sync.remoteLabel'), payloadMeta(remotePayload, remoteFile), t));
+            modal.appendChild(grid);
+
+            const mergedCounts = stateCounts(mergeStates(
+                localPayload && localPayload.state,
+                remotePayload && remotePayload.state
+            ));
+            const mergeInfo = document.createElement('p');
+            mergeInfo.className = 'sync-conflict-merge';
+            mergeInfo.textContent = `${t('sync.mergeResult')} ${t('sync.mergeResultCounts', {
+                owned: mergedCounts.owned,
+                mastered: mergedCounts.mastered,
+                lost: mergedCounts.lost,
+            })}`;
+            modal.appendChild(mergeInfo);
 
             const footer = document.createElement('div');
             footer.className = 'changelog-footer';
@@ -188,7 +272,7 @@ export function initDriveSync({ getState, applyRemoteState }) {
                 const localPayload = buildPayload(localSnapshot());
                 let choice = null;
                 if (hasAnyData(localPayload.state) && hasAnyData(loaded.payload.state)) {
-                    choice = await askSyncConflict();
+                    choice = await askSyncConflict(localPayload, loaded.payload, loaded.file);
                 }
                 let merged;
                 if (choice === 'local') merged = localPayload;
