@@ -2,14 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://itskreisler.github.io/fnsprites/</loc>
-        <lastmod>2026-09-17</lastmod>
+        <lastmod>2026-09-24</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>https://itskreisler.github.io/fnsprites/codes</loc>
-        <lastmod>2026-09-17</lastmod>
+        <loc>https://itskreisler.github.io/fnsprites/codes.html</loc>
+        <lastmod>2026-09-24</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://itskreisler.github.io/fnsprites/privacy.html</loc>
+        <lastmod>2026-09-24</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.2</priority>
+    </url>
+    <url>
+        <loc>https://itskreisler.github.io/fnsprites/terms.html</loc>
+        <lastmod>2026-09-24</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.2</priority>
     </url>
 </urlset>
