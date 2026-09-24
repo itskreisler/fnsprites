@@ -31,6 +31,8 @@ import {
 import { exportCanvasImage } from './src/export/canvasExport.js';
 import { generateTradeText, generateTradeGridText } from './src/export/tradeText.js';
 import { getTranslator, initOfflineAndPWA } from './src/ui/commonUi.js';
+import { initChangelogModal } from './src/ui/changelog.js';
+import { initDriveSync } from './src/sync/syncController.js';
 
 /* ===================================================
    State Management
@@ -53,6 +55,9 @@ const state = {
         openExports: false,
     },
 };
+
+/** Optional Google Drive sync controller (null until sign-in/init). */
+let driveSync = null;
 
 /* ===================================================
    DOM Cache
@@ -96,6 +101,23 @@ function saveCollection() {
     persist(STORAGE_KEYS.obtained, state.obtained);
     persist(STORAGE_KEYS.mastered, state.mastered);
     persist(STORAGE_KEYS.lost, state.lost);
+    if (driveSync && !state.viewMode) driveSync.scheduleAutosave();
+}
+
+/**
+ * Apply a merged (union) remote state coming from Google Drive sync.
+ * Unified with local data, keeping the same validation rules as load().
+ * @param {{obtained: string[], mastered: string[], lost: string[]}} payloadState - merged state
+ */
+function applyDriveMergedState(payloadState) {
+    const validIds = getSpriteIdSet();
+    const obtained = uniqueValidIds(payloadState?.obtained || [], validIds);
+    const obtainedIds = new Set(obtained);
+    state.obtained = obtained;
+    state.mastered = uniqueValidIds(payloadState?.mastered || [], validIds).filter(id => obtainedIds.has(id));
+    state.lost = uniqueValidIds(payloadState?.lost || [], validIds).filter(id => !obtainedIds.has(id));
+    saveCollection();
+    renderGrid();
 }
 
 /** Load state and preferences from LocalStorage. */
@@ -934,6 +956,19 @@ function init() {
     bindEvents();
     checkUnredeemedCodes();
     initOfflineAndPWA();
+
+    if (state.viewMode) {
+        const syncBtn = document.getElementById('syncBtn');
+        if (syncBtn) syncBtn.hidden = true;
+    } else {
+        driveSync = initDriveSync({
+            getState: () => ({ obtained: state.obtained, mastered: state.mastered, lost: state.lost }),
+            applyRemoteState: applyDriveMergedState,
+        });
+    }
+    window.addEventListener('pagehide', () => { if (driveSync) driveSync.flush(); });
+
+    initChangelogModal();
 }
 
 init();

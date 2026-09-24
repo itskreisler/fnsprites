@@ -86,6 +86,30 @@ variantes seguir usando `Special` con el tema, es nuestra convención.
   en `klei.js` como red de seguridad.
 - Después de importar, commit directo (sin build local).
 
+## Changelog / update notes (modal)
+
+- Entradas en `src/ui/changelog.js` (`CHANGELOG`, última más arriba). Cada entrada lleva
+  `version` único (ej. `2026-09-24`): es la clave de invalidación del `sessionStorage`.
+- Para que el modal vuelva a aparecer tras un cambio, **subir el `version`** de la nueva
+  entrada o añadir una entrada nueva arriba.
+- El flag "visto" vive en `sessionStorage` (`fnsprites_changelog_seen`): sobrevive a
+  recargas de pestaña pero se re-muestra en una sesión/pestaña nueva.
+- Notas bilingües/trilingües: cada ítem es `{ es, en, de }`.
+- Solo se muestra en `index.html` (init en `app.js` vía `initChangelogModal`).
+
+## Sync con Google Drive (opcional)
+
+- Cliente ID público en `src/sync/config.js` (`DRIVE_CLIENT_ID`). Es un web client ID de
+  OAuth: **se commitea** (no es secreto); sin él GitHub Pages no puede cargar el login.
+- Módulo: `src/sync/drive.js` (API aislada, sin UI). UI/estado: `src/sync/syncController.js`.
+  Botón `#syncBtn` + `#syncStatus` en `index.html` toolbar.
+- Iteración actual: autosave con debounce tras `saveCollection()` y merge aditivo
+  (`mergePayloads`) al conectarse. El usuario autoservicios debe tener la opción:
+  si la petición de origen (redirect URI de producción) cambia, actualizar el Client ID
+  en Google Cloud Console (Authorized JavaScript origins):
+  `https://itskreisler.github.io` + `http://localhost:8080`/`http://127.0.0.1:8080`.
+- `test.html` en `src/sync/` sirve como sandbox manual del login/save/merge/delete.
+
 ## Deploy a GitHub Pages
 
 **No hay build local ni carpeta `docs/`.** El deploy lo hace el workflow
@@ -97,6 +121,14 @@ git push origin main
 
 También se puede disparar manual (Actions → Deploy to GitHub Pages → Run workflow).
 No ejecutar `npm run build`, no crear `scripts/deploy.sh`.
+
+### Importante: subir la versión del Service Worker en cada deploy
+
+Antes de cada push, **bump de `CACHE_VERSION` en `sw.js`** (pj. `v1.0.2` → `v1.0.3`).
+Al cambiar la versión, el SW descarga todo el `STATIC_ASSETS` de nuevo y purga el
+caché viejo (`fn-sprites-*`), y la navegación es network-first, así los cambios
+se ven al instante en la siguiente carga. Si no se sube, los clientes pueden
+seguir con el JS/CSS viejos en caché.
 
 ## Dev local (móvil/termux)
 

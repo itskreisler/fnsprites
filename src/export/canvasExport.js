@@ -345,7 +345,7 @@ export function exportCanvasImage({
     if (!config) return;
 
     const imagesToLoad = [
-        { id: 'mascot', src: 'siteimages/staticsprite.png' },
+        { id: 'mascot', src: 'siteimages/logo.png' },
         ...releasedSprites.map(sprite => ({ id: sprite.id, src: `sprites/${encodeURIComponent(sprite.id)}.png` })),
     ];
 

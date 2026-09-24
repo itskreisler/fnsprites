@@ -3,37 +3,49 @@
  * @description Service Worker providing offline support, PWA asset caching, and automatic cache invalidation for new sprites/codes.
  */
 
-// Bump version when adding new sprites, codes, or assets
-const CACHE_VERSION = 'v1.0.1';
+// Bump version on EVERY deploy (nuevo sprite, código, bugfix, UI...) para
+// invalidar el caché y que los cambios se vean al instante.
+const CACHE_VERSION = 'v1.0.3';
 const CACHE_NAME = `fn-sprites-${CACHE_VERSION}`;
 
 const STATIC_ASSETS = [
   './',
   './index.html',
   './codes.html',
+  './privacy.html',
+  './terms.html',
   './styles.css',
   './app.js',
   './codes-app.js',
   './sprites-data.js',
   './codes-data.js',
   './manifest.json',
-  './favicon.ico',
   './sitemap.xml',
   './robots.txt',
   './src/constants.js',
   './src/klei.js',
   './src/klei-codes.js',
+  './src/legal.js',
   './src/export/canvasExport.js',
   './src/export/tradeText.js',
   './src/ui/commonUi.js',
+  './src/ui/changelog.js',
   './src/utils/clipboard.js',
   './src/utils/encoder.js',
   './src/utils/helpers.js',
   './src/utils/storage.js',
   './src/utils/toast.js',
+  './src/sync/config.js',
+  './src/sync/drive.js',
+  './src/sync/syncController.js',
+  './src/i18n/index.js',
+  './src/i18n/dom.js',
   './src/i18n/langs/es.js',
   './src/i18n/langs/en.js',
-  './src/i18n/langs/de.js'
+  './src/i18n/langs/de.js',
+  './siteimages/logo.png',
+  './siteimages/logo-192.png',
+  './siteimages/google.svg'
 ];
 
 // Install Event: Cache core static assets
@@ -77,6 +89,25 @@ self.addEventListener('fetch', (event) => {
           return networkResponse;
         })
         .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Network-first para navegación (HTML): los cambios se ven al instante,
+  // con fallback a caché si no hay conexión (offline).
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseToCache));
+          }
+          return networkResponse;
+        })
+        .catch(() =>
+          caches.match(event.request).then((res) => res || caches.match('./'))
+        )
     );
     return;
   }

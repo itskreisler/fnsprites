@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>fnsprites · Prototipo sync Google Drive</title>
+<style>
+  :root { --bg:#0b0e1a; --panel:#141a2e; --border:#26304f; --text:#e8ecf5; --muted:#8b95b8; --accent:#51f7cc; --err:#ff5c7a; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; background:var(--bg); color:var(--text); padding:24px; }
+  h1 { font-size:20px; margin:0 0 4px; }
+  p.muted { color:var(--muted); font-size:13px; margin:0 0 18px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(380px,1fr)); gap:16px; max-width:1100px; }
+  .panel { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:16px; }
+  .panel h2 { font-size:14px; margin:0 0 12px; color:var(--accent); text-transform:uppercase; letter-spacing:.04em; }
+  label { display:block; font-size:12px; color:var(--muted); margin:12px 0 4px; }
+  input[type=text], textarea { width:100%; background:#0d1224; color:var(--text); border:1px solid var(--border); border-radius:8px; padding:8px 10px; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12px; }
+  textarea { min-height:150px; resize:vertical; }
+  input[type=text]:focus, textarea:focus { outline:none; border-color:var(--accent); }
+  .row { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  button { background:#1c2541; color:var(--text); border:1px solid var(--border); border-radius:8px; padding:8px 12px; font-size:13px; cursor:pointer; }
+  button:hover { border-color:var(--accent); }
+  button.primary { background:var(--accent); color:#06231b; border-color:var(--accent); font-weight:700; }
+  button.danger { border-color:var(--err); color:var(--err); }
+  button:disabled { opacity:.45; cursor:not-allowed; }
+  #status { font-size:12px; font-family:ui-monospace,Menlo,Consolas,monospace; white-space:pre-wrap; word-break:break-word; background:#0d1224; border:1px solid var(--border); border-radius:8px; padding:10px; min-height:70px; max-height:200px; overflow:auto; }
+  #log { font-size:11.5px; font-family:ui-monospace,Menlo,Consolas,monospace; background:#0d1224; border:1px solid var(--border); border-radius:8px; padding:10px; min-height:120px; max-height:260px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+  .ok { color:var(--accent); } .err { color:var(--err); } .mut { color:#9ecbff; }
+  ol { padding-left:18px; font-size:13px; line-height:1.6; color:var(--text); } code { background:#0d1224; border:1px solid var(--border); border-radius:4px; padding:1px 5px; font-size:12px; }
+</style>
+</head>
+<body>
+  <h1>fnsprites · Prototipo de sync con Google Drive</h1>
+  <p class="muted">Módulo aislado <code>src/sync/drive.js</code> · scope <code>drive.file</code> · aún NO integrado al tracker. Sirve esta carpeta por <strong>HTTP</strong> (nunca <code>file://</code>).</p>
+
+  <div class="grid">
+    <div class="panel">
+      <h2>1 · Configuración</h2>
+      <label>OAuth Client ID (tipo Web application)</label>
+      <input type="text" id="clientId" value="714607383865-vhs1qs3g135epim62cp95s6enrtdmtvl.apps.googleusercontent.com" autocomplete="off">
+      <button id="connectBtn" class="primary">Cargar SDK + Conectar con Google</button>
+      <div class="row">
+        <button id="signOutBtn">Cerrar sesión</button>
+      </div>
+      <label>Estado</label>
+      <div id="status">—</div>
+    </div>
+
+    <div class="panel">
+      <h2>2 · Guardar / Leer / Borrar</h2>
+      <label>Datos locales a guardar (forma real: objeto del tracker, ya con <code>state</code>)</label>
+      <textarea id="localData">{
+  "obtained": ["water_basic", "water_gold", "bush_hacker", "klombo_bounty", "birthday_bounty"],
+  "mastered": ["water_basic", "water_gold"],
+  "lost": ["sonic_hacker"],
+  "settings": { "locale": "es", "lowFidelity": false }
+}</textarea>
+      <div class="row">
+        <button id="saveBtn">Subir a Drive</button>
+        <button id="loadBtn">Leer + merge</button>
+        <button id="deleteBtn" class="danger">Borrar archivo remoto</button>
+      </div>
+      <label>Resultado del merge local + remoto</label>
+      <textarea id="mergedData" placeholder="(se llena al pulsar Leer + merge)"></textarea>
+    </div>
+
+    <div class="panel" style="grid-column: 1 / -1;">
+      <h2>Log</h2>
+      <div id="log"></div>
+    </div>
+
+    <div class="panel" style="grid-column: 1 / -1;">
+      <h2>Qué necesitas de Google Cloud Console</h2>
+      <ol>
+        <li>Proyecto nuevo (o usar uno existente) → <strong>Google Drive API</strong> habilitada.</li>
+        <li>Pantalla de consentimiento OAuth → <strong>External</strong> → app name <code>fnsprites-sync</code>, tu email como support y contacto → añade tu cuenta como <strong>Test user</strong>.</li>
+        <li>Credenciales → Crear credenciales → <strong>OAuth client ID</strong> → tipo <strong>Web application</strong> → Authorized JavaScript origins:
+          <code>http://127.0.0.1:8080</code>, <code>http://localhost:8080</code> y <code>https://itskreisler.github.io</code>.
+          No necesitas redirect URIs (flujo token GIS).</li>
+        <li>Copia el <strong>Client ID</strong> arriba y dale a «Cargar SDK + Conectar».</li>
+      </ol>
+    </div>
+  </div>
+
+<script type="module">
+  import * as Drive from './drive.js';
+
+  const $ = (id) => document.getElementById(id);
+  const statusEl = $('status'), logEl = $('log');                
+
+  function log(msg, cls) {
+    const line = document.createElement('div');
+    if (cls) line.className = cls;
+    line.textContent = '[' + new Date().toLocaleTimeString() + '] ' + msg;
+    logEl.appendChild(line);
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  function renderStatus() {
+    const s = Drive.getAuthStatus();
+    statusEl.textContent = JSON.stringify(s, null, 2);
+  }
+
+  function getClientId() {
+    const v = $('clientId').value.trim();
+    if (!v) throw new Error('Pega tu OAuth Client ID primero');
+    return v;
+  }
+
+  function parseLocal() {
+    return JSON.parse($('localData').value);
+  }
+
+  $('connectBtn').addEventListener('click', async () => {
+    try {
+      Drive.configureDrive({ clientId: getClientId() });
+      log('SDK GIS cargándose…');
+      await Drive.loadGisScript();
+      log('GIS cargado, pidiendo acceso (popup de Google). Scope: ' + Drive.DRIVE_SCOPE);
+      const resp = await Drive.getAccessToken();
+      log('Conectado ✓ token ok, expira en ' + resp.expires_in + 's', 'ok');
+      renderStatus();
+    } catch (err) { log('Login falló: ' + err.message, 'err'); renderStatus(); }
+  });
+
+  $('signOutBtn').addEventListener('click', () => {
+    Drive.signOut();
+    log('Sesión cerrada / token revocado', 'mut');
+    renderStatus();
+  });
+
+  $('saveBtn').addEventListener('click', async () => {
+    try {
+      const state = parseLocal();
+      log('Subiendo a Drive…');
+      const res = await Drive.saveBackup(state);
+      log('Guardado ✓ fileId=' + res.fileId + ' savedAt=' + res.payload.savedAt, 'ok');
+      renderStatus();
+    } catch (err) { log('Guardar falló: ' + err.message, 'err'); }
+  });
+
+  $('loadBtn').addEventListener('click', async () => {
+    try {
+      const loaded = await Drive.loadBackup();
+      if (!loaded) { log('No hay archivo remoto todavía (usa «Subir a Drive» antes)', 'mut'); return; }
+      log('Remoto: id=' + loaded.file.id + ' modifiedTime=' + loaded.file.modifiedTime, 'ok');
+      const localPayload = Drive.buildPayload(parseLocal());
+      const merged = Drive.mergePayloads(localPayload, loaded.payload);
+      $('mergedData').value = JSON.stringify(merged, null, 2);
+      log('Merge aplicado. Remoto-ok=' + Drive.isValidPayload(loaded.payload), 'ok');
+      renderStatus();
+    } catch (err) { log('Leer falló: ' + err.message, 'err'); }
+  });
+
+  $('deleteBtn').addEventListener('click', async () => {
+    try {
+      const f = await Drive.findFile();
+      if (!f) { log('No hay archivo remoto para borrar', 'mut'); return; }
+      await Drive.removeFile(f.id);
+      log('Borrado ✓ id=' + f.id, 'mut');
+      renderStatus();
+    } catch (err) { log('Borrar falló: ' + err.message, 'err'); }
+  });
+
+  renderStatus();
+  log('Prototipo listo. Introduce Client ID y conéctate.', 'mut');
+  log('Nota: cada token dura ~1 hora; revive con «Cerrar sesión» → conectar de nuevo si hace falta.');
+</script>
+</body>
+</html>

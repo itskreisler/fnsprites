@@ -17,7 +17,7 @@
     <meta property="og:url" content="https://itskreisler.github.io/fnsprites/">
     <meta property="og:title" content="Sprites Tracker - Fortnite Sprites Collection & Mastery">
     <meta property="og:description" content="Track, manage, and share your Fortnite Sprites collection and mastery progress. Export custom trade cards and redeem lobby hacks.">
-    <meta property="og:image" content="https://itskreisler.github.io/fnsprites/siteimages/preview/screenshot.jpg">
+    <meta property="og:image" content="https://itskreisler.github.io/fnsprites/siteimages/preview/og.jpg">
     <meta property="og:site_name" content="Sprites Tracker">
     <meta property="og:locale" content="es_ES">
 
@@ -26,7 +26,7 @@
     <meta name="twitter:url" content="https://itskreisler.github.io/fnsprites/">
     <meta name="twitter:title" content="Sprites Tracker - Fortnite Sprites Collection">
     <meta name="twitter:description" content="Track, manage, and share your Fortnite Sprites collection and mastery progress.">
-    <meta name="twitter:image" content="https://itskreisler.github.io/fnsprites/siteimages/preview/screenshot.jpg">
+    <meta name="twitter:image" content="https://itskreisler.github.io/fnsprites/siteimages/preview/og.jpg">
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
@@ -45,7 +45,7 @@
     }
     </script>
 
-    <link rel="icon" type="image/png" href="siteimages/staticsprite.png">
+    <link rel="icon" type="image/png" href="siteimages/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
@@ -65,7 +65,7 @@
 <div class="app">
     <header class="header">
         <div class="brand">
-            <img src="siteimages/staticsprite.png" alt="Sprites Tracker Logo" class="brand-icon" width="36" height="36">
+            <img src="siteimages/logo.png" alt="Sprites Tracker Logo" class="brand-icon" width="36" height="36">
             <h1 data-i18n="app.title">Sprites Tracker</h1>
         </div>
         <div class="progress-group">
@@ -145,6 +145,11 @@
                     </div>
                 </div>
                 <button type="button" class="btn btn-accent" id="shareBtn" data-i18n="toolbar.share">Share</button>
+                <button type="button" class="btn social-btn" id="syncBtn" hidden aria-pressed="false">
+                    <img src="siteimages/google.svg" alt="Google" />
+                    <span class="sync-label">Continue with Google</span>
+                </button>
+                <span id="syncStatus" class="sync-status" hidden></span>
             </div>
         </div>
     </nav>
@@ -159,6 +164,11 @@
             <span data-i18n="support.supportMe">to support me.</span>
         </p>
         <p class="epic-partner" data-i18n="support.epicPartner">Thanks to you guys I'm an #EpicPartner.</p>
+        <p class="legal-links">
+            <a href="privacy.html" data-i18n="legal.privacyLink">Privacy Policy</a>
+            <span class="legal-sep">·</span>
+            <a href="terms.html" data-i18n="legal.termsLink">Terms of Service</a>
+        </p>
     </footer>
 </div>
 

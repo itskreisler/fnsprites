@@ -149,7 +149,7 @@ export function addCreatorCard() {
     link.style.cssText = 'display:block;width:64px;height:64px;border-radius:50%;overflow:hidden;margin:0 auto;border:2px solid var(--border)';
 
     const img = document.createElement('img');
-    img.src = 'siteimages/staticsprite.png';
+    img.src = 'siteimages/logo.png';
     img.alt = 'Kreisler';
     img.style.cssText = 'width:100%;height:100%;object-fit:cover';
     link.appendChild(img);
