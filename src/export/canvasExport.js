@@ -41,6 +41,7 @@ export function getRarityGradient(rarity, theme) {
         Quack: ['#322554', '#12091f'],
         Cheat: ['#003b00', '#000800'],
         Hacker: ['#4a1060', '#1c0429'],
+        Bounty: ['#6b1d92', '#260a35'],
     };
     return themes[theme] || themes.Basic;
 }

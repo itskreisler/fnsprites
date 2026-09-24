@@ -12,10 +12,10 @@
 
 ## Sprite data
 
-- **Date:** 2026-09-17
-- **Sprites released:** 190 total
-- **Temporada Override (C7S4):** 83 sprites (73 released + 10 unreleased)
-- **PNGs on disk:** ~206 en `sprites/{id}.png` (un PNG por `id`, coincide con `sprites-data.js`)
+- **Date:** 2026-09-24
+- **Sprites released:** 218 total
+- **Temporada Override (C7S4):** 101 sprites (101 released, 0 unreleased)
+- **PNGs on disk:** 223 en `sprites/{id}.png` (un PNG por `id`, coincide con `sprites-data.js`)
 - **Fuente upstream:** `https://rickventure.com` (Rick's Tracker) — no usar fortnite.gg para scraping.
 
 ## Fuente upstream (rickventure.com)
@@ -27,7 +27,7 @@ Es la fuente primaria de sprites y códigos:
 
 ### Temas conocidos upstream
 
-Basic, Gold, Candy, Galaxy, Gem, Holofoil, Cube, Rift, Quack, Cheat, **Hacker**
+Basic, Gold, Candy, Galaxy, Gem, Holofoil, Cube, Rift, Quack, Cheat, **Hacker**, **Bounty**
 (a estas les llamamos "variantes"). En season 3 upstream usa además `reaper` y
 `tricktreat`. IDs de variante usan sufijo (ej. `bush_hacker`).
 

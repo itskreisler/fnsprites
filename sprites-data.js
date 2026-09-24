@@ -45,7 +45,6 @@ const baseSprites = [
     { id: "duck_candy", name: "Gummy Duck", theme: "Candy", rarity: "Special", unreleased: false, season: "Runners" },
     { id: "duck_galaxy", name: "Galaxy Duck", theme: "Galaxy", rarity: "Special", unreleased: false, season: "Runners" },
     { id: "duck_gem", name: "Gem Duck", theme: "Gem", rarity: "Special", unreleased: false, season: "Runners" },
-	{ id: "duck_rift", name: "Cube Duck", theme: "Cube", rarity: "Special", unreleased: true, season: "Override" },
 
 	
     { id: "ghost_basic", name: "Ghost", theme: "Basic", rarity: "Epic", unreleased: false, season: "Runners" },
@@ -60,16 +59,12 @@ const baseSprites = [
     { id: "demon_candy", name: "Gummy Demon", theme: "Candy", rarity: "Special", unreleased: false, season: "Runners" },
 	{ id: "demon_galaxy", name: "Galaxy Demon", theme: "Galaxy", rarity: "Special", unreleased: false, season: "Runners" },
     { id: "demon_gem", name: "Gem Demon", theme: "Gem", rarity: "Special", unreleased: false, season: "Runners" },
-	{ id: "demon_rift", name: "Cube Demon", theme: "Cube", rarity: "Special", unreleased: true, season: "Override" },
-	{ id: "demon_holofoil", name: "Holofoil Demon", theme: "Holofoil", rarity: "Special", unreleased: true, season: "Override" },
 	
 	{ id: "king_basic", name: "King", theme: "Basic", rarity: "Epic", unreleased: false, season: "Runners" },
     { id: "king_gold", name: "Gold King", theme: "Gold", rarity: "Special", unreleased: false, season: "Runners" },
     { id: "king_candy", name: "Gummy King", theme: "Candy", rarity: "Special", unreleased: false, season: "Runners" },
     { id: "king_galaxy", name: "Galaxy King", theme: "Galaxy", rarity: "Special", unreleased: false, season: "Runners" },
     { id: "king_holofoil", name: "Holofoil King", theme: "Holofoil", rarity: "Special", unreleased: false, season: "Runners" },
-	{ id: "king_rift", name: "Cube King", theme: "Cube", rarity: "Special", unreleased: true, season: "Override" },
-	{ id: "king_gem", name: "Gem King", theme: "Gem", rarity: "Special", unreleased: true, season: "Override" },
 	
     { id: "striker_basic", name: "Striker", theme: "Basic", rarity: "Epic", unreleased: false, season: "Runners" },
     { id: "striker_gold", name: "Gold Striker", theme: "Gold", rarity: "Special", unreleased: false, season: "Runners" },
@@ -96,9 +91,7 @@ const baseSprites = [
     { id: "punk_gold", name: "Gold Punk", theme: "Gold", rarity: "Special", unreleased: false, season: "Runners" },
     { id: "punk_candy", name: "Gummy Punk", theme: "Candy", rarity: "Special", unreleased: false, season: "Runners" },
     { id: "punk_galaxy", name: "Galaxy Punk", theme: "Galaxy", rarity: "Special", unreleased: false, season: "Runners" },
-    { id: "punk_gem", name: "Gem Punk", theme: "Gem", rarity: "Special", unreleased: true, season: "Override" },
     { id: "punk_rift", name: "Cube Punk", theme: "Cube", rarity: "Special", unreleased: false, season: "Runners" },
-	{ id: "punk_holofoil", name: "Holofoil Punk", theme: "Holofoil", rarity: "Special", unreleased: true, season: "Override" },
 	
 	{ id: "boss_basic", name: "Boss", theme: "Basic", rarity: "Legendary", unreleased: false, season: "Runners" },
     { id: "boss_gold", name: "Gold Boss", theme: "Gold", rarity: "Special", unreleased: false, season: "Runners" },
@@ -172,66 +165,79 @@ const baseSprites = [
     { id: "bush_gold", name: "Gold Bush", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
     { id: "bush_cheat", name: "Cheat Master Bush", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "bush_hacker", name: "Loot Hacker Bush", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "bush_bounty", name: "Bounty Bush", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 
     { id: "jonesy_basic", name: "Jonesy", theme: "Basic", rarity: "Rare", unreleased: false, season: "Override" },
     { id: "jonesy_gold", name: "Gold Jonesy", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
     { id: "jonesy_cheat", name: "Cheat Master Jonesy", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "jonesy_hacker", name: "Loot Hacker Jonesy", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "jonesy_bounty", name: "Bounty Jonesy", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 
     { id: "adventure_basic", name: "Adventure", theme: "Basic", rarity: "Rare", unreleased: false, season: "Override" },
     { id: "adventure_gold", name: "Gold Adventure", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
     { id: "adventure_cheat", name: "Cheat Master Adventure", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "adventure_hacker", name: "Loot Hacker Adventure", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "adventure_bounty", name: "Bounty Adventure", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 
 	{ id: "8bit_basic", name: "8-Bit", theme: "Basic", rarity: "Rare", unreleased: false, season: "Override" },
     { id: "8bit_gold", name: "Gold 8-Bit", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
     { id: "8bit_cheat", name: "Cheat Master 8-Bit", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "8bit_hacker", name: "Loot Hacker 8-Bit", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "8bit_bounty", name: "Bounty 8-Bit", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 	
     { id: "stormking_basic", name: "Storm Scout", theme: "Basic", rarity: "Rare", unreleased: false, season: "Override" },
     { id: "stormking_gold", name: "Gold Storm Scout", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
     { id: "stormking_cheat", name: "Cheat Master Storm Scout", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "stormking_hacker", name: "Loot Hacker Storm Scout", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "stormking_bounty", name: "Bounty Storm Scout", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 
     { id: "killswitch_basic", name: "Killswitch", theme: "Basic", rarity: "Legendary", unreleased: false, season: "Override" },
     { id: "killswitch_gold", name: "Gold Killswitch", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
     { id: "killswitch_cheat", name: "Cheat Master Killswitch", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "killswitch_hacker", name: "Loot Hacker Killswitch", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "killswitch_bounty", name: "Bounty Killswitch", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 
 	{ id: "sonic_basic", name: "Sonic", theme: "Basic", rarity: "Epic", unreleased: false, season: "Override" },
     { id: "sonic_gold", name: "Gold Sonic", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
     { id: "sonic_cheat", name: "Cheat Master Sonic", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "sonic_hacker", name: "Loot Hacker Sonic", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "sonic_bounty", name: "Bounty Sonic", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 
     { id: "tails_basic", name: "Tails", theme: "Basic", rarity: "Epic", unreleased: false, season: "Override" },
     { id: "tails_gold", name: "Gold Tails", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
     { id: "tails_cheat", name: "Cheat Master Tails", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "tails_hacker", name: "Loot Hacker Tails", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },	
+    { id: "tails_bounty", name: "Bounty Tails", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 
     { id: "shadow_basic", name: "Shadow", theme: "Basic", rarity: "Epic", unreleased: false, season: "Override" },
     { id: "shadow_gold", name: "Gold Shadow", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
     { id: "shadow_cheat", name: "Cheat Master Shadow", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "shadow_hacker", name: "Loot Hacker Shadow", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "shadow_bounty", name: "Bounty Shadow", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 
     { id: "jackrabbit_basic", name: "Jackrabbit", theme: "Basic", rarity: "Legendary", unreleased: false, season: "Override" },
     { id: "jackrabbit_gold", name: "Gold Jackrabbit", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
     { id: "jackrabbit_cheat", name: "Cheat Master Jackrabbit", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "jackrabbit_hacker", name: "Loot Hacker Jackrabbit", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "jackrabbit_bounty", name: "Bounty Jackrabbit", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 	
     { id: "klombo_basic", name: "Klombo", theme: "Basic", rarity: "Mythic", unreleased: false, season: "Override" },
     { id: "klombo_gold", name: "Gold Klombo", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
     { id: "klombo_cheat", name: "Cheat Master Klombo", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "klombo_hacker", name: "Loot Hacker Klombo", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "klombo_bounty", name: "Bounty Klombo", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 
     { id: "crown_basic", name: "Crown", theme: "Basic", rarity: "Mythic", unreleased: false, season: "Override" },
     { id: "crown_gold", name: "Gold Crown", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
     { id: "crown_cheat", name: "Cheat Master Crown", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "crown_hacker", name: "Loot Hacker Crown", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "crown_bounty", name: "Bounty Crown", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 
 	{ id: "xray_basic", name: "X-Ray", theme: "Basic", rarity: "Legendary", unreleased: false, season: "Override" },
 	{ id: "xray_gold", name: "Gold X-Ray", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
 	{ id: "xray_cheat", name: "Cheat Master X-Ray", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "xray_hacker", name: "Loot Hacker X-Ray", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "xray_bounty", name: "Bounty X-Ray", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 
     { id: "megaman_basic", name: "Mega Man", theme: "Basic", rarity: "Rare", unreleased: false, season: "Override" },
 
@@ -239,31 +245,46 @@ const baseSprites = [
     { id: "overshield_gold", name: "Gold Overshield", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
     { id: "overshield_cheat", name: "Cheat Master Overshield", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "overshield_hacker", name: "Loot Hacker Overshield", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "overshield_bounty", name: "Bounty Overshield", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 
     { id: "onigiri_basic", name: "Onigiri", theme: "Basic", rarity: "Rare", unreleased: false, season: "Override" },
     { id: "onigiri_gold", name: "Gold Onigiri", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
     { id: "onigiri_cheat", name: "Cheat Master Onigiri", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "onigiri_hacker", name: "Loot Hacker Onigiri", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "onigiri_bounty", name: "Bounty Onigiri", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 
 	{ id: "pond_basic", name: "Pond", theme: "Basic", rarity: "Epic", unreleased: false, season: "Override" },
     { id: "pond_gold", name: "Gold Pond", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
     { id: "pond_cheat", name: "Cheat Master Pond", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "pond_hacker", name: "Loot Hacker Pond", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "pond_bounty", name: "Bounty Pond", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 
     { id: "crash_basic", name: "Crash Bandicoot", theme: "Basic", rarity: "Legendary", unreleased: false, season: "Override" },
     { id: "crash_gold", name: "Gold Crash Bandicoot", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
     { id: "crash_cheat", name: "Cheat Master Crash Bandicoot", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "crash_hacker", name: "Loot Hacker Crash Bandicoot", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "crash_bounty", name: "Bounty Crash Bandicoot", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 
     { id: "blinky_basic", name: "Blinky", theme: "Basic", rarity: "Legendary", unreleased: false, season: "Override" },
     { id: "blinky_gold", name: "Gold Blinky", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
     { id: "blinky_cheat", name: "Cheat Master Blinky", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "blinky_hacker", name: "Loot Hacker Blinky", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "blinky_bounty", name: "Bounty Blinky", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 
-	{ id: "honey_basic", name: "Honey", theme: "Basic", rarity: "Mythic", unreleased: true, season: "Override" },
-	{ id: "dumpster_basic", name: "Dumpster Dive", theme: "Basic", rarity: "Mythic", unreleased: true, season: "Override" },
-	{ id: "bullet_basic", name: "Bullet", theme: "Basic", rarity: "Mythic", unreleased: true, season: "Override" },
 
+
+	// sprites season 2 (week 2026-09-24)
+	{ id: "birthday_basic", name: "Birthday", theme: "Basic", rarity: "Rare", unreleased: false, season: "Override" },
+	{ id: "birthday_gold", name: "Gold Birthday", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "birthday_cheat", name: "Cheat Master Birthday", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "birthday_hacker", name: "Loot Hacker Birthday", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "birthday_bounty", name: "Bounty Birthday", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
+
+	{ id: "morgana_basic", name: "Morgana", theme: "Basic", rarity: "Epic", unreleased: false, season: "Override" },
+	{ id: "morgana_gold", name: "Gold Morgana", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "morgana_cheat", name: "Cheat Master Morgana", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "morgana_hacker", name: "Loot Hacker Morgana", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "morgana_bounty", name: "Bounty Morgana", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 ];
 
 if (typeof window !== 'undefined') {

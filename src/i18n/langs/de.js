@@ -94,6 +94,7 @@ export const de = {
         Quack: 'Quack',
         Cheat: 'Cheat',
         Hacker: 'Loot Hacker',
+        Bounty: 'Bounty',
     },
     creator: {
         madeBy: 'Erstellt von Kreisler',
