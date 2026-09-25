@@ -13,7 +13,7 @@ import {
     URLS,
 } from './src/constants.js';
 
-import { persist, readStoredArray, uniqueValidIds } from './src/utils/storage.js';
+import { persist, readStoredArray, storageGet, TypesStorages, uniqueValidIds } from './src/utils/storage.js';
 import { compressCollection, decompressCollection } from './src/utils/encoder.js';
 import { copyToClipboard, copySupportCode } from './src/utils/clipboard.js';
 import { showToast } from './src/utils/toast.js';
@@ -122,6 +122,7 @@ function applyDriveMergedState(payloadState) {
 
 /** Load state and preferences from LocalStorage. */
 function load() {
+    const readLS = (key) => storageGet(null, key, TypesStorages.LOCAL_STORAGE);
     const validIds = getSpriteIdSet();
     state.obtained = uniqueValidIds(readStoredArray(STORAGE_KEYS.obtained), validIds);
     state.mastered = uniqueValidIds(readStoredArray(STORAGE_KEYS.mastered), validIds)
@@ -129,26 +130,26 @@ function load() {
     state.lost = uniqueValidIds(readStoredArray(STORAGE_KEYS.lost), validIds)
         .filter(id => !state.obtained.includes(id));
 
-    state.filters.search = localStorage.getItem(STORAGE_KEYS.search) || '';
-    state.filters.theme = localStorage.getItem(STORAGE_KEYS.theme) || 'all';
-    state.filters.season = localStorage.getItem(STORAGE_KEYS.season) || 'all';
+    state.filters.search = readLS(STORAGE_KEYS.search) || '';
+    state.filters.theme = readLS(STORAGE_KEYS.theme) || 'all';
+    state.filters.season = readLS(STORAGE_KEYS.season) || 'all';
 
-    let savedStatus = localStorage.getItem(STORAGE_KEYS.status) || 'all';
+    let savedStatus = readLS(STORAGE_KEYS.status) || 'all';
     if (savedStatus === 'obtained') savedStatus = 'owned';
     state.filters.status = STATUS_FILTERS.includes(savedStatus) ? savedStatus : 'all';
 
-    state.settings.hideMastered = localStorage.getItem(STORAGE_KEYS.hideMastered) === 'true';
+    state.settings.hideMastered = readLS(STORAGE_KEYS.hideMastered) === 'true';
 
-    let savedSort = localStorage.getItem(STORAGE_KEYS.sortOrder);
+    let savedSort = readLS(STORAGE_KEYS.sortOrder);
     if (!savedSort) {
-        const legacyGroup = localStorage.getItem(STORAGE_KEYS.legacyGroupTheme);
+        const legacyGroup = readLS(STORAGE_KEYS.legacyGroupTheme);
         savedSort = legacyGroup === 'false' ? 'sprite' : 'theme';
     }
     state.settings.sortOrder = SORT_METHODS.includes(savedSort) ? savedSort : 'theme';
 
-    state.settings.showUnreleased = localStorage.getItem(STORAGE_KEYS.showUnreleased) === 'true';
-    state.settings.lowFidelity = localStorage.getItem(STORAGE_KEYS.lowFidelity) === 'true';
-    state.settings.openExports = localStorage.getItem(STORAGE_KEYS.openExports) === 'true';
+    state.settings.showUnreleased = readLS(STORAGE_KEYS.showUnreleased) === 'true';
+    state.settings.lowFidelity = readLS(STORAGE_KEYS.lowFidelity) === 'true';
+    state.settings.openExports = readLS(STORAGE_KEYS.openExports) === 'true';
 }
 
 /** Apply internal state values to controls in the DOM. */
@@ -191,7 +192,7 @@ function checkUnredeemedCodes() {
 
     let showAlerts = true;
     try {
-        const storedSetting = localStorage.getItem(STORAGE_KEYS.alertNewCodes);
+        const storedSetting = storageGet(null, STORAGE_KEYS.alertNewCodes, TypesStorages.LOCAL_STORAGE);
         if (storedSetting !== null) {
             showAlerts = JSON.parse(storedSetting);
         }
@@ -207,7 +208,7 @@ function checkUnredeemedCodes() {
 
     let redeemed = [];
     try {
-        redeemed = JSON.parse(localStorage.getItem(STORAGE_KEYS.redeemedCodes)) || [];
+        redeemed = JSON.parse(storageGet(null, STORAGE_KEYS.redeemedCodes, TypesStorages.LOCAL_STORAGE)) || [];
     } catch {
         redeemed = [];
     }
@@ -378,7 +379,7 @@ function renderGrid() {
 
     let redeemed = [];
     try {
-        redeemed = JSON.parse(localStorage.getItem(STORAGE_KEYS.redeemedCodes)) || [];
+        redeemed = JSON.parse(storageGet(null, STORAGE_KEYS.redeemedCodes, TypesStorages.LOCAL_STORAGE)) || [];
     } catch {
         redeemed = [];
     }

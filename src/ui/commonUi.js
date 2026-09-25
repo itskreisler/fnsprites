@@ -6,12 +6,13 @@
 import { STORAGE_KEYS, URLS, CREATOR_CODE } from '../constants.js';
 import { useTranslations } from '../i18n/index.js';
 import { applyTranslations } from '../i18n/dom.js';
+import { storageGet, storageSet, TypesStorages } from '../utils/storage.js';
 import { showToast } from '../utils/toast.js';
 
 const LANG_BTN_ID = 'fn-lang-btn';
 const LANG_LABELS = { es: '🇪🇸 ES', en: '🇬🇧 EN', de: '🇩🇪 DE' };
 
-let currentLocale = localStorage.getItem(STORAGE_KEYS.locale) || (navigator.language.startsWith('es') ? 'es' : 'en');
+let currentLocale = storageGet(null, STORAGE_KEYS.locale, TypesStorages.LOCAL_STORAGE) || (navigator.language.startsWith('es') ? 'es' : 'en');
 document.documentElement.lang = currentLocale;
 let t = useTranslations(currentLocale);
 
@@ -65,7 +66,7 @@ export function initLanguageSelector(targetContainer = null) {
 
     sel.addEventListener('change', () => {
         currentLocale = sel.value;
-        localStorage.setItem(STORAGE_KEYS.locale, currentLocale);
+        storageSet(null, STORAGE_KEYS.locale, currentLocale, TypesStorages.LOCAL_STORAGE);
         document.documentElement.lang = currentLocale;
         t = useTranslations(currentLocale);
         window.location.reload();

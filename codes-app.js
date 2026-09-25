@@ -5,7 +5,11 @@
 
 import { STORAGE_KEYS } from './src/constants.js';
 import { copyToClipboard, copySupportCode } from './src/utils/clipboard.js';
+import { storageGet, storageSet, TypesStorages } from './src/utils/storage.js';
 import { getTranslator, initOfflineAndPWA } from './src/ui/commonUi.js';
+
+const LS_GET = (key) => storageGet(null, key, TypesStorages.LOCAL_STORAGE);
+const LS_SET = (key, value) => storageSet(null, key, value, TypesStorages.LOCAL_STORAGE);
 
 /**
  * Get array of redeemed codes from LocalStorage.
@@ -13,7 +17,7 @@ import { getTranslator, initOfflineAndPWA } from './src/ui/commonUi.js';
  */
 function getRedeemedCodes() {
     try {
-        const item = localStorage.getItem(STORAGE_KEYS.redeemedCodes);
+        const item = LS_GET(STORAGE_KEYS.redeemedCodes);
         return item ? JSON.parse(item) : [];
     } catch {
         return [];
@@ -26,7 +30,7 @@ function getRedeemedCodes() {
  * @returns {void}
  */
 function saveRedeemedCodes(codes) {
-    localStorage.setItem(STORAGE_KEYS.redeemedCodes, JSON.stringify(codes));
+    LS_SET(STORAGE_KEYS.redeemedCodes, codes);
 }
 
 /**
@@ -164,20 +168,20 @@ function initToolbar() {
     if (unredeemAllBtn) unredeemAllBtn.addEventListener('click', unredeemAll);
 
     if (alertToggle) {
-        const storedSetting = localStorage.getItem(STORAGE_KEYS.alertNewCodes);
+        const storedSetting = LS_GET(STORAGE_KEYS.alertNewCodes);
         alertToggle.checked = storedSetting !== null ? JSON.parse(storedSetting) : true;
 
         alertToggle.addEventListener('change', (e) => {
-            localStorage.setItem(STORAGE_KEYS.alertNewCodes, JSON.stringify(e.target.checked));
+            LS_SET(STORAGE_KEYS.alertNewCodes, JSON.stringify(e.target.checked));
         });
     }
 
     if (hideRedeemedToggle) {
-        const storedSetting = localStorage.getItem(STORAGE_KEYS.hideRedeemedCodes);
+        const storedSetting = LS_GET(STORAGE_KEYS.hideRedeemedCodes);
         hideRedeemedToggle.checked = storedSetting !== null ? JSON.parse(storedSetting) : true;
 
         hideRedeemedToggle.addEventListener('change', (e) => {
-            localStorage.setItem(STORAGE_KEYS.hideRedeemedCodes, JSON.stringify(e.target.checked));
+            LS_SET(STORAGE_KEYS.hideRedeemedCodes, JSON.stringify(e.target.checked));
             renderCodes();
         });
     }

@@ -5,7 +5,7 @@
 
 // Bump version on EVERY deploy (nuevo sprite, código, bugfix, UI...) para
 // invalidar el caché y que los cambios se vean al instante.
-const CACHE_VERSION = 'v1.0.4';
+const CACHE_VERSION = 'v1.0.6';
 const CACHE_NAME = `fn-sprites-${CACHE_VERSION}`;
 
 const STATIC_ASSETS = [
@@ -35,6 +35,8 @@ const STATIC_ASSETS = [
   './src/utils/helpers.js',
   './src/utils/storage.js',
   './src/utils/toast.js',
+  './src/utils/crypto.js',
+  './src/utils/securedStorage.js',
   './src/sync/config.js',
   './src/sync/drive.js',
   './src/sync/syncController.js',

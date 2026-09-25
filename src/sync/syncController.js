@@ -7,6 +7,7 @@
 
 import { getTranslator } from '../ui/commonUi.js';
 import { showToast } from '../utils/toast.js';
+import { storageDelete, storageGet, storageSet, TypesStorages } from '../utils/storage.js';
 import { DRIVE_CLIENT_ID } from './config.js';
 import {
     DRIVE_SCOPE,
@@ -22,6 +23,7 @@ import {
     loadGisScript,
     mergePayloads,
     mergeStates,
+    restoreSession,
     signOut,
 } from './drive.js';
 
@@ -54,8 +56,10 @@ export function initDriveSync({ getState, applyRemoteState }) {
     const label = btn.querySelector('.sync-label');
 
     try {
-        accountEmail = sessionStorage.getItem(EMAIL_STORAGE_KEY) || null;
+        accountEmail = storageGet(null, EMAIL_STORAGE_KEY, TypesStorages.LOCAL_STORAGE) || null;
     } catch (_) {}
+
+    restoreSession().then(() => refresh());
 
     function setLabel(text) {
         if (label) label.textContent = text;
@@ -68,7 +72,7 @@ export function initDriveSync({ getState, applyRemoteState }) {
             const info = await getAccountInfo();
             if (info && info.email) {
                 accountEmail = info.email;
-                try { sessionStorage.setItem(EMAIL_STORAGE_KEY, accountEmail); } catch (_) {}
+                try { storageSet(null, EMAIL_STORAGE_KEY, accountEmail, TypesStorages.LOCAL_STORAGE); } catch (_) {}
             }
         } catch (_) {}
         finally {
@@ -300,7 +304,7 @@ export function initDriveSync({ getState, applyRemoteState }) {
             lastSyncAt = null;
             accountEmail = null;
             accountResolved = false;
-            try { sessionStorage.removeItem(EMAIL_STORAGE_KEY); } catch (_) {}
+            try { storageDelete(null, EMAIL_STORAGE_KEY, TypesStorages.LOCAL_STORAGE); } catch (_) {}
             showToast(t('sync.signedOut'), 'info');
             refresh();
             return;

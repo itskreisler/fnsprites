@@ -10,6 +10,7 @@
  */
 
 import { getCurrentLocale, getTranslator } from './commonUi.js';
+import { storageGet, storageSet, TypesStorages } from '../utils/storage.js';
 
 const SEEN_KEY = 'fnsprites_changelog_seen';
 const MODAL_OVERLAY_ID = 'changelogOverlay';
@@ -19,6 +20,28 @@ const MODAL_OVERLAY_ID = 'changelogOverlay';
  * `version` must be unique per release; bump it to show the modal again.
  */
 export const CHANGELOG = [
+    {
+        version: '2026-09-24-secure',
+        date: '2026-09-24',
+        title: { es: 'Notas de actualización', en: 'Update notes', de: 'Update-Hinweise' },
+        notes: [
+            {
+                es: 'Sync de Google Drive con respaldo automático y modal de conflicto con detalles (fecha, tamaño y sprites de cada versión).',
+                en: 'Google Drive sync with auto backup and a conflict modal with details (date, size and sprites per version).',
+                de: 'Google-Drive-Sync mit automatischem Backup und Konflikt-Dialog mit Details (Datum, Größe und Sprites pro Version).',
+            },
+            {
+                es: 'Almacenamiento seguro: el token de acceso se guarda cifrado (AES-256-GCM) y todo el storage pasa por un wrapper agnóstico.',
+                en: 'Secure storage: the access token is stored encrypted (AES-256-GCM) and all storage goes through an agnostic wrapper.',
+                de: 'Sicherer Speicher: Das Zugriffstoken wird verschlüsselt gespeichert (AES-256-GCM) und der gesamte Speicher läuft über einen agnostischen Wrapper.',
+            },
+            {
+                es: 'Nuevas páginas legales (privacidad y términos), nuevo logo y mejoras del export y del service worker.',
+                en: 'New legal pages (privacy & terms), new logo, and export/service-worker improvements.',
+                de: 'Neue Rechtsseiten (Datenschutz & Bedingungen), neues Logo und Verbesserungen bei Export und Service Worker.',
+            },
+        ],
+    },
     {
         version: '2026-09-24',
         date: '2026-09-24',
@@ -118,7 +141,7 @@ export function initChangelogModal() {
 
     let seen = null;
     try {
-        seen = sessionStorage.getItem(SEEN_KEY);
+        seen = storageGet(null, SEEN_KEY, TypesStorages.SESSION_STORAGE);
     } catch (_) {
         // storage unavailable (private mode): still show on first paint
         return;
@@ -130,7 +153,7 @@ export function initChangelogModal() {
     requestAnimationFrame(() => overlay.classList.add('visible'));
 
     try {
-        sessionStorage.setItem(SEEN_KEY, current.version);
+        storageSet(null, SEEN_KEY, current.version, TypesStorages.SESSION_STORAGE);
     } catch (_) {
         /* ignore */
     }

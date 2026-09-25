@@ -3,14 +3,16 @@
  * @description Sincronización aislada con Google Drive (scope drive.file).
  *
  * Flujo: GIS token client (implicit) -> Google Drive REST API v3.
- * El token se guarda en sessionStorage (sobrevive recargas de pestaña).
+ * El token se guarda CIFRADO (WebCrypto AES-256-GCM) en localStorage.
  *
  * API expuesta (sin UI): configureDrive, loadGisScript, getAccessToken,
- * signOut, isSignedIn, getAuthStatus, getAccountInfo, findFile,
- * uploadObject, downloadObject, removeFile, saveBackup, loadBackup,
+ * signOut, isSignedIn, restoreSession, getAuthStatus, getAccountInfo,
+ * findFile, uploadObject, downloadObject, removeFile, saveBackup, loadBackup,
  * mergePayloads, mergeStates, createAutosaver, buildPayload, isValidPayload.
  * UI/estado viven en syncController.js; sandbox manual en test.html.
  */
+
+import { securedDelete, securedGet, securedSet } from '../utils/securedStorage.js';
 
 export const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 export const DEFAULT_FILENAME = 'fnsprites-backup.json';
@@ -23,11 +25,12 @@ const UPLOAD_BASE = 'https://www.googleapis.com/upload/drive/v3';
 const USERINFO_URL = 'https://openidconnect.googleapis.com/v1/userinfo';
 
 /**
- * El token se persiste en sessionStorage para sobrevivir a recargas de la misma
- * pestaña (se pierde al cerrarla). Es un tradeoff de seguridad frente a tenerlo
- * solo en memoria; el scope es drive.file (solo archivos creados por la app).
+ * El token se persiste CIFRADO (AES-256-GCM vía WebCrypto) en localStorage,
+ * para sobrevivir a recargas Y a la apertura de nuevas pestañas, y protegerse
+ * ante lectura casual del storage. Cifrado/descifrado es asíncrono.
  */
 const TOKEN_STORAGE_KEY = 'fnsprites_drive_token';
+const TOKEN_PREFIX = 'sync';
 
 let config = null;
 let tokenClient = null;
@@ -35,35 +38,45 @@ let accessToken = null;
 let tokenExpiresAt = 0;
 let lastTokenResp = null;
 let tokenWaiters = null;
+let restorePromise = null;
 
-function storeStoredToken() {
+async function storeStoredToken() {
     try {
-        sessionStorage.setItem(TOKEN_STORAGE_KEY, JSON.stringify({ access_token: accessToken, expires_at: tokenExpiresAt }));
+        await securedSet(TOKEN_PREFIX, TOKEN_STORAGE_KEY, { access_token: accessToken, expires_at: tokenExpiresAt });
     } catch (_) {}
 }
 
 function clearStoredToken() {
-    try {
-        sessionStorage.removeItem(TOKEN_STORAGE_KEY);
-    } catch (_) {}
+    securedDelete(TOKEN_PREFIX, TOKEN_STORAGE_KEY);
 }
 
-function restoreStoredToken() {
+async function restoreStoredToken() {
     try {
-        const raw = sessionStorage.getItem(TOKEN_STORAGE_KEY);
-        if (!raw) return;
-        const data = JSON.parse(raw);
+        const data = await securedGet(TOKEN_PREFIX, TOKEN_STORAGE_KEY);
         if (data && data.access_token && data.expires_at > Date.now()) {
             accessToken = data.access_token;
             tokenExpiresAt = data.expires_at;
             lastTokenResp = { access_token: data.access_token };
         } else {
-            clearStoredToken();
+            if (data) clearStoredToken();
         }
     } catch (_) {
         clearStoredToken();
     }
 }
+
+/**
+ * Resolve a pending (or new) restore of the stored token. Idempotent.
+ * @returns {Promise<void>}
+ */
+export function restoreSession() {
+    if (!restorePromise) {
+        restorePromise = restoreStoredToken().catch(() => {});
+        restorePromise.finally(() => { restorePromise = null; });
+    }
+    return restorePromise;
+}
+
 let tokenRequestPending = false;
 
 /* ---------- SDK ---------- */
@@ -105,7 +118,8 @@ export function configureDrive(options) {
     tokenExpiresAt = 0;
     tokenWaiters = null;
     tokenRequestPending = false;
-    restoreStoredToken();
+    restorePromise = null;
+    restoreSession();
     return { ...config };
 }
 
@@ -151,17 +165,19 @@ export function isSignedIn() {
 
 export function getAccessToken({ consent = false } = {}) {
     return new Promise((resolve, reject) => {
-        if (isSignedIn()) return resolve(lastTokenResp || { access_token: accessToken });
-        tokenWaiters = tokenWaiters || [];
-        tokenWaiters.push({ resolve, reject });
-        if (tokenRequestPending) return;
-        try {
-            tokenRequestPending = true;
-            getTokenClient().requestAccessToken(consent ? { prompt: 'consent' } : undefined);
-        } catch (err) {
-            tokenRequestPending = false;
-            flushTokenWaiters(err);
-        }
+        restoreSession().then(() => {
+            if (isSignedIn()) return resolve(lastTokenResp || { access_token: accessToken });
+            tokenWaiters = tokenWaiters || [];
+            tokenWaiters.push({ resolve, reject });
+            if (tokenRequestPending) return;
+            try {
+                tokenRequestPending = true;
+                getTokenClient().requestAccessToken(consent ? { prompt: 'consent' } : undefined);
+            } catch (err) {
+                tokenRequestPending = false;
+                flushTokenWaiters(err);
+            }
+        });
     });
 }
 
