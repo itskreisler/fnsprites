@@ -7,7 +7,7 @@
 
 import { getTranslator } from '../ui/commonUi.js';
 import { showToast } from '../utils/toast.js';
-import { storageDelete, storageGet, storageSet, TypesStorages } from '../utils/storage.js';
+import { securedDelete, securedGet, securedSet } from '../utils/securedStorage.js';
 import { DRIVE_CLIENT_ID } from './config.js';
 import {
     DRIVE_SCOPE,
@@ -28,6 +28,7 @@ import {
 } from './drive.js';
 
 const EMAIL_STORAGE_KEY = 'fnsprites_drive_email';
+const EMAIL_PREFIX = 'sync';
 
 function maskEmail(email) {
     const at = email.indexOf('@');
@@ -55,11 +56,17 @@ export function initDriveSync({ getState, applyRemoteState }) {
     let fetchingAccount = false;
     const label = btn.querySelector('.sync-label');
 
-    try {
-        accountEmail = storageGet(null, EMAIL_STORAGE_KEY, TypesStorages.LOCAL_STORAGE) || null;
-    } catch (_) {}
+    restoreSession()
+        .then(() => restoreEmail())
+        .then(() => refresh());
 
-    restoreSession().then(() => refresh());
+    async function restoreEmail() {
+        try {
+            accountEmail = (await securedGet(EMAIL_PREFIX, EMAIL_STORAGE_KEY)) || null;
+        } catch (_) {
+            accountEmail = null;
+        }
+    }
 
     function setLabel(text) {
         if (label) label.textContent = text;
@@ -72,7 +79,7 @@ export function initDriveSync({ getState, applyRemoteState }) {
             const info = await getAccountInfo();
             if (info && info.email) {
                 accountEmail = info.email;
-                try { storageSet(null, EMAIL_STORAGE_KEY, accountEmail, TypesStorages.LOCAL_STORAGE); } catch (_) {}
+                try { await securedSet(EMAIL_PREFIX, EMAIL_STORAGE_KEY, accountEmail); } catch (_) {}
             }
         } catch (_) {}
         finally {
@@ -304,7 +311,7 @@ export function initDriveSync({ getState, applyRemoteState }) {
             lastSyncAt = null;
             accountEmail = null;
             accountResolved = false;
-            try { storageDelete(null, EMAIL_STORAGE_KEY, TypesStorages.LOCAL_STORAGE); } catch (_) {}
+            try { securedDelete(EMAIL_PREFIX, EMAIL_STORAGE_KEY); } catch (_) {}
             showToast(t('sync.signedOut'), 'info');
             refresh();
             return;

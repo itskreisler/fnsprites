@@ -5,7 +5,7 @@
 
 // Bump version on EVERY deploy (nuevo sprite, código, bugfix, UI...) para
 // invalidar el caché y que los cambios se vean al instante.
-const CACHE_VERSION = 'v1.0.6';
+const CACHE_VERSION = 'v1.0.7';
 const CACHE_NAME = `fn-sprites-${CACHE_VERSION}`;
 
 const STATIC_ASSETS = [

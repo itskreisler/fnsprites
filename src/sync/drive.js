@@ -13,6 +13,7 @@
  */
 
 import { securedDelete, securedGet, securedSet } from '../utils/securedStorage.js';
+import { storageGet, TypesStorages } from '../utils/storage.js';
 
 export const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 export const DEFAULT_FILENAME = 'fnsprites-backup.json';
@@ -51,18 +52,19 @@ function clearStoredToken() {
 }
 
 async function restoreStoredToken() {
+    const raw = storageGet(TOKEN_PREFIX, TOKEN_STORAGE_KEY, TypesStorages.LOCAL_STORAGE);
+    if (!raw) return;
     try {
         const data = await securedGet(TOKEN_PREFIX, TOKEN_STORAGE_KEY);
         if (data && data.access_token && data.expires_at > Date.now()) {
             accessToken = data.access_token;
             tokenExpiresAt = data.expires_at;
             lastTokenResp = { access_token: data.access_token };
-        } else {
-            if (data) clearStoredToken();
+            return;
         }
-    } catch (_) {
-        clearStoredToken();
+    } catch (_) { /* cipher ilegible */
     }
+    clearStoredToken();
 }
 
 /**
