@@ -21,6 +21,23 @@ const MODAL_OVERLAY_ID = 'changelogOverlay';
  */
 export const CHANGELOG = [
     {
+        version: '2026-10-02-trade-image',
+        date: '2026-10-02',
+        title: { es: 'Imagen de intercambio corregida', en: 'Trade image fixed', de: 'Tauschbild repariert' },
+        notes: [
+            {
+                es: 'La imagen de intercambio salía vacía, sin la tabla de sprites. Ya se ve la rejilla completa con tu lista de lo que tienes y lo que te falta.',
+                en: 'The trade image came out empty, with no sprite grid. You now get the full grid with your have/need list.',
+                de: 'Das Tauschbild war leer, ohne Sprite-Raster. Jetzt siehst du das vollständige Raster mit deiner Haben-/Brauchen-Liste.',
+            },
+            {
+                es: 'Las barras de progreso de la imagen ya no se pisan con el título.',
+                en: 'The progress bars in the image no longer overlap the title.',
+                de: 'Die Fortschrittsbalken im Bild überlappen den Titel nicht mehr.',
+            },
+        ],
+    },
+    {
         version: '2026-10-02-sprites-fix',
         date: '2026-10-02',
         title: { es: 'Novedades', en: "What's new", de: 'Neuerungen' },

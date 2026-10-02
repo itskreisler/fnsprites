@@ -371,6 +371,23 @@ export function exportCanvasImage({
         });
 
         const layout = EXPORT_LAYOUT;
+
+        const bw = 110;
+        const statGap = 25;
+        const statsW = bw * 2 + statGap;
+        const statsTitleGap = 20;
+        const mascotSize = 32;
+        const mascotGap = 10;
+        const mascotImg = imageMap['mascot'];
+        const fullTitle = `${config.titleL1} ${config.titleL2}`;
+
+        // Contexto desechable solo para medir texto antes de que exista el
+        // canvas final (las métricas de fuente no dependen del tamaño).
+        const measureCtx = document.createElement('canvas').getContext('2d');
+        measureCtx.font = `italic 900 16px "Oswald", sans-serif`;
+        const minTitleBlockW = mascotSize + (mascotImg ? mascotGap : 0)
+            + measureCtx.measureText(fullTitle).width;
+
         let canvasW, canvasH, headerH, useCompactHeader;
         let cols = 0, rows = 0, startGridY = 0, gridWidth = 0;
 
@@ -408,6 +425,13 @@ export function exportCanvasImage({
             colW = layout.labelW + cardBlockW;
             tableW = colW * tableColumnCount + layout.colGap * Math.max(0, tableColumnCount - 1);
             canvasW = Math.max(layout.minCanvasW, tableW + layout.border * 2 + layout.sidePad * 2);
+
+            // La tarjeta de intercambio siempre muestra COLLECTION/MASTERY:
+            // se ensancha el canvas para que las barras nunca se solapen con el
+            // título ni se pierdan, en vez de recortarlas.
+            const neededForStats = layout.border * 2 + layout.sidePad * 2 + minTitleBlockW + statsTitleGap + statsW;
+            canvasW = Math.max(canvasW, neededForStats);
+
             useCompactHeader = canvasW < layout.compactHeaderW;
             headerH = useCompactHeader ? layout.compactHeaderH : layout.headerH;
             canvasH = layout.border * 2 + headerH + layout.colHeaderH + rowsH + layout.footerH;
@@ -476,11 +500,6 @@ export function exportCanvasImage({
         const colPct = totalCount > 0 ? ownedCount / totalCount : 0;
         const masPct = totalCount > 0 ? masteredCount / totalCount : 0;
 
-        const bw = 110;
-        const statGap = 25;
-        const mascotImg = imageMap['mascot'];
-        const fullTitle = `${config.titleL1} ${config.titleL2}`;
-
         const fitFont = (text, maxWidth, startSize, minSize, style) => {
             let size = startSize;
             ctx.font = `${style} ${size}px "Oswald", sans-serif`;
@@ -529,7 +548,6 @@ export function exportCanvasImage({
             ctx.fillText(config.titleL2, canvasW / 2, layout.border + 52);
 
             if (mode === 'trade') {
-                const statsW = bw * 2 + statGap;
                 const statsX = (canvasW - statsW) / 2;
                 const statsY = layout.border + 86;
                 drawProgressBlock(i18nLabels.collection || 'COLLECTION', ownedCount, totalCount, colPct, statsX, statsY, '#22c55e');
@@ -537,14 +555,19 @@ export function exportCanvasImage({
             }
         } else {
             const statsRight = canvasW - layout.border - layout.sidePad;
-            const collectionX = statsRight - bw * 2 - statGap;
+            const collectionX = statsRight - statsW;
             const masteryX = statsRight - bw;
             const titleX = layout.border + layout.sidePad;
-            const mascotSize = 32;
-            const mascotGap = mascotImg ? 10 : 0;
-            const titleMaxW = (mode === 'trade') ? (collectionX - titleX - 20) : (canvasW - titleX - layout.border - layout.sidePad);
+            const fullWidthAvailable = canvasW - titleX - layout.border - layout.sidePad;
+            const widthAvailableWithStats = collectionX - titleX - statsTitleGap;
 
-            fitFont(fullTitle, titleMaxW - (mascotImg ? mascotSize + mascotGap : 0), 26, 16, 'italic 900');
+            // En intercambio las barras se muestran siempre; en el resto solo si
+            // el título cabe en el hueco que dejan.
+            const showStats = mode === 'trade' || widthAvailableWithStats >= minTitleBlockW;
+            const titleMaxW = (showStats ? widthAvailableWithStats : fullWidthAvailable)
+                - (mascotImg ? mascotSize + mascotGap : 0);
+
+            fitFont(fullTitle, titleMaxW, 26, 16, 'italic 900');
             ctx.fillStyle = borderGrad;
             ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
@@ -556,9 +579,10 @@ export function exportCanvasImage({
             }
             ctx.fillText(fullTitle, textLeft, layout.border + headerH / 2);
 
-            if (mode === 'trade') {
-                drawProgressBlock(i18nLabels.collection || 'COLLECTION', ownedCount, totalCount, colPct, collectionX, layout.border + 28, '#22c55e');
-                drawProgressBlock(i18nLabels.mastery || 'MASTERY', masteredCount, totalCount, masPct, masteryX, layout.border + 28, '#ffd700');
+            if (showStats) {
+                const statsY = layout.border + headerH / 2 - 8;
+                drawProgressBlock(i18nLabels.collection || 'COLLECTION', ownedCount, totalCount, colPct, collectionX, statsY, '#22c55e');
+                drawProgressBlock(i18nLabels.mastery || 'MASTERY', masteredCount, totalCount, masPct, masteryX, statsY, '#ffd700');
             }
         }
 

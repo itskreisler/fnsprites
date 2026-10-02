@@ -612,11 +612,15 @@ function handleExportImage(mode) {
     const config = getExportConfig(mode);
     if (!config) return;
 
+    const releasedSprites = getReleasedSprites();
+
     exportCanvasImage({
         mode,
         config,
-        releasedSprites: getReleasedSprites(),
-        activeThemes: getActiveThemes(),
+        releasedSprites,
+        activeThemes: getActiveThemes(releasedSprites),
+        familyKeys: Array.from(new Set(releasedSprites.map(getFamilyKey))),
+        familyThemeMap: getFamilyThemeMap(releasedSprites),
         openInNewTab: state.settings.openExports,
         getExportCardState,
         getCollectionCounts,
