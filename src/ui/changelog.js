@@ -21,6 +21,23 @@ const MODAL_OVERLAY_ID = 'changelogOverlay';
  */
 export const CHANGELOG = [
     {
+        version: '2026-10-02-credits',
+        date: '2026-10-02',
+        title: { es: 'Créditos y licencia', en: 'Credits and license', de: 'Credits und Lizenz' },
+        notes: [
+            {
+                es: 'Se añadieron los créditos del autor original del tracker y un aviso de que este proyecto es un fork hecho por fans.',
+                en: 'Added credits for the original tracker author, plus a notice that this is an unofficial fan-made fork.',
+                de: 'Credits für den ursprünglichen Autor des Trackers ergänzt, dazu ein Hinweis, dass dies ein inoffizieller Fan-Fork ist.',
+            },
+            {
+                es: 'Los términos ahora aclaran quién es el dueño de cada imagen y cómo pedir que se borre una. Si te llega a molestar algo, solo hay que abrir un issue.',
+                en: 'The terms now clarify who owns each image and how to request removal. If anything bothers you, just open an issue.',
+                de: 'Die Bedingungen erklären jetzt, wem jedes Bild gehört und wie eine Entfernung beantragt wird. Wenn dich etwas stört, öffne einfach ein Issue.',
+            },
+        ],
+    },
+    {
         version: '2026-10-02-trade-image',
         date: '2026-10-02',
         title: { es: 'Imagen de intercambio corregida', en: 'Trade image fixed', de: 'Tauschbild repariert' },

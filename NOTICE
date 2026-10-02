@@ -1,0 +1,46 @@
+# NOTICE
+
+## Attribution
+
+This project is a **fork** of an earlier community tracker. It would not exist
+without the original work.
+
+- **Original tracker:** created by **staticvacant** — <https://github.com/staticvacant/fnsprites>
+- **This fork:** maintained by **Kreisler** (<https://github.com/itskreisler/fnsprites>)
+
+The original repository was published **without a license file**. No license
+was granted by its author, so this fork is not able to redistribute those
+original portions under the MIT license in `LICENSE` — that license applies
+only to the changes and additions made here. Permission for continued
+publication and redistribution of the derived portions is being sought from the
+original author; until then, treat the derived portions as all rights reserved
+by their respective author.
+
+Contributions in this fork: i18n (es/en/de), lost-sprites feature, branding,
+image export rework, accessibility/QA fixes, Google Drive sync, deployment.
+
+## Data sources
+
+- **Sprite data and sprite images:** Rick's Tracker — <https://rickventure.com>
+- **Supplementary sprite images:** <https://fortnite.gg/sprites>
+- **Creator code:** `KLEI`
+
+## Trademarks and game assets
+
+This is an **unofficial fan project**. It is not affiliated with, endorsed by,
+or sponsored by Epic Games.
+
+- *Fortnite* and all related trademarks, logos and game assets are the property
+  of Epic Games and its licensors.
+- The sprite images in `sprites/` are game artwork owned by Epic Games. They
+  are included here for personal, non-commercial identification purposes only,
+  and remain the property of their respective owner. They are not covered by
+  the MIT license in `LICENSE`.
+
+If you are a rights holder and want an image or asset removed, open an issue
+on this repository and it will be taken down.
+
+## No affiliation
+
+The names of any contributors or community members are used only to credit
+their work.

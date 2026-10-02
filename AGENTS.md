@@ -92,10 +92,19 @@ variantes seguir usando `Special` con el tema, es nuestra convención.
 
 - Nunca convertir los archivos de datos a ESM; cargan como scripts globales.
 - No sobrescribir: `src/i18n/`, `src/klei.js`, `src/klei-codes.js`, `src/i18n/dom.js`.
-- No citar al autor original (`staticvacant`, `Rick`) en UI ni comentarios.
-- Reemplazar `staticvacant.github.io/fnsprites` por `itskreisler.github.io/fnsprites`
-  en todos los archivos (agregado de branding). Mantener `removeStaticvacantBranding()`
-  en `klei.js` como red de seguridad.
+- **Atribución (obligatoria):** el upstream `staticvacant/fnsprites` se publicó **sin
+  licencia**, así que este fork no puede relicenciarlo. La atribución al autor
+  original va en `README.md` (sección Credits), `NOTICE` y `terms.html`
+  (`legal.termsCredits`). **No borrar ni abreviar esa atribución**: quitar el
+  crédito es lo que convierte "construí sobre tu trabajo" en "me lo copié" y
+  empeora la situación legal. `LICENSE` es MIT pero solo cubre lo propio del
+  fork; ver el scope note del propio archivo.
+- No usar el branding del original en la UI (favicon, logo, nombre del sitio) ni
+  enlazar a su dominio como sitio canónico: se enlaza a `itskreisler.github.io`.
+  Mantener `removeStaticvacantBranding()` en `klei.js` como red de seguridad.
+- Legal: los sprites son arte del juego de Epic. El aviso "no oficial, sin
+  afiliación con Epic" y la cláusula de retirada vía issue están en
+  `privacy.html`/`terms.html` — no quitarlos.
 - Después de importar, commit directo (sin build local).
 
 ## Changelog / update notes (modal)

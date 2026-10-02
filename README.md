@@ -45,10 +45,26 @@ In Fortnite, you can lose collected sprites and revive them later with Stardust.
 
 ## Credits
 
-- **Kreisler** — i18n, lost sprites feature, branding, deployment
-- **Vero** — Feature idea: lost sprites system & German language request
-- **staticvacant** — Original tracker
+This project is a fork. It would not exist without the original tracker.
+
+- **[staticvacant](https://github.com/staticvacant/fnsprites)** — original
+  tracker, created by staticvacant. All credit for the original work.
+- **Kreisler** — i18n, lost sprites feature, branding, image export rework,
+  Google Drive sync, accessibility, deployment
+- **Vero** — feature idea: lost sprites system & German language request
+
+The original repository was published without a license file, so its author
+granted no license for its contents. This fork asks that author's permission
+before redistributing the derived portions, and is not able to relicense them
+under the MIT license below. See [`NOTICE`](NOTICE) for the full details.
+
+Sprite data and images come from [Rick's Tracker](https://rickventure.com) and,
+where needed, [fortnite.gg](https://fortnite.gg/sprites).
 
 ## License
 
-Fan project. Not affiliated with Epic Games.
+The original contributions in this fork are released under the
+[MIT License](LICENSE). Derived portions are excluded — see [`NOTICE`](NOTICE).
+
+Fan project. Not affiliated with, endorsed by or sponsored by Epic Games.
+*Fortnite* and all related trademarks and game assets belong to Epic Games.
