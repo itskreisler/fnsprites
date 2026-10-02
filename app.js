@@ -46,13 +46,13 @@ const state = {
     mastered: [],
     lost: [],
     viewMode: false,
-    filters: { search: '', theme: 'all', season: 'all', status: 'all' },
+    filters: { search: '', theme: 'all', season: 'Override', status: 'all' },
     settings: {
         hideMastered: false,
         sortOrder: 'theme',
         showUnreleased: false,
         lowFidelity: false,
-        openExports: false,
+        openExports: true,
     },
 };
 
@@ -132,7 +132,7 @@ function load() {
 
     state.filters.search = readLS(STORAGE_KEYS.search) || '';
     state.filters.theme = readLS(STORAGE_KEYS.theme) || 'all';
-    state.filters.season = readLS(STORAGE_KEYS.season) || 'all';
+    state.filters.season = readLS(STORAGE_KEYS.season) || 'Override';
 
     let savedStatus = readLS(STORAGE_KEYS.status) || 'all';
     if (savedStatus === 'obtained') savedStatus = 'owned';
@@ -149,7 +149,8 @@ function load() {
 
     state.settings.showUnreleased = readLS(STORAGE_KEYS.showUnreleased) === 'true';
     state.settings.lowFidelity = readLS(STORAGE_KEYS.lowFidelity) === 'true';
-    state.settings.openExports = readLS(STORAGE_KEYS.openExports) === 'true';
+    const savedOpenExports = readLS(STORAGE_KEYS.openExports);
+    state.settings.openExports = savedOpenExports !== null ? savedOpenExports === 'true' : true;
 }
 
 /** Apply internal state values to controls in the DOM. */

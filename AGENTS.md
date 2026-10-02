@@ -12,11 +12,14 @@
 
 ## Sprite data
 
-- **Date:** 2026-09-24
-- **Sprites released:** 218 total
-- **Temporada Override (C7S4):** 101 sprites (101 released, 0 unreleased)
-- **PNGs on disk:** 223 en `sprites/{id}.png` (un PNG por `id`, coincide con `sprites-data.js`)
+- **Date:** 2026-10-02
+- **Sprites released:** 239 total
+- **Temporada Override (C7S4):** 122 sprites (122 released, 0 unreleased)
+- **Temporada Runners (C7S3):** 117 sprites
+- **PNGs on disk:** 244 en `sprites/{id}.png` (5 huérfanos: `boss_gem`, `dream_gem`, `drifter_basic`, `fire_gem`, `ghost_gem`)
 - **Fuente upstream:** `https://rickventure.com` (Rick's Tracker) — no usar fortnite.gg para scraping.
+  - Fuente de respaldo: `https://fortnite.gg/sprites` (webp, requiere `dwebp`). Útil cuando rickventure
+    aún no ha actualizado. Selector útil: `[data-season="42"][data-is-new="1"]`.
 
 ## Fuente upstream (rickventure.com)
 
@@ -27,9 +30,18 @@ Es la fuente primaria de sprites y códigos:
 
 ### Temas conocidos upstream
 
-Basic, Gold, Candy, Galaxy, Gem, Holofoil, Cube, Rift, Quack, Cheat, **Hacker**, **Bounty**
-(a estas les llamamos "variantes"). En season 3 upstream usa además `reaper` y
-`tricktreat`. IDs de variante usan sufijo (ej. `bush_hacker`).
+Basic, Gold, Candy, Galaxy, Gem, Holofoil, Cube, Rift, Quack, Cheat, **Hacker**,
+**Bounty**, **TrickTreat** (a estas les llamamos "variantes"). En season 3 upstream
+usa además `reaper`. IDs de variante usan sufijo (ej. `bush_hacker`).
+
+### Export de imágenes (límite de canvas)
+
+Safari/iOS aborta un canvas por encima de **16777216 px de área**: `toBlob()`
+devuelve `null` y `toDataURL()` devuelve `"data:,"` (PNG vacío sin aviso).
+`src/export/canvasExport.js` baja `scale` de forma adaptativa hasta 1 para no
+superar `MAX_CANVAS_AREA`. Además el filtro de temporada abre por defecto en
+`Override` (no en `all`): con las dos temporadas el canvas se pasa de 16.78M y
+el export falla. No subir el `scale` a 2 fijo.
 
 ## Weekly check
 

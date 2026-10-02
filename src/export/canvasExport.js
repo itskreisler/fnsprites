@@ -13,13 +13,16 @@ import {
     isIOS,
 } from '../utils/helpers.js';
 
+// Techo de área del canvas por debajo del límite de Safari (16777216 px) para
+// dejar margen y no depender del dispositivo.
+const MAX_CANVAS_AREA = 16000000;
+
 /**
  * Get background gradient colors for card rarity.
  * @param {string} rarity - Sprite rarity.
  * @param {string} theme - Sprite theme.
  * @returns {[string, string]} Linear gradient stop colors.
  */
-
 export function getRarityGradient(rarity, theme) {
     const map = {
         Rare: ['#104273', '#081a35'],
@@ -42,6 +45,7 @@ export function getRarityGradient(rarity, theme) {
         Cheat: ['#003b00', '#000800'],
         Hacker: ['#4a1060', '#1c0429'],
         Bounty: ['#6b1d92', '#260a35'],
+        TrickTreat: ['#7a3b06', '#2b1203'],
     };
     return themes[theme] || themes.Basic;
 }
@@ -353,7 +357,12 @@ export function exportCanvasImage({
 
     showToast(i18nLabels.generating || 'Generating image export...', 'info');
 
-    Promise.all(imagesToLoad.map(loadImage)).then(loadedImages => {
+    // Esperar a que la tipografía esté lista: si Oswald aún no cargó, el texto
+    // se dibuja con la fuente de fallback y las medidas salen mal.
+    const fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+
+    Promise.all([fontsReady, ...imagesToLoad.map(loadImage)]).then(results => {
+        const loadedImages = results.slice(1);
         const imageMap = {};
         loadedImages.forEach(res => {
             if (res.success) {
@@ -420,10 +429,18 @@ export function exportCanvasImage({
             startGridY = layout.border + headerH + layout.sidePad;
         }
 
-        const scale = 2;
+        // Escala adaptativa: Safari/iOS aborta el canvas por encima de ~16.78M px
+        // (toBlob devuelve null, toDataURL devuelve "data:,"), así que con
+        // colecciones grandes o season="all" hay que bajar el factor en vez de
+        // exportar una imagen vacía.
+        let scale = 2;
+        while (scale > 1 && canvasW * scale * canvasH * scale > MAX_CANVAS_AREA) {
+            scale -= 0.25;
+        }
+
         const canvas = document.createElement('canvas');
-        canvas.width = canvasW * scale;
-        canvas.height = canvasH * scale;
+        canvas.width = Math.floor(canvasW * scale);
+        canvas.height = Math.floor(canvasH * scale);
 
         const ctx = canvas.getContext('2d');
         ctx.scale(scale, scale);

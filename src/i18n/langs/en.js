@@ -95,6 +95,7 @@ export const en = {
         Cheat: 'Cheat',
         Hacker: 'Loot Hacker',
         Bounty: 'Bounty',
+        TrickTreat: 'Trick or Treat',
     },
     creator: {
         madeBy: 'Made by Kreisler',

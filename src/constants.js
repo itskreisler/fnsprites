@@ -31,7 +31,7 @@ export const STORAGE_KEYS = {
  * Canonical themes order.
  * @type {string[]}
  */
-export const THEME_ORDER = ['Basic', 'Gold', 'Candy', 'Galaxy', 'Gem', 'Holofoil', 'Cube', 'Rift', 'Quack', 'Cheat', 'Hacker', 'Bounty'];
+export const THEME_ORDER = ['Basic', 'Gold', 'Candy', 'Galaxy', 'Gem', 'Holofoil', 'Cube', 'Rift', 'Quack', 'Cheat', 'Hacker', 'Bounty', 'TrickTreat'];
 
 /**
  * Canonical rarities order.
@@ -59,6 +59,7 @@ export const UI_THEME_LABELS = {
     Candy: 'Gummy',
     Hacker: 'Loot Hacker',
     Bounty: 'Bounty',
+    TrickTreat: 'Trick or Treat',
 };
 
 /**
@@ -70,6 +71,7 @@ export const EXPORT_THEME_LABELS = {
     Candy: 'GUMMY',
     Hacker: 'LOOT HACKER',
     Bounty: 'BOUNTY',
+    TrickTreat: 'TRICK OR TREAT',
 };
 
 /**
@@ -81,6 +83,7 @@ export const TRADE_THEME_LABELS = {
     Candy: 'Gummy',
     Hacker: 'Loot Hacker',
     Bounty: 'Bounty',
+    TrickTreat: 'Trick or Treat',
 };
 
 /**

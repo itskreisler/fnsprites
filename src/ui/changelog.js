@@ -21,6 +21,33 @@ const MODAL_OVERLAY_ID = 'changelogOverlay';
  */
 export const CHANGELOG = [
     {
+        version: '2026-10-02-sprites-fix',
+        date: '2026-10-02',
+        title: { es: 'Novedades', en: "What's new", de: 'Neuerungen' },
+        notes: [
+            {
+                es: '¡21 sprites nuevos de la temporada Override! Incluye Spooky Dash, Vampire, The Deer, Dumpster Dive y el Trick or Treat Crown.',
+                en: '21 brand new Override season sprites! Including Spooky Dash, Vampire, The Deer, Dumpster Dive and the Trick or Treat Crown.',
+                de: '21 brandneue Sprites der Saison Override! Darunter Spooky Dash, Vampire, The Deer, Dumpster Dive und die Trick-or-Treat-Krone.',
+            },
+            {
+                es: 'Se arregló la descarga de imágenes: a veces salía en blanco o no se guardaba, sobre todo en móvil. Ahora el filtro de temporada abre en Override (la actual) en vez de todas, y la imagen se ajusta sola para que nunca falle.',
+                en: 'Fixed image downloads: they sometimes came out blank or did not save, especially on mobile. The season filter now opens on Override (the current season) instead of all seasons, and the image resizes itself automatically so it can never fail.',
+                de: 'Bild-Downloads repariert: Sie waren manchmal leer oder wurden nicht gespeichert, besonders auf dem Handy. Der Saisonfilter öffnet jetzt standardmäßig Override (aktuelle Saison) statt aller Saisons, und das Bild skaliert sich automatisch, sodass es nie fehlschlagen kann.',
+            },
+            {
+                es: 'Nuevo tema de color Trick or Treat para los sprites de Halloween.',
+                en: 'New Trick or Treat colour theme for the Halloween sprites.',
+                de: 'Neues Farbschema Trick or Treat für die Halloween-Sprites.',
+            },
+            {
+                es: 'Las imágenes exportadas ahora usan siempre la tipografía correcta, sin esperar a que la letra esté lista.',
+                en: 'Exported images now always use the correct font, without waiting for the typeface to be ready.',
+                de: 'Exportierte Bilder verwenden jetzt immer die richtige Schriftart, ohne auf das Laden der Schrift zu warten.',
+            },
+        ],
+    },
+    {
         version: '2026-09-24-secure',
         date: '2026-09-24',
         title: { es: 'Notas de actualización', en: 'Update notes', de: 'Update-Hinweise' },

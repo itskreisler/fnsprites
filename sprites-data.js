@@ -232,6 +232,7 @@ const baseSprites = [
     { id: "crown_cheat", name: "Cheat Master Crown", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "crown_hacker", name: "Loot Hacker Crown", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
     { id: "crown_bounty", name: "Bounty Crown", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "crown_tricktreat", name: "Trick or Treat Crown", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
 
 	{ id: "xray_basic", name: "X-Ray", theme: "Basic", rarity: "Legendary", unreleased: false, season: "Override" },
 	{ id: "xray_gold", name: "Gold X-Ray", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
@@ -285,6 +286,31 @@ const baseSprites = [
 	{ id: "morgana_cheat", name: "Cheat Master Morgana", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
 	{ id: "morgana_hacker", name: "Loot Hacker Morgana", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
 	{ id: "morgana_bounty", name: "Bounty Morgana", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
+
+	// sprites season 2 (week 2026-10-02)
+	{ id: "spooky_basic", name: "Spooky Dash", theme: "Basic", rarity: "Mythic", unreleased: false, season: "Override" },
+	{ id: "spooky_gold", name: "Gold Spooky Dash", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "spooky_cheat", name: "Cheat Master Spooky Dash", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "spooky_hacker", name: "Loot Hacker Spooky Dash", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "spooky_bounty", name: "Bounty Spooky Dash", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
+
+	{ id: "vampire_basic", name: "Vampire", theme: "Basic", rarity: "Legendary", unreleased: false, season: "Override" },
+	{ id: "vampire_gold", name: "Gold Vampire", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "vampire_cheat", name: "Cheatmaster Vampire", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "vampire_hacker", name: "Loot Hacker Vampire", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "vampire_bounty", name: "Bounty Vampire", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
+
+	{ id: "deer_basic", name: "The Deer", theme: "Basic", rarity: "Legendary", unreleased: false, season: "Override" },
+	{ id: "deer_gold", name: "Gold The Deer", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "deer_cheat", name: "Cheatmaster The Deer", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "deer_hacker", name: "Loot Hacker The Deer", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "deer_bounty", name: "Bounty The Deer", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
+
+	{ id: "dumpster_basic", name: "Dumpster Dive", theme: "Basic", rarity: "Epic", unreleased: false, season: "Override" },
+	{ id: "dumpster_gold", name: "Gold Dumpster Dive", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "dumpster_cheat", name: "Cheat Master Dumpster Dive", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "dumpster_hacker", name: "Loot Hacker Dumpster Dive", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "dumpster_bounty", name: "Bounty Dumpster Dive", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 ];
 
 if (typeof window !== 'undefined') {
