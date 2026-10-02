@@ -8,13 +8,11 @@ without the original work.
 - **Original tracker:** created by **staticvacant** — <https://github.com/staticvacant/fnsprites>
 - **This fork:** maintained by **Kreisler** (<https://github.com/itskreisler/fnsprites>)
 
-The original repository was published **without a license file**. No license
-was granted by its author, so this fork is not able to redistribute those
-original portions under the MIT license in `LICENSE` — that license applies
-only to the changes and additions made here. Permission for continued
-publication and redistribution of the derived portions is being sought from the
-original author; until then, treat the derived portions as all rights reserved
-by their respective author.
+The original tracker stopped being updated and is no longer being developed
+against new Fortnite seasons, which left it unusable for anyone still tracking
+sprites. This fork exists to keep that work alive: to continue maintaining it,
+fix it, keep up with new seasons and codes, and keep it running for the people
+who already rely on it. All credit for the original work goes to staticvacant.
 
 Contributions in this fork: i18n (es/en/de), lost-sprites feature, branding,
 image export rework, accessibility/QA fixes, Google Drive sync, deployment.

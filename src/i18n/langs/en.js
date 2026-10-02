@@ -147,7 +147,7 @@ export const en = {
         termsUnofficialTitle: 'Unofficial project',
         termsUnofficial: 'This is an unofficial fan project. "Fortnite" and related trademarks belong to Epic Games.',
         termsCreditsTitle: 'Credits and open source',
-        termsCredits: 'This tracker is a fork of the original tracker created by staticvacant, and would not exist without that original work. All credit goes to them. Permission to redistribute the derived portions is being sought from the original author. Original contributions in this fork are released under the MIT License; see the NOTICE and LICENSE files in the repository. Sprite data and images come from Rick\'s Tracker and fortnite.gg.',
+        termsCredits: 'This tracker is a fork of the original tracker created by staticvacant, and would not exist without that original work. All credit goes to them. The original tracker is no longer being updated or maintained against new seasons, so this fork exists to keep that work alive: to continue maintaining it, fix it, keep up with new seasons and codes, and keep it running for the people who already rely on it. See the NOTICE and LICENSE files in the repository. Sprite data and images come from Rick\'s Tracker and fortnite.gg.',
         termsAssets: 'The sprite images are Fortnite game artwork owned by Epic Games. They are included for personal, non-commercial identification purposes only and remain the property of their respective owner. If you are a rights holder and want an image removed, open an issue and it will be taken down.',
         termsWarrantyTitle: 'No warranty',
         termsWarranty: 'The service is provided "as is" without warranties of any kind, and its operator is not liable for any damages arising from its use.',

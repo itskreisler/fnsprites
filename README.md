@@ -53,18 +53,19 @@ This project is a fork. It would not exist without the original tracker.
   Google Drive sync, accessibility, deployment
 - **Vero** — feature idea: lost sprites system & German language request
 
-The original repository was published without a license file, so its author
-granted no license for its contents. This fork asks that author's permission
-before redistributing the derived portions, and is not able to relicense them
-under the MIT license below. See [`NOTICE`](NOTICE) for the full details.
+The original tracker stopped being updated and is no longer being developed
+against new Fortnite seasons, which made it unusable for anyone still tracking
+sprites. This fork exists to keep that work alive: to maintain it, keep up with
+new seasons and codes, and keep it running for the people who already rely on
+it.
 
 Sprite data and images come from [Rick's Tracker](https://rickventure.com) and,
 where needed, [fortnite.gg](https://fortnite.gg/sprites).
 
 ## License
 
-The original contributions in this fork are released under the
-[MIT License](LICENSE). Derived portions are excluded — see [`NOTICE`](NOTICE).
+The contributions made in this fork are released under the
+[MIT License](LICENSE). See [`NOTICE`](NOTICE) for attribution and details.
 
 Fan project. Not affiliated with, endorsed by or sponsored by Epic Games.
 *Fortnite* and all related trademarks and game assets belong to Epic Games.
