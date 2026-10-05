@@ -21,6 +21,33 @@ const MODAL_OVERLAY_ID = 'changelogOverlay';
  */
 export const CHANGELOG = [
     {
+        version: '2026-10-05-codes',
+        date: '2026-10-05',
+        title: { es: 'Códigos de lobby al día', en: 'Lobby codes up to date', de: 'Lobby-Codes aktuell' },
+        notes: [
+            {
+                es: 'La página de hacks de lobby ahora lista 52 códigos, ordenados del más reciente al más antiguo. Antes había 42.',
+                en: 'The lobby hacks page now lists 52 codes, sorted from newest to oldest. There were 42 before.',
+                de: 'Die Lobby-Hacks-Seite listet jetzt 52 Codes, sortiert von neu nach alt. Vorher waren es 42.',
+            },
+            {
+                es: '16 códigos nuevos, entre ellos VeryScaryPumpkin, PUMPKINSPICELIFE, CrowsAreAfraid, POWEROUT y s7h-50p-r03.',
+                en: '16 new codes, including VeryScaryPumpkin, PUMPKINSPICELIFE, CrowsAreAfraid, POWEROUT and s7h-50p-r03.',
+                de: '16 neue Codes, darunter VeryScaryPumpkin, PUMPKINSPICELIFE, CrowsAreAfraid, POWEROUT und s7h-50p-r03.',
+            },
+            {
+                es: 'Se corrigieron varias recompensas: O2Override da 5 Portable Extractors (no 1) y YourThoughtsAreMine avisa de que tiene un problema conocido.',
+                en: 'Several rewards were corrected: O2Override gives 5 Portable Extractors (not 1), and YourThoughtsAreMine now flags a known issue.',
+                de: 'Mehrere Belohnungen korrigiert: O2Override gibt 5 Portable Extractors (nicht 1) und YourThoughtsAreMine weist jetzt auf ein bekanntes Problem hin.',
+            },
+            {
+                es: 'Se normalizó la escritura de varios códigos para que coincidan con los del juego.',
+                en: 'The spelling of several codes was normalised so it matches the in-game ones.',
+                de: 'Die Schreibweise mehrerer Codes wurde normalisiert, damit sie mit den Ingame-Codes übereinstimmt.',
+            },
+        ],
+    },
+    {
         version: '2026-10-02-credits',
         date: '2026-10-02',
         title: { es: 'Créditos y licencia', en: 'Credits and license', de: 'Credits und Lizenz' },
