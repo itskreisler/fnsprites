@@ -1,94 +1,93 @@
-[hidden] {
-    display: none !important;
+@layer base {
+    [hidden] {
+        display: none !important;
+    }
+
+    :root {
+        --bg: #0b0d14;
+        --surface: #141720;
+        --surface-raised: #1a1e2a;
+        --surface-overlay: #222738;
+
+        --border: rgba(255, 255, 255, 0.08);
+        --border-hover: rgba(255, 255, 255, 0.16);
+        --border-focus: rgba(0, 180, 255, 0.5);
+
+        --text: #e4e7ef;
+        --text-soft: #8891a5;
+        --text-muted: #555d72;
+
+        --collected: #22c55e;
+        --mastered: #ffd700;
+        --missing: #ef4444;
+        --unmastered: #00d4ff;
+        --unreleased-color: #ef4444;
+
+        --rare: #004A8E;
+        --rare-deep: #081a35;
+        --rare-text: #00FFFB;
+        --epic: #511D7F;
+        --epic-deep: #1e052c;
+        --epic-text: #ED2BFF;
+        --legendary: #8E4122;
+        --legendary-deep: #301702;
+        --legendary-text: #FBC568;
+        --mythic: #80622A;
+        --mythic-deep: #2e2107;
+        --mythic-text: #FFF1A9;
+
+        --gap: 12px;
+        --gap-lg: 20px;
+        --radius: 8px;
+        --radius-sm: 6px;
+        --radius-pill: 999px;
+        --ease: 150ms ease;
+        --ease-slow: 300ms ease;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        min-height: 100vh;
+        background: radial-gradient(ellipse at 50% 0%, #161f30 0%, var(--bg) 70%);
+        color: var(--text);
+        font-family: 'Oswald', system-ui, sans-serif;
+        font-weight: 400;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+    }
+
+    img { display: block; max-width: 100%; }
+    button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; touch-action: manipulation; }
+    input, select { font: inherit; color: inherit; }
+    a { color: var(--mastered); }
+
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    .file-input { display: none !important; }
+
+    .btn:focus-visible,
+    .pill:focus-visible,
+    .switch input:focus-visible,
+    .dropdown-menu button:focus-visible,
+    .card:focus-visible,
+    .card-crown:focus-visible {
+        outline: 2px solid var(--border-focus);
+        outline-offset: 2px;
+    }
 }
 
-:root {
-    --bg: #0b0d14;
-    --surface: #141720;
-    --surface-raised: #1a1e2a;
-    --surface-overlay: #222738;
-
-    --border: rgba(255, 255, 255, 0.08);
-    --border-hover: rgba(255, 255, 255, 0.16);
-    --border-focus: rgba(0, 180, 255, 0.5);
-
-    --text: #e4e7ef;
-    --text-soft: #8891a5;
-    --text-muted: #555d72;
-
-    --collected: #22c55e;
-    --mastered: #ffd700;
-    --missing: #ef4444;
-    --unmastered: #00d4ff;
-    --unreleased-color: #ef4444;
-
-    --rare: #004A8E;
-    --rare-deep: #081a35;
-    --rare-text: #00FFFB;
-    --epic: #511D7F;
-    --epic-deep: #1e052c;
-    --epic-text: #ED2BFF;
-    --legendary: #8E4122;
-    --legendary-deep: #301702;
-    --legendary-text: #FBC568;
-    --mythic: #80622A;
-    --mythic-deep: #2e2107;
-    --mythic-text: #FFF1A9;
-
-    --gap: 12px;
-    --gap-lg: 20px;
-    --radius: 8px;
-    --radius-sm: 6px;
-    --radius-pill: 999px;
-    --ease: 150ms ease;
-    --ease-slow: 300ms ease;
-}
-
-/* ===================================================
-   Reset & Base
-   =================================================== */
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-    min-height: 100vh;
-    background: radial-gradient(ellipse at 50% 0%, #161f30 0%, var(--bg) 70%);
-    color: var(--text);
-    font-family: 'Oswald', system-ui, sans-serif;
-    font-weight: 400;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-}
-
-img { display: block; max-width: 100%; }
-button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; touch-action: manipulation; }
-input, select { font: inherit; color: inherit; }
-a { color: var(--mastered); }
-
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-}
-
-.file-input { display: none; }
-
-.btn:focus-visible,
-.pill:focus-visible,
-.switch input:focus-visible,
-.dropdown-menu button:focus-visible,
-.card:focus-visible,
-.card-crown:focus-visible {
-    outline: 2px solid var(--border-focus);
-    outline-offset: 2px;
-}
-
+@layer components {
 /* ===================================================
    App Shell
    =================================================== */
@@ -675,7 +674,9 @@ a { color: var(--mastered); }
     letter-spacing: 0.5px;
     clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%);
 }
+}
 
+@layer utilities {
 /* ===================================================
    Rarity Backgrounds
    =================================================== */
@@ -1622,4 +1623,5 @@ body.low-fidelity .card.theme-TrickTreat {
     border-left: 3px solid var(--collected, #22c55e);
     background: rgba(255,255,255,0.04);
     border-radius: 0 8px 8px 0;
+}
 }

@@ -9,6 +9,62 @@
     <meta name="theme-color" content="#0d1117">
     <link rel="icon" type="image/png" href="siteimages/logo.png">
     <link rel="canonical" href="https://itskreisler.github.io/fnsprites/terms.html">
+        <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Oswald', 'system-ui', 'sans-serif'],
+              oswald: ['Oswald', 'system-ui', 'sans-serif'],
+            },
+            colors: {
+              bg: '#0b0d14',
+              surface: {
+                DEFAULT: '#141720',
+                raised: '#1a1e2a',
+                overlay: '#222738',
+              },
+              border: {
+                DEFAULT: 'rgba(255, 255, 255, 0.08)',
+                hover: 'rgba(255, 255, 255, 0.16)',
+                focus: 'rgba(0, 180, 255, 0.5)',
+              },
+              text: {
+                DEFAULT: '#e4e7ef',
+                soft: '#8891a5',
+                muted: '#555d72',
+              },
+              collected: '#22c55e',
+              mastered: '#ffd700',
+              missing: '#ef4444',
+              unmastered: '#00d4ff',
+              unreleased: '#ef4444',
+              rare: {
+                DEFAULT: '#004A8E',
+                deep: '#081a35',
+                text: '#00FFFB',
+              },
+              epic: {
+                DEFAULT: '#511D7F',
+                deep: '#1e052c',
+                text: '#ED2BFF',
+              },
+              legendary: {
+                DEFAULT: '#8E4122',
+                deep: '#301702',
+                text: '#FBC568',
+              },
+              mythic: {
+                DEFAULT: '#80622A',
+                deep: '#2e2107',
+                text: '#FFF1A9',
+              },
+            },
+          },
+        },
+      }
+    </script>
     <link rel="stylesheet" href="styles.css">
     <script type="module" src="src/legal.js"></script>
 </head>
