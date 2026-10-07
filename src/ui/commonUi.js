@@ -45,9 +45,8 @@ export function initLanguageSelector(targetContainer = null) {
 
     const sel = document.createElement('select');
     sel.id = LANG_BTN_ID;
-    sel.className = 'lang-select';
+    sel.className = 'select lang-select';
     sel.setAttribute('aria-label', 'Language');
-    sel.style.cssText = 'background:#1a1a2e;color:#e0e0e0;border:1px solid #444;border-radius:4px;padding:4px 6px;font-size:13px;cursor:pointer';
 
     for (const [code, label] of Object.entries(LANG_LABELS)) {
         const opt = document.createElement('option');
@@ -136,7 +135,6 @@ export function addCreatorCard() {
 
     const card = document.createElement('div');
     card.className = 'panel creator-card';
-    card.style.cssText = 'text-align:center;padding:16px;margin-top:16px;border:2px solid var(--border);border-radius:8px';
 
     const title = document.createElement('div');
     title.style.cssText = 'font-size:18px;font-weight:700;color:#ffd700;margin-bottom:8px';

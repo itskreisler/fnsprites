@@ -90,6 +90,11 @@ const dom = {
     exportBackupBtn: document.getElementById('exportBackupBtn'),
     importBtn: document.getElementById('importBtn'),
     importInput: document.getElementById('importInput'),
+    mobileFilterBtn: document.getElementById('mobileFilterBtn'),
+    mobileShareBtn: document.getElementById('mobileShareBtn'),
+    drawerOverlay: document.getElementById('drawerOverlay'),
+    drawerCloseBtn: document.getElementById('drawerCloseBtn'),
+    drawerBody: document.getElementById('drawerBody'),
 };
 
 /* ===================================================
@@ -495,7 +500,7 @@ function fitCardNames() {
             const span = spans[i];
             const parent = span.parentElement;
             if (!parent || parent.clientWidth === 0) continue;
-            let size = 14;
+            let size = 13;
             span.style.fontSize = size + 'px';
             while (span.scrollWidth > parent.clientWidth && size > 8) {
                 size -= 0.5;
@@ -644,6 +649,38 @@ function setDropdownOpen(dropdown, toggle, open) {
 function closeDropdowns() {
     setDropdownOpen(dom.exportDropdown, dom.exportToggle, false);
     setDropdownOpen(dom.copyDropdown, dom.copyToggle, false);
+}
+
+/* ===================================================
+   Mobile Drawer & Sheet Helpers
+   =================================================== */
+
+function openMobileDrawer() {
+    if (!dom.drawerOverlay || !dom.drawerBody) return;
+    const toolbarContent = document.querySelector('.toolbar');
+    if (toolbarContent) {
+        dom.drawerBody.innerHTML = '';
+        dom.drawerBody.appendChild(toolbarContent.cloneNode(true));
+
+        // Re-bind change listeners inside drawer
+        dom.drawerBody.querySelectorAll('select, input').forEach(el => {
+            el.addEventListener('change', () => {
+                const orig = document.getElementById(el.id);
+                if (orig) {
+                    orig.value = el.value;
+                    orig.checked = el.checked;
+                    orig.dispatchEvent(new Event('change'));
+                }
+            });
+        });
+    }
+    dom.drawerOverlay.classList.add('open');
+}
+
+function closeMobileDrawer() {
+    if (dom.drawerOverlay) {
+        dom.drawerOverlay.classList.remove('open');
+    }
 }
 
 /* ===================================================
@@ -918,6 +955,24 @@ function bindEvents() {
             const code = compressCollection(baseSprites, state.obtained, state.mastered);
             const url = `${location.origin}${location.pathname}?c=${code}`;
             copyToClipboard(url, e.currentTarget, t('toasts.shareCopied'), t('toasts.shareCopyError'));
+        });
+    }
+
+    if (dom.mobileFilterBtn) {
+        dom.mobileFilterBtn.addEventListener('click', openMobileDrawer);
+    }
+
+    if (dom.mobileShareBtn && dom.shareBtn) {
+        dom.mobileShareBtn.addEventListener('click', (e) => dom.shareBtn.click());
+    }
+
+    if (dom.drawerCloseBtn) {
+        dom.drawerCloseBtn.addEventListener('click', closeMobileDrawer);
+    }
+
+    if (dom.drawerOverlay) {
+        dom.drawerOverlay.addEventListener('click', (e) => {
+            if (e.target === dom.drawerOverlay) closeMobileDrawer();
         });
     }
 }
