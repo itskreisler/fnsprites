@@ -883,3 +883,26 @@ a:hover { text-decoration: underline; }
     .mobile-bottom-nav { display: none; }
     .toast { bottom: 24px; }
 }
+
+/* Grid Columns Density Options */
+.grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+.grid.cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+.grid.cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
+.grid.cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)) !important; }
+
+/* Dropdown Switched Controls */
+.dropdown-item-switch {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--text-soft);
+}
+
+.dropdown-item-switch:hover {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-sm);
+}

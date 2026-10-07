@@ -118,6 +118,16 @@
                 <option value="rarity" data-i18n="toolbar.sortRarity">Sort by Rarity</option>
             </select>
 
+            <!-- Grid Columns Density Selector -->
+            <label class="sr-only" for="gridColsSelect">Grid Columns</label>
+            <select id="gridColsSelect" class="select">
+                <option value="auto">Cols: Auto</option>
+                <option value="3">3 Cols</option>
+                <option value="4">4 Cols</option>
+                <option value="5">5 Cols</option>
+                <option value="6">6 Cols</option>
+            </select>
+
             <div class="pills" id="statusPills">
                 <button type="button" class="pill active" data-status="all" data-i18n="toolbar.all">All</button>
                 <button type="button" class="pill" data-status="owned" data-i18n="toolbar.owned">Owned</button>
@@ -130,8 +140,6 @@
             <div class="switches">
                 <label class="switch"><input type="checkbox" id="hideMastered"><span data-i18n="toolbar.hideMastered">Hide mastered</span></label>
                 <label class="switch"><input type="checkbox" id="showUnreleased"><span data-i18n="toolbar.showUnreleased">Unreleased</span></label>
-                <label class="switch"><input type="checkbox" id="lowFidelity"><span data-i18n="toolbar.lowFidelity">Low fidelity</span></label>
-                <label class="switch" id="exportModeSwitch"><input type="checkbox" id="openExports"><span data-i18n="toolbar.downloadExports">Download Exports</span></label>
             </div>
 
             <div class="actions">
@@ -153,16 +161,19 @@
                     </div>
                 </div>
 
-                <button type="button" class="btn" id="importBtn" data-i18n="toolbar.import">Import</button>
-                <input type="file" id="importInput" class="file-input" accept=".json">
-
-                <div class="dropdown" id="copyDropdown">
-                    <button type="button" class="btn" id="copyToggle" aria-haspopup="true" aria-expanded="false" data-i18n="toolbar.copyTradeList">Copy trade list</button>
-                    <div class="dropdown-menu" aria-label="Copy options">
-                        <button type="button" id="copyTradeTextBtn"><span class="dot dot-text"></span><span data-i18n="toolbar.copyTradeText">Trade list (text)</span></button>
-                        <button type="button" id="copyTradeGridBtn"><span class="dot dot-backup"></span><span data-i18n="toolbar.copyTradeGrid">Trade grid (text)</span></button>
+                <!-- Streamlined Options Dropdown -->
+                <div class="dropdown" id="optionsDropdown">
+                    <button type="button" class="btn" id="optionsToggle" aria-haspopup="true" aria-expanded="false">More Options ▾</button>
+                    <div class="dropdown-menu" aria-label="More options">
+                        <button type="button" id="copyTradeTextBtn"><span class="dot dot-text"></span><span data-i18n="toolbar.copyTradeText">Copy Trade List</span></button>
+                        <button type="button" id="copyTradeGridBtn"><span class="dot dot-backup"></span><span data-i18n="toolbar.copyTradeGrid">Copy Trade Grid</span></button>
+                        <button type="button" id="importBtn" data-i18n="toolbar.import">Import Data</button>
+                        <hr class="dropdown-divider">
+                        <label class="dropdown-item-switch"><input type="checkbox" id="lowFidelity"> <span data-i18n="toolbar.lowFidelity">Low fidelity</span></label>
+                        <label class="dropdown-item-switch" id="exportModeSwitch"><input type="checkbox" id="openExports"> <span data-i18n="toolbar.downloadExports">Download Exports</span></label>
                     </div>
                 </div>
+                <input type="file" id="importInput" class="file-input" accept=".json">
 
                 <button type="button" class="btn btn-accent" id="shareBtn" data-i18n="toolbar.share">Share</button>
                 <button type="button" class="btn social-btn" id="syncBtn" hidden aria-pressed="false">

@@ -50,6 +50,7 @@ const state = {
     settings: {
         hideMastered: false,
         sortOrder: 'theme',
+        gridCols: 'auto',
         showUnreleased: false,
         lowFidelity: false,
         openExports: true,
@@ -69,6 +70,7 @@ const dom = {
     searchInput: document.getElementById('searchInput'),
     themeFilter: document.getElementById('themeFilter'),
     sortOrder: document.getElementById('sortOrder'),
+    gridColsSelect: document.getElementById('gridColsSelect'),
     statusPills: document.getElementById('statusPills'),
     hideMastered: document.getElementById('hideMastered'),
     showUnreleased: document.getElementById('showUnreleased'),
@@ -78,8 +80,8 @@ const dom = {
     exportModeSwitch: document.getElementById('exportModeSwitch'),
     exportDropdown: document.getElementById('exportDropdown'),
     exportToggle: document.getElementById('exportToggle'),
-    copyDropdown: document.getElementById('copyDropdown'),
-    copyToggle: document.getElementById('copyToggle'),
+    optionsDropdown: document.getElementById('optionsDropdown'),
+    optionsToggle: document.getElementById('optionsToggle'),
     shareBtn: document.getElementById('shareBtn'),
     copyTradeTextBtn: document.getElementById('copyTradeTextBtn'),
     copyTradeGridBtn: document.getElementById('copyTradeGridBtn'),
@@ -151,6 +153,7 @@ function load() {
         savedSort = legacyGroup === 'false' ? 'sprite' : 'theme';
     }
     state.settings.sortOrder = SORT_METHODS.includes(savedSort) ? savedSort : 'theme';
+    state.settings.gridCols = readLS('fnsprites_gridCols') || 'auto';
 
     state.settings.showUnreleased = readLS(STORAGE_KEYS.showUnreleased) === 'true';
     state.settings.lowFidelity = readLS(STORAGE_KEYS.lowFidelity) === 'true';
@@ -166,6 +169,7 @@ function applyStateToDOM() {
     if (dom.themeFilter) dom.themeFilter.value = state.filters.theme;
     if (dom.seasonFilter) dom.seasonFilter.value = state.filters.season;
     if (dom.sortOrder) dom.sortOrder.value = state.settings.sortOrder;
+    if (dom.gridColsSelect) dom.gridColsSelect.value = state.settings.gridCols;
     if (dom.hideMastered) dom.hideMastered.checked = state.settings.hideMastered;
     if (dom.showUnreleased) dom.showUnreleased.checked = state.settings.showUnreleased;
     if (dom.lowFidelity) dom.lowFidelity.checked = state.settings.lowFidelity;
@@ -383,6 +387,12 @@ function renderGrid() {
     let items = filterSprites();
     items = sortSprites(items, state.settings.sortOrder);
 
+    // Apply Column Density class
+    dom.grid.className = 'grid';
+    if (state.settings.gridCols !== 'auto') {
+        dom.grid.classList.add(`cols-${state.settings.gridCols}`);
+    }
+
     let redeemed = [];
     try {
         redeemed = JSON.parse(storageGet(null, STORAGE_KEYS.redeemedCodes, TypesStorages.LOCAL_STORAGE)) || [];
@@ -500,9 +510,9 @@ function fitCardNames() {
             const span = spans[i];
             const parent = span.parentElement;
             if (!parent || parent.clientWidth === 0) continue;
-            let size = 13;
+            let size = 11.5;
             span.style.fontSize = size + 'px';
-            while (span.scrollWidth > parent.clientWidth && size > 8) {
+            while (span.scrollWidth > parent.clientWidth && size > 7.5) {
                 size -= 0.5;
                 span.style.fontSize = size + 'px';
             }
@@ -648,7 +658,7 @@ function setDropdownOpen(dropdown, toggle, open) {
 
 function closeDropdowns() {
     setDropdownOpen(dom.exportDropdown, dom.exportToggle, false);
-    setDropdownOpen(dom.copyDropdown, dom.copyToggle, false);
+    setDropdownOpen(dom.optionsDropdown, dom.optionsToggle, false);
 }
 
 /* ===================================================
@@ -760,6 +770,14 @@ function bindEvents() {
         });
     }
 
+    if (dom.gridColsSelect) {
+        dom.gridColsSelect.addEventListener('change', () => {
+            state.settings.gridCols = dom.gridColsSelect.value;
+            persist('fnsprites_gridCols', state.settings.gridCols);
+            renderGrid();
+        });
+    }
+
     if (dom.statusPills) {
         dom.statusPills.addEventListener('click', (e) => {
             const pill = e.target.closest('.pill');
@@ -793,8 +811,16 @@ function bindEvents() {
     if (dom.exportToggle) {
         dom.exportToggle.addEventListener('click', (e) => {
             e.stopPropagation();
-            setDropdownOpen(dom.copyDropdown, dom.copyToggle, false);
+            setDropdownOpen(dom.optionsDropdown, dom.optionsToggle, false);
             setDropdownOpen(dom.exportDropdown, dom.exportToggle, !dom.exportDropdown.classList.contains('open'));
+        });
+    }
+
+    if (dom.optionsToggle) {
+        dom.optionsToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            setDropdownOpen(dom.exportDropdown, dom.exportToggle, false);
+            setDropdownOpen(dom.optionsDropdown, dom.optionsToggle, !dom.optionsDropdown.classList.contains('open'));
         });
     }
 
@@ -807,20 +833,12 @@ function bindEvents() {
         });
     }
 
-    if (dom.copyToggle) {
-        dom.copyToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            setDropdownOpen(dom.exportDropdown, dom.exportToggle, false);
-            setDropdownOpen(dom.copyDropdown, dom.copyToggle, !dom.copyDropdown.classList.contains('open'));
-        });
-    }
-
     document.addEventListener('click', (e) => {
         if (dom.exportDropdown && !dom.exportDropdown.contains(e.target)) {
             setDropdownOpen(dom.exportDropdown, dom.exportToggle, false);
         }
-        if (dom.copyDropdown && !dom.copyDropdown.contains(e.target)) {
-            setDropdownOpen(dom.copyDropdown, dom.copyToggle, false);
+        if (dom.optionsDropdown && !dom.optionsDropdown.contains(e.target)) {
+            setDropdownOpen(dom.optionsDropdown, dom.optionsToggle, false);
         }
     });
 
@@ -920,7 +938,7 @@ function bindEvents() {
             });
 
             copyToClipboard(text, e.currentTarget, t('toasts.tradeListCopied'), t('toasts.tradeListCopyError'));
-            setDropdownOpen(dom.copyDropdown, dom.copyToggle, false);
+            closeDropdowns();
         });
     }
 
@@ -944,7 +962,7 @@ function bindEvents() {
             });
 
             copyToClipboard(text, e.currentTarget, t('toasts.tradeGridCopied'), t('toasts.tradeGridCopyError'));
-            setDropdownOpen(dom.copyDropdown, dom.copyToggle, false);
+            closeDropdowns();
         });
     }
 
