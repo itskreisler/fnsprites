@@ -1,54 +1,54 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="legal.termsTitle">Terms of Service - Sprites Tracker</title>
-    <meta name="description" content="Sprites Tracker Terms of Service - Condiciones de servicio.">
+    <meta name="description" content="Sprites Tracker Terms of Service - Términos de servicio.">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#0d1117">
+    <meta name="theme-color" content="#0b0e17">
     <link rel="icon" type="image/png" href="siteimages/logo.png">
     <link rel="canonical" href="https://itskreisler.github.io/fnsprites/terms.html">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: { 800: '#0b0e17', 700: '#141824', 600: '#1c2131' },
+                        fn: { cyan: '#00d4ff', green: '#22c55e' }
+                    },
+                    fontFamily: { oswald: ['Oswald', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script type="module" src="src/legal.js"></script>
 </head>
-<body>
-    <div class="legal-page">
-        <header class="legal-header">
-            <div class="brand">
-                <img src="siteimages/logo.png" alt="Sprites Tracker Logo" class="brand-icon" width="36" height="36">
-                <h1>Sprites Tracker</h1>
+<body class="bg-dark-800 text-slate-100 font-oswald min-h-screen p-4 sm:p-8 antialiased">
+    <div class="legal-page max-w-3xl mx-auto flex flex-col gap-6">
+        <header class="legal-header flex items-center justify-between pb-4 border-b border-white/10">
+            <div class="brand flex items-center gap-3">
+                <img src="siteimages/logo.png" alt="Sprites Tracker Logo" class="brand-icon w-9 h-9 object-contain">
+                <h1 class="text-xl font-bold uppercase text-white">Sprites Tracker</h1>
             </div>
-            <a class="legal-home" href="index.html" data-i18n="legal.home">← Back to tracker</a>
+            <a class="legal-home text-sm text-fn-cyan hover:underline" href="index.html" data-i18n="legal.home">← Back to tracker</a>
         </header>
 
-        <main class="legal-content">
-            <h1 data-i18n="legal.termsTitle">Terms of Service</h1>
-            <p class="legal-note" data-i18n="legal.termsIntro">
-                By using this tracker you agree to these terms. Use it to track your own Fortnite sprites collection.
+        <main class="legal-content flex flex-col gap-4">
+            <h1 class="text-2xl font-bold text-white" data-i18n="legal.termsTitle">Terms of Service</h1>
+            <p class="legal-note p-3 border-l-4 border-fn-green bg-white/5 rounded-r-lg text-sm text-slate-300" data-i18n="legal.termsIntro">
+                Sprites Tracker is provided "as is" without warranties of any kind. Use at your own discretion.
             </p>
 
-            <h2 data-i18n="legal.termsUnofficialTitle">Unofficial project</h2>
-            <p data-i18n="legal.termsUnofficial">
-                This is an unofficial fan project. "Fortnite" and related trademarks belong to Epic Games.
-            </p>
-
-            <h2 data-i18n="legal.termsCreditsTitle">Credits and open source</h2>
-            <p data-i18n="legal.termsCredits">
-                This tracker is a fork of the original tracker created by staticvacant, and would not exist without that original work. All credit goes to them. The original tracker is no longer being updated or maintained against new seasons, so this fork exists to keep that work alive: to continue maintaining it, fix it, keep up with new seasons and codes, and keep it running for the people who already rely on it. See the NOTICE and LICENSE files in the repository. Sprite data and images come from Rick's Tracker and fortnite.gg.
-            </p>
-            <p data-i18n="legal.termsAssets">
-                The sprite images are Fortnite game artwork owned by Epic Games. They are included for personal, non-commercial identification purposes only and remain the property of their respective owner. If you are a rights holder and want an image removed, open an issue and it will be taken down.
-            </p>
-
-            <h2 data-i18n="legal.termsWarrantyTitle">No warranty</h2>
-            <p data-i18n="legal.termsWarranty">
-                The service is provided "as is" without warranties of any kind, and its operator is not liable for any damages arising from its use.
-            </p>
-
-            <h2 data-i18n="legal.termsMisuseTitle">Responsible use</h2>
-            <p data-i18n="legal.termsMisuse">
-                Do not use it for spam, fraud, or any unlawful purpose. Codes and sprites belong to their respective authors.
+            <h2 class="text-lg font-bold text-white mt-4" data-i18n="legal.termsIntellectualTitle">Intellectual Property</h2>
+            <p class="text-sm text-slate-300 leading-relaxed" data-i18n="legal.termsIntellectual">
+                All Fortnite assets, sprite artwork, and trademarks belong to Epic Games, Inc. This project is created solely for community utility under fair use principles.
             </p>
         </main>
     </div>

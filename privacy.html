@@ -1,45 +1,63 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="legal.privacyTitle">Privacy Policy - Sprites Tracker</title>
     <meta name="description" content="Sprites Tracker Privacy Policy - Políticas de privacidad.">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#0d1117">
+    <meta name="theme-color" content="#0b0e17">
     <link rel="icon" type="image/png" href="siteimages/logo.png">
     <link rel="canonical" href="https://itskreisler.github.io/fnsprites/privacy.html">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: { 800: '#0b0e17', 700: '#141824', 600: '#1c2131' },
+                        fn: { cyan: '#00d4ff', green: '#22c55e' }
+                    },
+                    fontFamily: { oswald: ['Oswald', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script type="module" src="src/legal.js"></script>
 </head>
-<body>
-    <div class="legal-page">
-        <header class="legal-header">
-            <div class="brand">
-                <img src="siteimages/logo.png" alt="Sprites Tracker Logo" class="brand-icon" width="36" height="36">
-                <h1>Sprites Tracker</h1>
+<body class="bg-dark-800 text-slate-100 font-oswald min-h-screen p-4 sm:p-8 antialiased">
+    <div class="legal-page max-w-3xl mx-auto flex flex-col gap-6">
+        <header class="legal-header flex items-center justify-between pb-4 border-b border-white/10">
+            <div class="brand flex items-center gap-3">
+                <img src="siteimages/logo.png" alt="Sprites Tracker Logo" class="brand-icon w-9 h-9 object-contain">
+                <h1 class="text-xl font-bold uppercase text-white">Sprites Tracker</h1>
             </div>
-            <a class="legal-home" href="index.html" data-i18n="legal.home">← Back to tracker</a>
+            <a class="legal-home text-sm text-fn-cyan hover:underline" href="index.html" data-i18n="legal.home">← Back to tracker</a>
         </header>
 
-        <main class="legal-content">
-            <h1 data-i18n="legal.privacyTitle">Privacy Policy</h1>
-            <p class="legal-note" data-i18n="legal.privacyIntro">
+        <main class="legal-content flex flex-col gap-4">
+            <h1 class="text-2xl font-bold text-white" data-i18n="legal.privacyTitle">Privacy Policy</h1>
+            <p class="legal-note p-3 border-l-4 border-fn-green bg-white/5 rounded-r-lg text-sm text-slate-300" data-i18n="legal.privacyIntro">
                 This is an unofficial fan-made tracker. It is not affiliated with, endorsed by, or sponsored by Epic Games.
             </p>
 
-            <h2 data-i18n="legal.privacyLocalTitle">Local storage</h2>
-            <p data-i18n="legal.privacyLocal">
+            <h2 class="text-lg font-bold text-white mt-4" data-i18n="legal.privacyLocalTitle">Local storage</h2>
+            <p class="text-sm text-slate-300 leading-relaxed" data-i18n="legal.privacyLocal">
                 Your collection is stored only in your browser on this device. We do not have access to it and do not collect or transmit any personal data.
             </p>
 
-            <h2 data-i18n="legal.privacyDriveTitle">Google Drive sync</h2>
-            <p data-i18n="legal.privacyDrive">
+            <h2 class="text-lg font-bold text-white mt-4" data-i18n="legal.privacyDriveTitle">Google Drive sync</h2>
+            <p class="text-sm text-slate-300 leading-relaxed" data-i18n="legal.privacyDrive">
                 Optional: you can enable Google Drive sync to back up your collection. The backup is a JSON file saved in your own Google Drive account, created by this app with limited access.
             </p>
 
-            <h2 data-i18n="legal.privacyThirdTitle">Third-party services</h2>
-            <p data-i18n="legal.privacyThird">
+            <h2 class="text-lg font-bold text-white mt-4" data-i18n="legal.privacyThirdTitle">Third-party services</h2>
+            <p class="text-sm text-slate-300 leading-relaxed" data-i18n="legal.privacyThird">
                 When using the optional Drive sync or the "Continue with Google" option, Google processes authentication data under its own privacy policy.
             </p>
         </main>

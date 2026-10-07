@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title data-i18n="codes.title">Sprites Tracker - Lobby Hacks</title>
     <meta name="description" content="Redeem Fortnite Sprites lobby hack codes for free sprites, XP, Sprite Dust, and exclusive loading screens.">
     <meta name="keywords" content="Fortnite Codes, Fortnite Lobby Hacks, Fortnite Sprites, Fortnite Free Rewards, Creator Code KLEI">
     <meta name="author" content="Kreisler">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#0d1117">
+    <meta name="theme-color" content="#0b0e17">
     <link rel="manifest" href="manifest.json">
     <link rel="canonical" href="https://itskreisler.github.io/fnsprites/codes">
 
@@ -28,21 +28,34 @@
     <meta name="twitter:description" content="Redeem Fortnite Sprites lobby hack codes for free rewards.">
     <meta name="twitter:image" content="https://itskreisler.github.io/fnsprites/siteimages/preview/og.jpg">
 
-    <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Sprites Tracker - Lobby Hacks",
-      "url": "https://itskreisler.github.io/fnsprites/codes",
-      "description": "Redeem Fortnite Sprites lobby hack codes for free sprites, XP, Sprite Dust, and exclusive loading screens.",
-      "applicationCategory": "GameApplication",
-      "operatingSystem": "All",
-      "author": {
-        "@type": "Person",
-        "name": "Kreisler"
-      }
-    }
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#07090e',
+                            800: '#0b0e17',
+                            700: '#141824',
+                            600: '#1c2131',
+                        },
+                        fn: {
+                            cyan: '#00d4ff',
+                            purple: '#a855f7',
+                            green: '#22c55e',
+                            gold: '#ffd700',
+                            red: '#ef4444',
+                        }
+                    },
+                    fontFamily: {
+                        oswald: ['Oswald', 'sans-serif'],
+                    }
+                }
+            }
+        }
     </script>
 
     <link rel="icon" type="image/png" href="siteimages/logo.png">
@@ -54,55 +67,67 @@
     <script type="module" src="codes-app.js"></script>
     <script type="module" src="src/klei-codes.js"></script>
 </head>
-<body>
+<body class="bg-dark-800 text-slate-100 font-oswald min-h-screen pb-20 lg:pb-6 antialiased selection:bg-fn-cyan selection:text-black">
 
-<div class="app">
-    <header class="header">
-        <div class="brand">
-            <img src="siteimages/logo.png" alt="Sprites Tracker Logo" class="brand-icon" width="36" height="36">
-            <h1 data-i18n="codes.title">Sprites Tracker - Lobby Hacks</h1>
+<div class="app max-w-7xl mx-auto p-3 sm:p-6 flex flex-col gap-4 sm:gap-6">
+    <!-- Header App Bar -->
+    <header class="header bg-dark-700/80 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-2xl flex items-center justify-between gap-4">
+        <div class="brand flex items-center gap-3">
+            <img src="siteimages/logo.png" alt="Sprites Tracker Logo" class="brand-icon w-10 h-10 object-contain drop-shadow-[0_2px_8px_rgba(0,212,255,0.4)]">
+            <h1 class="text-xl sm:text-2xl font-bold uppercase tracking-wider bg-gradient-to-r from-white via-slate-100 to-fn-purple bg-clip-text text-transparent" data-i18n="codes.title">Sprites Tracker - Lobby Hacks</h1>
         </div>
-        <div class="actions">
-            <a href="index.html" class="btn btn-accent" data-i18n="codes.return">Return</a>
+        <div class="header-actions">
+            <a href="index.html" class="btn h-11 px-4 bg-fn-green/20 border border-fn-green text-fn-green rounded-xl text-xs font-bold uppercase hover:bg-fn-green/30 transition-all" data-i18n="codes.return">Return</a>
         </div>
     </header>
 
-    <nav class="toolbar codes-toolbar">
-        <div class="toolbar-row">
-            <div class="switches">
-                <label class="switch">
-                    <input type="checkbox" id="hideRedeemedToggle" checked>
+    <!-- Toolbar Controls -->
+    <nav class="toolbar bg-dark-700/80 backdrop-blur-md border border-white/10 rounded-2xl p-3 sm:p-4 flex flex-col gap-3 shadow-xl">
+        <div class="toolbar-row flex flex-col sm:flex-row items-center justify-between gap-3 w-full">
+            <div class="switches flex items-center gap-3">
+                <label class="switch flex items-center gap-2 text-xs font-medium text-slate-300 cursor-pointer">
+                    <input type="checkbox" id="hideRedeemedToggle" checked class="w-9 h-5 bg-dark-600 rounded-full appearance-none relative cursor-pointer checked:bg-emerald-500/30 transition-all">
                     <span data-i18n="codes.hideRedeemed">Hide redeemed codes</span>
                 </label>
             </div>
-            <div class="codes-actions">
-                <button type="button" id="redeemAllBtn" class="btn btn-accent" data-i18n="codes.redeemAll">Redeem All</button>
-                <button type="button" id="unredeemAllBtn" class="btn" data-i18n="codes.unredeemAll">Unredeem All</button>
+            <div class="codes-actions flex items-center gap-2 w-full sm:w-auto">
+                <button type="button" id="redeemAllBtn" class="btn flex-1 sm:flex-none h-11 px-4 bg-fn-green/20 border border-fn-green text-fn-green rounded-xl text-xs font-bold uppercase hover:bg-fn-green/30 transition-all" data-i18n="codes.redeemAll">Redeem All</button>
+                <button type="button" id="unredeemAllBtn" class="btn flex-1 sm:flex-none h-11 px-4 bg-dark-600 border border-white/10 rounded-xl text-xs font-bold uppercase hover:bg-dark-700 transition-all" data-i18n="codes.unredeemAll">Unredeem All</button>
             </div>
         </div>
     </nav>
 
-    <main class="codes-table-container">
-        <div class="codes-table-header">
-            <span data-i18n="codes.code">CODE</span>
-            <span data-i18n="codes.reward">REWARD</span>
-            <span data-i18n="codes.actions">ACTIONS</span>
-        </div>
-        <div class="codes-list" id="codesList">
+    <!-- Hacks List Table Container -->
+    <main class="codes-table-container bg-dark-700/80 backdrop-blur-md border border-white/10 rounded-2xl p-3 sm:p-4 shadow-2xl flex flex-col gap-4">
+        <div class="codes-list flex flex-col gap-4" id="codesList">
             <!-- Codes rendered via JavaScript -->
         </div>
     </main>
-    <footer class="support-footer">
-        <p class="support-message">
+
+    <!-- Support Footer -->
+    <footer class="support-footer mt-10 py-6 border-t border-white/10 text-center text-slate-300">
+        <p class="support-message text-base sm:text-lg mb-1">
             <span data-i18n="support.useCode">Use code</span>
-            <button type="button" class="btn-copy-code" id="supportCodeBtn">KLEI</button>
+            <button type="button" class="btn-copy-code font-bold text-fn-cyan px-1 hover:underline" id="supportCodeBtn">KLEI</button>
             <span data-i18n="support.itemShop">in the item shop</span>
-            <a href="https://www.fortnite.com/item-shop?creator-code=klei" target="_blank" rel="noopener noreferrer" class="item-shop-link">item shop</a>
+            <a href="https://www.fortnite.com/item-shop?creator-code=klei" target="_blank" rel="noopener noreferrer" class="item-shop-link text-blue-400 underline hover:text-blue-300">item shop</a>
             <span data-i18n="support.supportMe">to support me.</span>
         </p>
-        <p class="epic-partner" data-i18n="support.epicPartner">Thanks to you guys I'm an #EpicPartner.</p>
+        <p class="epic-partner text-xs sm:text-sm text-slate-400" data-i18n="support.epicPartner">Thanks to you guys I'm an #EpicPartner.</p>
     </footer>
 </div>
+
+<!-- Mobile Bottom Navigation Dock -->
+<nav class="mobile-bottom-nav fixed bottom-0 left-0 right-0 h-16 pb-[env(safe-area-inset-bottom)] bg-dark-700/90 backdrop-blur-xl border-t border-white/10 z-40 flex items-center justify-around lg:hidden shadow-2xl" aria-label="Mobile Navigation">
+    <a href="index.html" class="mobile-nav-item flex flex-col items-center justify-center gap-1 text-[11px] font-bold uppercase text-slate-400 hover:text-white">
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        <span>Tracker</span>
+    </a>
+    <a href="codes.html" class="mobile-nav-item active flex flex-col items-center justify-center gap-1 text-[11px] font-bold uppercase text-fn-purple">
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+        <span>Hacks</span>
+    </a>
+</nav>
 
 </body>
 </html>

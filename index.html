@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title data-i18n="app.title">Sprites Tracker - Fortnite Sprites Collection & Mastery</title>
     <meta name="description" content="Track, manage, and share your Fortnite Sprites collection and mastery progress. Export custom trade cards, track lost sprites, and redeem lobby hacks.">
     <meta name="keywords" content="Fortnite Sprites, Sprites Tracker, Fortnite, Fortnite Codes, Fortnite Lobby Hacks, Fortnite Sprites Mastery, Fortnite Item Shop Creator Code KLEI">
     <meta name="author" content="Kreisler">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#0d1117">
+    <meta name="theme-color" content="#0b0e17">
     <link rel="manifest" href="manifest.json">
     <link rel="canonical" href="https://itskreisler.github.io/fnsprites/">
 
@@ -28,21 +28,34 @@
     <meta name="twitter:description" content="Track, manage, and share your Fortnite Sprites collection and mastery progress.">
     <meta name="twitter:image" content="https://itskreisler.github.io/fnsprites/siteimages/preview/og.jpg">
 
-    <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Sprites Tracker",
-      "url": "https://itskreisler.github.io/fnsprites/",
-      "description": "Track, manage, and share your Fortnite Sprites collection and mastery progress.",
-      "applicationCategory": "GameApplication",
-      "operatingSystem": "All",
-      "author": {
-        "@type": "Person",
-        "name": "Kreisler"
-      }
-    }
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#07090e',
+                            800: '#0b0e17',
+                            700: '#141824',
+                            600: '#1c2131',
+                        },
+                        fn: {
+                            cyan: '#00d4ff',
+                            purple: '#a855f7',
+                            green: '#22c55e',
+                            gold: '#ffd700',
+                            red: '#ef4444',
+                        }
+                    },
+                    fontFamily: {
+                        oswald: ['Oswald', 'sans-serif'],
+                    }
+                }
+            }
+        }
     </script>
 
     <link rel="icon" type="image/png" href="siteimages/logo.png">
@@ -55,121 +68,200 @@
     <script type="module" src="app.js"></script>
     <script type="module" src="src/klei.js"></script>
 </head>
-<body>
+<body class="bg-dark-800 text-slate-100 font-oswald min-h-screen pb-20 lg:pb-6 antialiased selection:bg-fn-cyan selection:text-black">
 
-<div class="banner" id="viewBanner" hidden>
+<div class="banner bg-gradient-to-r from-cyan-500/20 to-purple-500/20 backdrop-blur border-b border-cyan-500/40 py-2.5 px-4 text-center text-xs sm:text-sm font-medium flex items-center justify-center gap-2 sticky top-0 z-50" id="viewBanner" hidden>
     <span data-i18n="viewMode.banner">Viewing a shared collection - showing collected sprites only.</span>
-    <a href="index.html" data-i18n="viewMode.goToPersonal">Go to my tracker</a>
+    <a href="index.html" class="font-bold underline text-white" data-i18n="viewMode.goToPersonal">Go to my tracker</a>
 </div>
 
-<div class="app">
-    <header class="header">
-        <div class="brand">
-            <img src="siteimages/logo.png" alt="Sprites Tracker Logo" class="brand-icon" width="36" height="36">
-            <h1 data-i18n="app.title">Sprites Tracker</h1>
+<div class="app max-w-7xl mx-auto p-3 sm:p-6 flex flex-col gap-4 sm:gap-6">
+    <!-- Header App Bar -->
+    <header class="header bg-dark-700/80 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="brand flex items-center gap-3">
+            <img src="siteimages/logo.png" alt="Sprites Tracker Logo" class="brand-icon w-10 h-10 object-contain drop-shadow-[0_2px_8px_rgba(0,212,255,0.4)]">
+            <h1 class="text-xl sm:text-2xl font-bold uppercase tracking-wider bg-gradient-to-r from-white via-slate-100 to-fn-cyan bg-clip-text text-transparent" data-i18n="app.title">Sprites Tracker</h1>
         </div>
-        <div class="progress-group">
-            <div class="progress-item">
-                <div class="progress-meta">
-                    <span class="progress-label" data-i18n="app.collection">Collection</span>
-                    <span class="progress-value" id="collectionRatio">0 / 0</span>
+
+        <!-- Progress Stat Cards -->
+        <div class="progress-group flex flex-col sm:flex-row gap-3 w-full sm:w-auto sm:min-w-[340px]">
+            <div class="progress-item flex-1 bg-dark-600/90 border border-white/10 rounded-xl p-2.5">
+                <div class="progress-meta flex justify-between items-baseline mb-1">
+                    <span class="progress-label text-[11px] font-bold uppercase text-slate-400" data-i18n="app.collection">Collection</span>
+                    <span class="progress-value text-xs sm:text-sm font-bold font-mono text-slate-100" id="collectionRatio">0 / 0</span>
                 </div>
-                <div class="progress-track"><div class="progress-fill" id="collectionFill"></div></div>
+                <div class="progress-track h-2 bg-black/40 rounded-full overflow-hidden p-0.5 border border-white/10">
+                    <div class="progress-fill h-full bg-gradient-to-r from-emerald-600 to-fn-green rounded-full shadow-[0_0_8px_rgba(34,197,94,0.4)] transition-all duration-300" id="collectionFill"></div>
+                </div>
             </div>
-            <div class="progress-item">
-                <div class="progress-meta">
-                    <span class="progress-label" data-i18n="app.mastery">Mastery</span>
-                    <span class="progress-value" id="masteryRatio">0 / 0</span>
+            <div class="progress-item flex-1 bg-dark-600/90 border border-white/10 rounded-xl p-2.5">
+                <div class="progress-meta flex justify-between items-baseline mb-1">
+                    <span class="progress-label text-[11px] font-bold uppercase text-slate-400" data-i18n="app.mastery">Mastery</span>
+                    <span class="progress-value text-xs sm:text-sm font-bold font-mono text-slate-100" id="masteryRatio">0 / 0</span>
                 </div>
-                <div class="progress-track"><div class="progress-fill mastery" id="masteryFill"></div></div>
+                <div class="progress-track h-2 bg-black/40 rounded-full overflow-hidden p-0.5 border border-white/10">
+                    <div class="progress-fill mastery h-full bg-gradient-to-r from-amber-600 to-fn-gold rounded-full shadow-[0_0_8px_rgba(255,215,0,0.4)] transition-all duration-300" id="masteryFill"></div>
+                </div>
             </div>
         </div>
     </header>
 
-    <nav class="toolbar">
-        <div class="toolbar-row">
-            <label class="sr-only" for="searchInput" data-i18n="toolbar.searchPlaceholder">Search sprites</label>
-            <input type="search" id="searchInput" class="input" placeholder="Search sprites…" data-i18n-placeholder="toolbar.searchPlaceholder" autocomplete="off" spellcheck="false">
-            <label class="sr-only" for="themeFilter">Filter by theme</label>
-            <select id="themeFilter" class="select">
-                <option value="all">All Themes</option>
-            </select>
-            <label class="sr-only" for="seasonFilter">Filter by Season</label>
-            <select id="seasonFilter" class="select">
-                <option value="all" data-i18n="toolbar.allSeasons">All Seasons</option>
-                <option value="Runners">Runners - C7S3</option>
-                <option value="Override">Override - C7S4</option>
-            </select>
-            <label class="sr-only" for="sortOrder">Sort Sprites</label>
-            <select id="sortOrder" class="select">
-                <option value="theme" data-i18n="toolbar.sortTheme">Group by Theme</option>
-                <option value="sprite" data-i18n="toolbar.sortSprite">Group by Sprite</option>
-                <option value="name" data-i18n="toolbar.sortName">Alphabetical (A-Z)</option>
-                <option value="rarity" data-i18n="toolbar.sortRarity">Sort by Rarity</option>
-            </select>
-            <div class="pills" id="statusPills">
-                <button type="button" class="pill active" data-status="all" data-i18n="toolbar.all">All</button>
-                <button type="button" class="pill" data-status="owned" data-i18n="toolbar.owned">Owned</button>
-                <button type="button" class="pill" data-status="lost" data-i18n="toolbar.lost">Lost</button>
-                <button type="button" class="pill" data-status="missing" data-i18n="toolbar.missing">Missing</button>
+    <!-- Toolbar Controls -->
+    <nav class="toolbar bg-dark-700/80 backdrop-blur-md border border-white/10 rounded-2xl p-3 sm:p-4 flex flex-col gap-3 shadow-xl">
+        <div class="toolbar-row flex flex-col sm:flex-row items-center gap-3 w-full">
+            <div class="search-box relative w-full sm:flex-1 min-w-[200px]">
+                <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 fill-slate-400 pointer-events-none" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <label class="sr-only" for="searchInput" data-i18n="toolbar.searchPlaceholder">Search sprites</label>
+                <input type="search" id="searchInput" class="input w-full h-11 pl-10 pr-3 bg-dark-600 border border-white/10 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-fn-cyan focus:ring-2 focus:ring-fn-cyan/30" placeholder="Search sprites…" data-i18n-placeholder="toolbar.searchPlaceholder" autocomplete="off" spellcheck="false">
+            </div>
+
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+                <label class="sr-only" for="themeFilter">Filter by theme</label>
+                <select id="themeFilter" class="select flex-1 sm:flex-none h-11 px-3 bg-dark-600 border border-white/10 rounded-xl text-xs sm:text-sm font-medium text-slate-200 focus:outline-none focus:border-fn-cyan">
+                    <option value="all">All Themes</option>
+                </select>
+
+                <label class="sr-only" for="seasonFilter">Filter by Season</label>
+                <select id="seasonFilter" class="select flex-1 sm:flex-none h-11 px-3 bg-dark-600 border border-white/10 rounded-xl text-xs sm:text-sm font-medium text-slate-200 focus:outline-none focus:border-fn-cyan">
+                    <option value="all" data-i18n="toolbar.allSeasons">All Seasons</option>
+                    <option value="Runners">Runners - C7S3</option>
+                    <option value="Override">Override - C7S4</option>
+                </select>
+            </div>
+
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+                <label class="sr-only" for="sortOrder">Sort Sprites</label>
+                <select id="sortOrder" class="select flex-1 sm:flex-none h-11 px-3 bg-dark-600 border border-white/10 rounded-xl text-xs sm:text-sm font-medium text-slate-200 focus:outline-none focus:border-fn-cyan">
+                    <option value="theme" data-i18n="toolbar.sortTheme">Group by Theme</option>
+                    <option value="sprite" data-i18n="toolbar.sortSprite">Group by Sprite</option>
+                    <option value="name" data-i18n="toolbar.sortName">Alphabetical (A-Z)</option>
+                    <option value="rarity" data-i18n="toolbar.sortRarity">Sort by Rarity</option>
+                </select>
+
+                <label class="sr-only" for="gridColsSelect">Grid Columns</label>
+                <select id="gridColsSelect" class="select flex-1 sm:flex-none h-11 px-3 bg-dark-600 border border-white/10 rounded-xl text-xs sm:text-sm font-medium text-slate-200 focus:outline-none focus:border-fn-cyan">
+                    <option value="auto">Cols: Auto</option>
+                    <option value="3">3 Cols</option>
+                    <option value="4">4 Cols</option>
+                    <option value="5">5 Cols</option>
+                    <option value="6">6 Cols</option>
+                </select>
+            </div>
+
+            <div class="pills grid grid-cols-4 bg-dark-600 border border-white/10 rounded-xl p-1 gap-1 w-full sm:w-auto" id="statusPills">
+                <button type="button" class="pill active py-2 px-3 text-xs font-bold uppercase rounded-lg text-slate-400 hover:text-white transition-all" data-status="all" data-i18n="toolbar.all">All</button>
+                <button type="button" class="pill py-2 px-3 text-xs font-bold uppercase rounded-lg text-slate-400 hover:text-white transition-all" data-status="owned" data-i18n="toolbar.owned">Owned</button>
+                <button type="button" class="pill py-2 px-3 text-xs font-bold uppercase rounded-lg text-slate-400 hover:text-white transition-all" data-status="lost" data-i18n="toolbar.lost">Lost</button>
+                <button type="button" class="pill py-2 px-3 text-xs font-bold uppercase rounded-lg text-slate-400 hover:text-white transition-all" data-status="missing" data-i18n="toolbar.missing">Missing</button>
             </div>
         </div>
-        <div class="toolbar-row">
-            <div class="switches">
-                <label class="switch"><input type="checkbox" id="hideMastered"><span data-i18n="toolbar.hideMastered">Hide mastered</span></label>
-                <label class="switch"><input type="checkbox" id="showUnreleased"><span data-i18n="toolbar.showUnreleased">Unreleased</span></label>
-                <label class="switch"><input type="checkbox" id="lowFidelity"><span data-i18n="toolbar.lowFidelity">Low fidelity</span></label>
-                <label class="switch" id="exportModeSwitch"><input type="checkbox" id="openExports"><span data-i18n="toolbar.downloadExports">Download Exports</span></label>
+
+        <div class="toolbar-row flex flex-col sm:flex-row items-center justify-between gap-3 w-full">
+            <div class="switches grid grid-cols-2 gap-3 w-full sm:w-auto">
+                <label class="switch flex items-center gap-2 text-xs font-medium text-slate-300 cursor-pointer">
+                    <input type="checkbox" id="hideMastered" class="w-9 h-5 bg-dark-600 rounded-full appearance-none relative cursor-pointer checked:bg-emerald-500/30 transition-all">
+                    <span data-i18n="toolbar.hideMastered">Hide mastered</span>
+                </label>
+                <label class="switch flex items-center gap-2 text-xs font-medium text-slate-300 cursor-pointer">
+                    <input type="checkbox" id="showUnreleased" class="w-9 h-5 bg-dark-600 rounded-full appearance-none relative cursor-pointer checked:bg-emerald-500/30 transition-all">
+                    <span data-i18n="toolbar.showUnreleased">Unreleased</span>
+                </label>
             </div>
-            <div class="actions">
-                <a href="codes.html" class="btn btn-codes" id="codesBtn"><span data-i18n="toolbar.lobbyHacks">Lobby Hacks</span><span class="notification-dot" id="codesNotification" hidden></span></a>
-                <div class="dropdown" id="exportDropdown">
-                    <button type="button" class="btn" id="exportToggle" aria-haspopup="true" aria-expanded="false" data-i18n="toolbar.export">Export</button>
-                    <div class="dropdown-menu" aria-label="Export options">
-                        <button type="button" data-export="collected"><span class="dot dot-collected"></span><span data-i18n="toolbar.collectionImage">Collection image</span></button>
-                        <button type="button" data-export="missing"><span class="dot dot-missing"></span><span data-i18n="toolbar.missingSprites">Missing sprites</span></button>
-                        <button type="button" data-export="unmastered"><span class="dot dot-unmastered"></span><span data-i18n="toolbar.unmasteredSprites">Unmastered sprites</span></button>
-                        <button type="button" data-export="mastered"><span class="dot dot-mastered"></span><span data-i18n="toolbar.masteredSprites">Mastered sprites</span></button>
-                        <button type="button" data-export="trade"><span class="dot dot-trade"></span><span data-i18n="toolbar.tradeCard">Trade card image</span></button>
-                        <hr class="dropdown-divider">
-                        <button type="button" id="exportBackupBtn"><span class="dot dot-backup"></span><span data-i18n="toolbar.backupData">Backup data (JSON)</span></button>
+
+            <div class="actions flex items-center gap-2 w-full sm:w-auto sm:ml-auto">
+                <a href="codes.html" class="btn btn-codes flex-1 sm:flex-none h-11 px-4 bg-dark-600 border border-white/10 rounded-xl text-xs font-bold uppercase flex items-center justify-center gap-2 hover:bg-dark-700 transition-all" id="codesBtn">
+                    <span data-i18n="toolbar.lobbyHacks">Lobby Hacks</span>
+                    <span class="notification-dot w-2.5 h-2.5 bg-fn-red rounded-full shadow-[0_0_8px_#ef4444]" id="codesNotification" hidden></span>
+                </a>
+
+                <div class="dropdown relative flex-1 sm:flex-none" id="exportDropdown">
+                    <button type="button" class="btn btn-primary w-full h-11 px-4 bg-fn-cyan/20 border border-fn-cyan text-fn-cyan rounded-xl text-xs font-bold uppercase hover:bg-fn-cyan/30 transition-all" id="exportToggle" aria-haspopup="true" aria-expanded="false" data-i18n="toolbar.export">Export</button>
+                    <div class="dropdown-menu absolute top-full left-0 right-0 sm:right-0 sm:left-auto mt-2 w-full sm:w-56 bg-dark-600 border border-white/15 rounded-xl p-2 hidden z-50 shadow-2xl flex-col gap-1" aria-label="Export options">
+                        <button type="button" class="flex items-center gap-2.5 w-full px-3 py-2 text-xs text-slate-200 hover:bg-white/10 rounded-lg text-left" data-export="collected"><span class="dot dot-collected w-2 h-2 rounded-full bg-fn-green"></span><span data-i18n="toolbar.collectionImage">Collection image</span></button>
+                        <button type="button" class="flex items-center gap-2.5 w-full px-3 py-2 text-xs text-slate-200 hover:bg-white/10 rounded-lg text-left" data-export="missing"><span class="dot dot-missing w-2 h-2 rounded-full bg-fn-red"></span><span data-i18n="toolbar.missingSprites">Missing sprites</span></button>
+                        <button type="button" class="flex items-center gap-2.5 w-full px-3 py-2 text-xs text-slate-200 hover:bg-white/10 rounded-lg text-left" data-export="unmastered"><span class="dot dot-unmastered w-2 h-2 rounded-full bg-fn-cyan"></span><span data-i18n="toolbar.unmasteredSprites">Unmastered sprites</span></button>
+                        <button type="button" class="flex items-center gap-2.5 w-full px-3 py-2 text-xs text-slate-200 hover:bg-white/10 rounded-lg text-left" data-export="mastered"><span class="dot dot-mastered w-2 h-2 rounded-full bg-fn-gold"></span><span data-i18n="toolbar.masteredSprites">Mastered sprites</span></button>
+                        <button type="button" class="flex items-center gap-2.5 w-full px-3 py-2 text-xs text-slate-200 hover:bg-white/10 rounded-lg text-left" data-export="trade"><span class="dot dot-trade w-2 h-2 rounded-full bg-gradient-to-r from-fn-gold to-fn-green"></span><span data-i18n="toolbar.tradeCard">Trade card image</span></button>
+                        <hr class="border-white/10 my-1">
+                        <button type="button" id="exportBackupBtn" class="flex items-center gap-2.5 w-full px-3 py-2 text-xs text-slate-200 hover:bg-white/10 rounded-lg text-left"><span class="dot dot-backup w-2 h-2 rounded-full bg-slate-400"></span><span data-i18n="toolbar.backupData">Backup data (JSON)</span></button>
                     </div>
                 </div>
-                <button type="button" class="btn" id="importBtn" data-i18n="toolbar.import">Import</button>
-                <input type="file" id="importInput" class="file-input" accept=".json">
-                <div class="dropdown" id="copyDropdown">
-                    <button type="button" class="btn" id="copyToggle" aria-haspopup="true" aria-expanded="false" data-i18n="toolbar.copyTradeList">Copy trade list</button>
-                    <div class="dropdown-menu" aria-label="Copy options">
-                        <button type="button" id="copyTradeTextBtn"><span class="dot dot-text"></span><span data-i18n="toolbar.copyTradeText">Trade list (text)</span></button>
-                        <button type="button" id="copyTradeGridBtn"><span class="dot dot-backup"></span><span data-i18n="toolbar.copyTradeGrid">Trade grid (text)</span></button>
+
+                <div class="dropdown relative flex-1 sm:flex-none" id="optionsDropdown">
+                    <button type="button" class="btn w-full h-11 px-4 bg-dark-600 border border-white/10 rounded-xl text-xs font-bold uppercase hover:bg-dark-700 transition-all" id="optionsToggle" aria-haspopup="true" aria-expanded="false">Options ▾</button>
+                    <div class="dropdown-menu absolute top-full left-0 right-0 sm:right-0 sm:left-auto mt-2 w-full sm:w-56 bg-dark-600 border border-white/15 rounded-xl p-2 hidden z-50 shadow-2xl flex-col gap-1" aria-label="More options">
+                        <button type="button" id="copyTradeTextBtn" class="flex items-center gap-2.5 w-full px-3 py-2 text-xs text-slate-200 hover:bg-white/10 rounded-lg text-left"><span class="dot dot-text w-2 h-2 rounded-full bg-fn-cyan"></span><span data-i18n="toolbar.copyTradeText">Copy Trade List</span></button>
+                        <button type="button" id="copyTradeGridBtn" class="flex items-center gap-2.5 w-full px-3 py-2 text-xs text-slate-200 hover:bg-white/10 rounded-lg text-left"><span class="dot dot-backup w-2 h-2 rounded-full bg-slate-400"></span><span data-i18n="toolbar.copyTradeGrid">Copy Trade Grid</span></button>
+                        <button type="button" id="importBtn" class="flex items-center gap-2.5 w-full px-3 py-2 text-xs text-slate-200 hover:bg-white/10 rounded-lg text-left" data-i18n="toolbar.import">Import Data</button>
+                        <hr class="border-white/10 my-1">
+                        <label class="flex items-center gap-2 px-3 py-2 text-xs text-slate-300 hover:bg-white/10 rounded-lg cursor-pointer"><input type="checkbox" id="lowFidelity"> <span data-i18n="toolbar.lowFidelity">Low fidelity</span></label>
+                        <label class="flex items-center gap-2 px-3 py-2 text-xs text-slate-300 hover:bg-white/10 rounded-lg cursor-pointer" id="exportModeSwitch"><input type="checkbox" id="openExports"> <span data-i18n="toolbar.downloadExports">Download Exports</span></label>
                     </div>
                 </div>
-                <button type="button" class="btn btn-accent" id="shareBtn" data-i18n="toolbar.share">Share</button>
-                <button type="button" class="btn social-btn" id="syncBtn" hidden aria-pressed="false">
-                    <img src="siteimages/google.svg" alt="Google" />
+                <input type="file" id="importInput" class="hidden file-input" accept=".json">
+
+                <button type="button" class="btn btn-accent flex-1 sm:flex-none h-11 px-4 bg-fn-green/20 border border-fn-green text-fn-green rounded-xl text-xs font-bold uppercase hover:bg-fn-green/30 transition-all" id="shareBtn" data-i18n="toolbar.share">Share</button>
+                <button type="button" class="btn social-btn flex-1 sm:flex-none h-11 px-4 bg-white/10 border border-white/20 rounded-xl text-xs font-medium hover:bg-white/20 transition-all" id="syncBtn" hidden aria-pressed="false">
+                    <img src="siteimages/google.svg" alt="Google" class="w-4 h-4 inline mr-1.5">
                     <span class="sync-label">Continue with Google</span>
                 </button>
-                <span id="syncStatus" class="sync-status" hidden></span>
+                <span id="syncStatus" class="sync-status hidden text-xs text-slate-400"></span>
             </div>
         </div>
     </nav>
 
-    <main class="grid" id="spriteGrid" aria-label="Sprites collection"></main>
-    <footer class="support-footer">
-        <p class="support-message">
+    <!-- Sprites Card Grid -->
+    <main class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2.5 sm:gap-3" id="spriteGrid" aria-label="Sprites collection"></main>
+
+    <!-- Footer Support -->
+    <footer class="support-footer mt-10 py-6 border-t border-white/10 text-center text-slate-300">
+        <p class="support-message text-base sm:text-lg mb-1">
             <span data-i18n="support.useCode">Use code</span>
-            <button type="button" class="btn-copy-code" id="supportCodeBtn">KLEI</button>
+            <button type="button" class="btn-copy-code font-bold text-fn-cyan px-1 hover:underline" id="supportCodeBtn">KLEI</button>
             <span data-i18n="support.itemShop">in the item shop</span>
-            <a href="https://www.fortnite.com/item-shop?creator-code=klei" target="_blank" rel="noopener noreferrer" class="item-shop-link">item shop</a>
+            <a href="https://www.fortnite.com/item-shop?creator-code=klei" target="_blank" rel="noopener noreferrer" class="item-shop-link text-blue-400 underline hover:text-blue-300">item shop</a>
             <span data-i18n="support.supportMe">to support me.</span>
         </p>
-        <p class="epic-partner" data-i18n="support.epicPartner">Thanks to you guys I'm an #EpicPartner.</p>
-        <p class="legal-links">
-            <a href="privacy.html" data-i18n="legal.privacyLink">Privacy Policy</a>
-            <span class="legal-sep">·</span>
-            <a href="terms.html" data-i18n="legal.termsLink">Terms of Service</a>
+        <p class="epic-partner text-xs sm:text-sm text-slate-400" data-i18n="support.epicPartner">Thanks to you guys I'm an #EpicPartner.</p>
+        <p class="legal-links mt-3 text-xs text-slate-500 flex items-center justify-center gap-2">
+            <a href="privacy.html" class="hover:text-slate-300 underline" data-i18n="legal.privacyLink">Privacy Policy</a>
+            <span>·</span>
+            <a href="terms.html" class="hover:text-slate-300 underline" data-i18n="legal.termsLink">Terms of Service</a>
         </p>
     </footer>
+</div>
+
+<!-- Mobile Bottom Navigation Dock -->
+<nav class="mobile-bottom-nav fixed bottom-0 left-0 right-0 h-16 pb-[env(safe-area-inset-bottom)] bg-dark-700/90 backdrop-blur-xl border-t border-white/10 z-40 flex items-center justify-around lg:hidden shadow-2xl" aria-label="Mobile Navigation">
+    <a href="index.html" class="mobile-nav-item active flex flex-col items-center justify-center gap-1 text-[11px] font-bold uppercase text-fn-cyan">
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        <span>Tracker</span>
+    </a>
+    <a href="codes.html" class="mobile-nav-item flex flex-col items-center justify-center gap-1 text-[11px] font-bold uppercase text-slate-400 hover:text-white">
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+        <span>Hacks</span>
+    </a>
+    <button type="button" class="mobile-nav-item flex flex-col items-center justify-center gap-1 text-[11px] font-bold uppercase text-slate-400 hover:text-white" id="mobileFilterBtn">
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
+        <span>Filters</span>
+    </button>
+    <button type="button" class="mobile-nav-item flex flex-col items-center justify-center gap-1 text-[11px] font-bold uppercase text-slate-400 hover:text-white" id="mobileShareBtn">
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
+        <span>Share</span>
+    </button>
+</nav>
+
+<!-- Mobile Filter Drawer Sheet -->
+<div class="drawer-overlay fixed inset-0 bg-black/80 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300" id="drawerOverlay">
+    <div class="drawer-sheet fixed bottom-0 left-0 right-0 max-h-[85vh] bg-dark-600 border-t border-white/20 rounded-t-3xl p-5 z-50 translate-y-full transition-transform duration-300 overflow-y-auto">
+        <div class="drawer-header flex items-center justify-between pb-3 mb-4 border-b border-white/10">
+            <span class="drawer-title text-base font-bold uppercase text-slate-100" data-i18n="toolbar.filters">Filters & Settings</span>
+            <button type="button" class="drawer-close w-8 h-8 flex items-center justify-center bg-white/10 rounded-full text-lg" id="drawerCloseBtn">&times;</button>
+        </div>
+        <div class="drawer-body flex flex-col gap-4" id="drawerBody">
+            <!-- Dynamic Mobile Sheet Content -->
+        </div>
+    </div>
 </div>
 
 </body>
