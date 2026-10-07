@@ -1,6 +1,6 @@
 /**
  * @file app.js
- * @description Main application controller and UI state coordinator.
+ * @description Main application controller and UI state coordinator using Tailwind CSS utility classes.
  */
 
 import {
@@ -38,9 +38,6 @@ import { initDriveSync } from './src/sync/syncController.js';
    State Management
    =================================================== */
 
-/**
- * Global reactive UI state object.
- */
 const state = {
     obtained: [],
     mastered: [],
@@ -57,7 +54,6 @@ const state = {
     },
 };
 
-/** Optional Google Drive sync controller (null until sign-in/init). */
 let driveSync = null;
 
 /* ===================================================
@@ -103,7 +99,6 @@ const dom = {
    Persistence & Collection Helpers
    =================================================== */
 
-/** Save active collection state to LocalStorage. */
 function saveCollection() {
     persist(STORAGE_KEYS.obtained, state.obtained);
     persist(STORAGE_KEYS.mastered, state.mastered);
@@ -111,11 +106,6 @@ function saveCollection() {
     if (driveSync && !state.viewMode) driveSync.scheduleAutosave();
 }
 
-/**
- * Apply a merged (union) remote state coming from Google Drive sync.
- * Unified with local data, keeping the same validation rules as load().
- * @param {{obtained: string[], mastered: string[], lost: string[]}} payloadState - merged state
- */
 function applyDriveMergedState(payloadState) {
     const validIds = getSpriteIdSet();
     const obtained = uniqueValidIds(payloadState?.obtained || [], validIds);
@@ -127,7 +117,6 @@ function applyDriveMergedState(payloadState) {
     renderGrid();
 }
 
-/** Load state and preferences from LocalStorage. */
 function load() {
     const readLS = (key) => storageGet(null, key, TypesStorages.LOCAL_STORAGE);
     const validIds = getSpriteIdSet();
@@ -161,7 +150,6 @@ function load() {
     state.settings.openExports = savedOpenExports !== null ? savedOpenExports === 'true' : true;
 }
 
-/** Apply internal state values to controls in the DOM. */
 function applyStateToDOM() {
     const t = getTranslator();
 
@@ -189,12 +177,16 @@ function applyStateToDOM() {
         dom.statusPills.querySelectorAll('.pill').forEach(pill => {
             const match = pill.dataset.status === state.filters.status;
             pill.classList.toggle('active', match);
+            if (match) {
+                pill.className = 'pill active py-2 px-3 text-xs font-bold uppercase rounded-lg bg-fn-cyan text-black shadow-md transition-all';
+            } else {
+                pill.className = 'pill py-2 px-3 text-xs font-bold uppercase rounded-lg text-slate-400 hover:text-white transition-all';
+            }
             pill.setAttribute('aria-pressed', String(match));
         });
     }
 }
 
-/** Check for active unredeemed lobby hack codes. */
 function checkUnredeemedCodes() {
     const notifDot = document.getElementById('codesNotification');
     const codesBtn = document.getElementById('codesBtn');
@@ -388,7 +380,7 @@ function renderGrid() {
     items = sortSprites(items, state.settings.sortOrder);
 
     // Apply Column Density class
-    dom.grid.className = 'grid';
+    dom.grid.className = 'grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2.5 sm:gap-3';
     if (state.settings.gridCols !== 'auto') {
         dom.grid.classList.add(`cols-${state.settings.gridCols}`);
     }
@@ -417,10 +409,11 @@ function renderGrid() {
         const card = document.createElement('div');
         card.dataset.id = sprite.id;
 
-        const classes = ['card', `rarity-${sprite.rarity}`, `theme-${sprite.theme}`];
-        if (obtained) classes.push('obtained');
-        if (mastered) classes.push('mastered');
-        if (lost) classes.push('lost');
+        const baseClasses = 'card relative bg-dark-700/90 border border-white/10 rounded-xl overflow-hidden cursor-pointer opacity-85 hover:opacity-100 hover:scale-[1.02] transition-all duration-150 select-none';
+        const classes = [baseClasses, `rarity-${sprite.rarity}`, `theme-${sprite.theme}`];
+        if (obtained) classes.push('obtained opacity-100 border-emerald-500/40');
+        if (mastered) classes.push('mastered border-fn-gold shadow-[0_0_12px_rgba(255,215,0,0.3)]');
+        if (lost) classes.push('lost opacity-50 grayscale');
         if (hasHack) classes.push('hack-available');
         card.className = classes.join(' ');
 
@@ -435,7 +428,7 @@ function renderGrid() {
 
         let cardHTML = buildCardHTML(sprite, obtained, mastered, lost, t);
         if (hasHack) {
-            cardHTML = `<div class="hack-badge">${t('card.hackAvailable')}</div>` + cardHTML;
+            cardHTML = `<div class="hack-badge font-bold text-[10px] bg-fn-purple text-white px-2 py-0.5 rounded shadow-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none uppercase">${t('card.hackAvailable')}</div>` + cardHTML;
         }
 
         card.innerHTML = cardHTML;
@@ -458,42 +451,44 @@ function buildCardHTML(sprite, obtained, mastered, lost, t) {
 
     let badge = '';
     if (lost) {
-        badge = `<div class="card-badge lost-badge">${t('card.lost')}</div>`;
+        badge = `<div class="card-badge lost-badge absolute top-1 left-1 z-10 px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-fn-purple text-white">${t('card.lost')}</div>`;
     } else if (sprite.unreleased) {
-        badge = `<div class="card-badge unreleased-badge">${t('card.unreleased')}</div>`;
+        badge = `<div class="card-badge unreleased-badge absolute top-1 left-1 z-10 px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-fn-red text-white">${t('card.unreleased')}</div>`;
     } else if (mastered) {
-        badge = `<div class="card-badge mastered-badge">${t('card.mastered')}</div>`;
+        badge = `<div class="card-badge mastered-badge absolute top-1 left-1 z-10 px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-fn-gold text-black">${t('card.mastered')}</div>`;
     } else if (obtained) {
-        badge = `<div class="card-badge collected">${t('card.collected')}</div>`;
+        badge = `<div class="card-badge collected absolute top-1 left-1 z-10 px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-fn-green text-black">${t('card.collected')}</div>`;
     }
 
     let crownAction = '';
     if (obtained && !mastered && !lost && !state.viewMode) {
         const titleText = t('card.toggleMastery', { name: safeName });
-        crownAction = `<button class="card-crown" type="button" title="${titleText}" aria-label="${titleText}">${ICONS.crown}</button>`;
+        crownAction = `<button class="card-crown absolute top-1 right-1 z-10 w-6 h-6 bg-black/60 rounded-full flex items-center justify-center hover:bg-fn-gold/40 transition-all" type="button" title="${titleText}" aria-label="${titleText}">${ICONS.crown}</button>`;
     }
 
     let crownDisplay = '';
     if (mastered && !lost) {
-        crownDisplay = `<div class="card-crown-display">${ICONS.crown}</div>`;
+        crownDisplay = `<div class="card-crown-display absolute top-1 right-1 z-10">${ICONS.crown}</div>`;
     }
 
     let lostAction = '';
     if ((obtained || mastered) && !lost && !state.viewMode) {
         const titleText = t('card.markLost', { name: safeName });
-        lostAction = `<button class="card-lost" type="button" title="${titleText}" aria-label="${titleText}">${ICONS.lost}</button>`;
+        lostAction = `<button class="card-lost absolute top-1 right-8 z-10 w-6 h-6 bg-black/60 rounded-full flex items-center justify-center hover:bg-fn-purple/40 transition-all" type="button" title="${titleText}" aria-label="${titleText}">${ICONS.lost}</button>`;
     }
 
     return `${badge}${crownAction}${lostAction}
-        <div class="card-display">
+        <div class="card-display aspect-[4/5] flex items-center justify-center relative overflow-hidden p-1">
             ${crownDisplay}
-            <img src="${imgPath}" alt="${safeName}" loading="lazy">
-            <div class="card-rarity">${safeRarity}</div>
-            <div class="card-season" title="${safeSeasonName}">
-                <img src="${seasonData.img}" alt="${safeSeasonName}" title="${safeSeasonName}">
+            <img src="${imgPath}" alt="${safeName}" class="w-full h-full object-contain relative z-0" loading="lazy">
+            <div class="card-rarity absolute bottom-0 left-0 z-0 px-2 py-0.5 text-[9px] font-bold uppercase">${safeRarity}</div>
+            <div class="card-season absolute bottom-0.5 right-0.5 z-0 h-3.5" title="${safeSeasonName}">
+                <img src="${seasonData.img}" alt="${safeSeasonName}" class="h-full w-auto object-contain" title="${safeSeasonName}">
             </div>
         </div>
-        <div class="card-name"><span>${safeName}</span></div>`;
+        <div class="card-name p-1.5 text-center bg-black/80 border-t border-white/10 overflow-hidden">
+            <span class="block text-[11px] font-bold uppercase tracking-tight truncate">${safeName}</span>
+        </div>`;
 }
 
 function fitCardNames() {
@@ -510,7 +505,7 @@ function fitCardNames() {
             const span = spans[i];
             const parent = span.parentElement;
             if (!parent || parent.clientWidth === 0) continue;
-            let size = 11.5;
+            let size = 11;
             span.style.fontSize = size + 'px';
             while (span.scrollWidth > parent.clientWidth && size > 7.5) {
                 size -= 0.5;
@@ -652,6 +647,16 @@ function handleExportImage(mode) {
 
 function setDropdownOpen(dropdown, toggle, open) {
     if (!dropdown || !toggle) return;
+    const menu = dropdown.querySelector('.dropdown-menu');
+    if (menu) {
+        if (open) {
+            menu.classList.remove('hidden');
+            menu.classList.add('flex');
+        } else {
+            menu.classList.add('hidden');
+            menu.classList.remove('flex');
+        }
+    }
     dropdown.classList.toggle('open', open);
     toggle.setAttribute('aria-expanded', String(open));
 }
@@ -672,7 +677,6 @@ function openMobileDrawer() {
         dom.drawerBody.innerHTML = '';
         dom.drawerBody.appendChild(toolbarContent.cloneNode(true));
 
-        // Re-bind change listeners inside drawer
         dom.drawerBody.querySelectorAll('select, input').forEach(el => {
             el.addEventListener('change', () => {
                 const orig = document.getElementById(el.id);
