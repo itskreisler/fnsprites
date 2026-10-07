@@ -178,3 +178,161 @@ body.low-fidelity .card.theme-Cheat::before {
 @media (min-width: 1024px) {
     .toast { bottom: 24px; }
 }
+
+/* File Input Utility */
+.file-input {
+    display: none !important;
+}
+
+/* ===================================================
+   Changelog Modal & Overlay Styles
+   =================================================== */
+
+.changelog-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.changelog-overlay.visible {
+    opacity: 1;
+}
+
+.changelog-modal {
+    width: min(540px, calc(100vw - 32px));
+    max-height: min(75vh, 660px);
+    display: flex;
+    flex-direction: column;
+    background: #1c2131;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+    padding: 24px;
+    overflow: hidden;
+}
+
+.changelog-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+}
+
+.changelog-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #f0f3fa;
+}
+
+.changelog-meta {
+    font-size: 12px;
+    color: #8e97ab;
+}
+
+.changelog-list {
+    list-style-type: disc !important;
+    padding-left: 24px !important;
+    overflow-y: auto;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: #e2e8f0;
+}
+
+.changelog-list li {
+    margin-bottom: 8px;
+}
+
+.changelog-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 16px;
+    margin-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ===================================================
+   Support Footer Styling
+   =================================================== */
+
+.support-footer {
+    width: 100%;
+    margin-top: 2rem;
+    padding: 1.5rem 0 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.support-message {
+    font-size: 1.1rem;
+    color: #f0f3fa;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.btn-copy-code {
+    background: rgba(0, 212, 255, 0.15);
+    border: 1px solid #00d4ff;
+    color: #00d4ff;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 150ms ease;
+}
+
+.btn-copy-code:hover {
+    background: rgba(0, 212, 255, 0.3);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+}
+
+.item-shop-link {
+    color: #60a5fa;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.item-shop-link:hover {
+    color: #93c5fd;
+}
+
+.epic-partner {
+    font-size: 0.85rem;
+    color: #8e97ab;
+    margin-top: 0.25rem;
+}
+
+.legal-links {
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.legal-links a {
+    color: #8e97ab;
+    text-decoration: underline;
+}
+
+.legal-links a:hover {
+    color: #f0f3fa;
+}
