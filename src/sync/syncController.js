@@ -209,16 +209,19 @@ export function initDriveSync({ getState, applyRemoteState }) {
             header.appendChild(title);
             modal.appendChild(header);
 
+            const scroll = document.createElement('div');
+            scroll.className = 'changelog-scroll';
+
             const body = document.createElement('p');
             body.className = 'sync-conflict-body';
             body.textContent = t('sync.conflictBody');
-            modal.appendChild(body);
+            scroll.appendChild(body);
 
             const grid = document.createElement('div');
             grid.className = 'sync-conflict-grid';
             grid.appendChild(buildConflictCard(t('sync.localLabel'), payloadMeta(localPayload, null), t));
             grid.appendChild(buildConflictCard(t('sync.remoteLabel'), payloadMeta(remotePayload, remoteFile), t));
-            modal.appendChild(grid);
+            scroll.appendChild(grid);
 
             const mergedCounts = stateCounts(mergeStates(
                 localPayload && localPayload.state,
@@ -231,7 +234,8 @@ export function initDriveSync({ getState, applyRemoteState }) {
                 mastered: mergedCounts.mastered,
                 lost: mergedCounts.lost,
             })}`;
-            modal.appendChild(mergeInfo);
+            scroll.appendChild(mergeInfo);
+            modal.appendChild(scroll);
 
             const footer = document.createElement('div');
             footer.className = 'changelog-footer';

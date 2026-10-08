@@ -4,9 +4,8 @@
  * users and re-shows it whenever a new version is pushed (the modal key is
  * the entry `version`, so bumping it invalidates the seen flag).
  *
- * The seen-flag lives in sessionStorage: it survives page reloads inside the
- * same tab/session but resets per new session, so an update is not lost for
- * users who reload during a session.
+ * The seen-flag lives in localStorage: it survives page reloads and new
+ * tabs/sessions, so the modal only reappears when a new version is pushed.
  */
 
 import { getCurrentLocale, getTranslator } from './commonUi.js';
@@ -237,7 +236,7 @@ function buildModal(entry) {
 }
 
 /**
- * Show the changelog modal once per version within the current session.
+ * Show the changelog modal once per version, across sessions.
  * Marks it as seen as soon as it is rendered so reloads don't re-trigger it.
  */
 export function initChangelogModal() {
@@ -246,7 +245,7 @@ export function initChangelogModal() {
 
     let seen = null;
     try {
-        seen = storageGet(null, SEEN_KEY, TypesStorages.SESSION_STORAGE);
+        seen = storageGet(null, SEEN_KEY, TypesStorages.LOCAL_STORAGE);
     } catch (_) {
         // storage unavailable (private mode): still show on first paint
         return;
@@ -258,7 +257,7 @@ export function initChangelogModal() {
     requestAnimationFrame(() => overlay.classList.add('visible'));
 
     try {
-        storageSet(null, SEEN_KEY, current.version, TypesStorages.SESSION_STORAGE);
+        storageSet(null, SEEN_KEY, current.version, TypesStorages.LOCAL_STORAGE);
     } catch (_) {
         /* ignore */
     }

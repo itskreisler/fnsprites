@@ -113,8 +113,8 @@ variantes seguir usando `Special` con el tema, es nuestra convención.
   `version` único (ej. `2026-09-24`): es la clave de invalidación del `sessionStorage`.
 - Para que el modal vuelva a aparecer tras un cambio, **subir el `version`** de la nueva
   entrada o añadir una entrada nueva arriba.
-- El flag "visto" vive en `sessionStorage` (`fnsprites_changelog_seen`): sobrevive a
-  recargas de pestaña pero se re-muestra en una sesión/pestaña nueva.
+- El flag "visto" vive en `localStorage` (`fnsprites_changelog_seen`): el modal
+  solo vuelve a aparecer cuando se pushea una entrada con `version` nueva.
 - Notas bilingües/trilingües: cada ítem es `{ es, en, de }`.
 - Solo se muestra en `index.html` (init en `app.js` vía `initChangelogModal`).
 
