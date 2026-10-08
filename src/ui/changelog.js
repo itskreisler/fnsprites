@@ -21,6 +21,23 @@ const MODAL_OVERLAY_ID = 'changelogOverlay';
  */
 export const CHANGELOG = [
     {
+        version: '2026-10-08-tricktreat',
+        date: '2026-10-08',
+        title: { es: 'Espíritus Trick or Treat', en: 'Trick or Treat spirits', de: 'Trick-or-Treat-Spirits' },
+        notes: [
+            {
+                es: '23 nuevos espíritus Trick or Treat: Bush, Jonesy, Adventure, 8-Bit, Overshield, Onigiri, Storm Scout, Sonic, Tails, Shadow, Killswitch, Jackrabbit, X-Ray, Klombo, Crown, Birthday, Pond, Crash Bandicoot, Blinky, Morgana, Dumpster Dive, Vampire, The Deer y Spooky Dash.',
+                en: '23 new Trick or Treat spirits: Bush, Jonesy, Adventure, 8-Bit, Overshield, Onigiri, Storm Scout, Sonic, Tails, Shadow, Killswitch, Jackrabbit, X-Ray, Klombo, Crown, Birthday, Pond, Crash Bandicoot, Blinky, Morgana, Dumpster Dive, Vampire, The Deer and Spooky Dash.',
+                de: '23 neue Trick-or-Treat-Spirits: Bush, Jonesy, Adventure, 8-Bit, Overshield, Onigiri, Storm Scout, Sonic, Tails, Shadow, Killswitch, Jackrabbit, X-Ray, Klombo, Crown, Birthday, Pond, Crash Bandicoot, Blinky, Morgana, Dumpster Dive, Vampire, The Deer und Spooky Dash.',
+            },
+            {
+                es: 'La temporada Override ahora tiene 145 espíritus (antes 122).',
+                en: 'The Override season now has 145 spirits (was 122).',
+                de: 'Die Override-Staffel hat jetzt 145 Spirits (vorher 122).',
+            },
+        ],
+    },
+    {
         version: '2026-10-05-codes',
         date: '2026-10-05',
         title: { es: 'Códigos de lobby al día', en: 'Lobby codes up to date', de: 'Lobby-Codes aktuell' },

@@ -232,7 +232,7 @@ const baseSprites = [
     { id: "crown_cheat", name: "Cheat Master Crown", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
     { id: "crown_hacker", name: "Loot Hacker Crown", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
     { id: "crown_bounty", name: "Bounty Crown", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
-    { id: "crown_tricktreat", name: "Trick or Treat Crown", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+    { id: "crown_treat", name: "Trick or Treat Crown", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
 
 	{ id: "xray_basic", name: "X-Ray", theme: "Basic", rarity: "Legendary", unreleased: false, season: "Override" },
 	{ id: "xray_gold", name: "Gold X-Ray", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
@@ -288,11 +288,11 @@ const baseSprites = [
 	{ id: "morgana_bounty", name: "Bounty Morgana", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 
 	// sprites season 2 (week 2026-10-02)
-	{ id: "spooky_basic", name: "Spooky Dash", theme: "Basic", rarity: "Mythic", unreleased: false, season: "Override" },
-	{ id: "spooky_gold", name: "Gold Spooky Dash", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
-	{ id: "spooky_cheat", name: "Cheat Master Spooky Dash", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
-	{ id: "spooky_hacker", name: "Loot Hacker Spooky Dash", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
-	{ id: "spooky_bounty", name: "Bounty Spooky Dash", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "dash_basic", name: "Spooky Dash", theme: "Basic", rarity: "Mythic", unreleased: false, season: "Override" },
+	{ id: "dash_gold", name: "Gold Spooky Dash", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "dash_cheat", name: "Cheat Master Spooky Dash", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "dash_hacker", name: "Loot Hacker Spooky Dash", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "dash_bounty", name: "Bounty Spooky Dash", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
 
 	{ id: "vampire_basic", name: "Vampire", theme: "Basic", rarity: "Legendary", unreleased: false, season: "Override" },
 	{ id: "vampire_gold", name: "Gold Vampire", theme: "Gold", rarity: "Special", unreleased: false, season: "Override" },
@@ -311,6 +311,31 @@ const baseSprites = [
 	{ id: "dumpster_cheat", name: "Cheat Master Dumpster Dive", theme: "Cheat", rarity: "Special", unreleased: false, season: "Override" },
 	{ id: "dumpster_hacker", name: "Loot Hacker Dumpster Dive", theme: "Hacker", rarity: "Special", unreleased: false, season: "Override" },
 	{ id: "dumpster_bounty", name: "Bounty Dumpster Dive", theme: "Bounty", rarity: "Special", unreleased: false, season: "Override" },
+
+	// sprites season Override (week 2026-10-08) — Trick or Treat variants
+	{ id: "bush_treat", name: "Trick or Treat Bush", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "jonesy_treat", name: "Trick or Treat Jonesy", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "adventure_treat", name: "Trick or Treat Adventure", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "8bit_treat", name: "Trick or Treat 8-Bit", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "overshield_treat", name: "Trick or Treat Overshield", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "onigiri_treat", name: "Trick or Treat Onigiri", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "stormking_treat", name: "Trick or Treat Storm Scout", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "sonic_treat", name: "Trick or Treat Sonic", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "tails_treat", name: "Trick or Treat Tails", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "shadow_treat", name: "Trick or Treat Shadow", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "killswitch_treat", name: "Trick or Treat Killswitch", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "jackrabbit_treat", name: "Trick or Treat Jackrabbit", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "xray_treat", name: "Trick or Treat X-Ray", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "klombo_treat", name: "Trick or Treat Klombo", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "birthday_treat", name: "Trick or Treat Birthday", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "pond_treat", name: "Trick or Treat Pond", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "crash_treat", name: "Trick or Treat Crash Bandicoot", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "blinky_treat", name: "Trick or Treat Blinky", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "morgana_treat", name: "Trick or Treat Morgana", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "dumpster_treat", name: "Trick or Treat Dumpster Dive", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "vampire_treat", name: "Trick or Treat Vampire", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "deer_treat", name: "Trick or Treat The Deer", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
+	{ id: "dash_treat", name: "Trick or Treat Spooky Dash", theme: "TrickTreat", rarity: "Special", unreleased: false, season: "Override" },
 ];
 
 if (typeof window !== 'undefined') {

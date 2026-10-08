@@ -12,11 +12,11 @@
 
 ## Sprite data
 
-- **Date:** 2026-10-02
-- **Sprites released:** 239 total
-- **Temporada Override (C7S4):** 122 sprites (122 released, 0 unreleased)
+- **Date:** 2026-10-08
+- **Sprites released:** 262 total
+- **Temporada Override (C7S4):** 145 sprites (145 released, 0 unreleased)
 - **Temporada Runners (C7S3):** 117 sprites
-- **PNGs on disk:** 244 en `sprites/{id}.png` (5 huérfanos: `boss_gem`, `dream_gem`, `drifter_basic`, `fire_gem`, `ghost_gem`)
+- **PNGs on disk:** 267 en `sprites/{id}.png` (5 huérfanos: `boss_gem`, `dream_gem`, `drifter_basic`, `fire_gem`, `ghost_gem`)
 - **Fuente upstream:** `https://rickventure.com` (Rick's Tracker) — no usar fortnite.gg para scraping.
   - Fuente de respaldo: `https://fortnite.gg/sprites` (webp, requiere `dwebp`). Útil cuando rickventure
     aún no ha actualizado. Selector útil: `[data-season="42"][data-is-new="1"]`.
